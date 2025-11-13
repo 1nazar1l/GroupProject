@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Document</title>
     <link rel="stylesheet" href="{% static "css/normalize.css" %}">
     <link rel="stylesheet" href="{% static "css/fonts.css" %}">
@@ -12,6 +12,27 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-    startGame
+<section class="screen main-screen active">
+    <div class="image-container">
+        <img src="../../media/title.jpeg" alt="" class="background">
+        <div class="content">
+            <div class="menu">
+                <div class="btn new-game-btn">Новая игра</div>
+                <div class="btn">Продолжить</div>
+                <div class="btn">Настройки</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="screen tier0_shop">
+    <div class="image-container">
+        <img src="../../media/tier0_shop.png" alt="" class="background">
+        <div class="content">
+            <!-- Убрано меню из tier0_shop -->
+        </div>
+    </div>
+</section>
+<script src="{% static "js/script.js" %}"></script>
 </body>
 </html>
