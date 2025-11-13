@@ -99,8 +99,6 @@ function handleFullscreenChange() {
 // Обработчик нажатия F11
 function handleKeyPress(event) {
     if (event.key === 'F11') {
-        event.preventDefault(); // Предотвращаем стандартное поведение F11
-        // Обновляем состояние через небольшую задержку, чтобы браузер успел обработать F11
         setTimeout(handleFullscreenChange, 100);
     }
 }
@@ -112,10 +110,7 @@ function handleResize() {
 }
 
 // Инициализация при загрузке
-window.addEventListener('load', function() {
-    // При первой загрузке принудительно включаем полноэкранные стили
-    document.body.classList.add('fullscreen-mode');
-    
+window.addEventListener('load', function() {    
     updateAllScreens();
     
     // Добавляем обработчик для кнопки "Новая игра"
