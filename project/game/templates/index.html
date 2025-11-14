@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
+<section class="pause-menu">
+    <div class="btn main-screen-btn" data-screen-target="main-screen">Главное меню</div>
+    <div class="btn continue-btn">Продолжить</div>
+    <div class="btn settings-btn">Настройки</div>
+    <div class="btn fullscreen-btn">Полный экран</div>
+</section>
 <section class="screen main-screen active">
     <div class="image-container">
         <img src="../../media/title.jpeg" alt="" class="background">
@@ -28,9 +34,9 @@
 
 <section class="screen tier0_shop">
     <div class="image-container">
-        <img src="../../media/tier0_shop.png" alt="" class="background">
+        <img src="../../media/tier0_shop.webp" alt="" class="background">
         <div class="content">
-            <button class="pause-btn btn" data-screen-target="main-screen">
+            <button class="pause-btn btn">
                 <span></span>
                 <span></span>
             </button>

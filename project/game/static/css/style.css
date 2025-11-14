@@ -98,7 +98,7 @@ section.screen .content {
     padding: 10px 0;
 }
 
-.menu .btn.fullscreen-btn {
+.fullscreen-btn {
     font-size: 2.2rem;
 }
 
@@ -108,6 +108,10 @@ section.screen .content {
 
 .screen.active {
     display: block;
+}
+
+.screen.brightness .background{
+    filter: brightness(40%);
 }
 
 .fullscreen-mode .background {
@@ -141,4 +145,36 @@ section.screen .content {
     width: 8px;
     height: 25px;
     background-color: var(--color3);
+}
+
+
+.pause-menu {
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    width: 20%;
+    border-radius: 20px;
+    border: 5px solid #d9834f;
+    background-color: #f6b763;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    z-index: 1000;
+    display: none; /* Скрыто по умолчанию */
+}
+
+.pause-menu.active {
+    display: flex; /* Показываем когда активно */
+}
+
+.pause-menu .btn {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 2.7rem;
+}
+
+.pause-menu .fullscreen-btn {
+    font-size: 2.2rem;
 }

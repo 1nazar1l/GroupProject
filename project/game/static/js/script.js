@@ -16,20 +16,19 @@ function syncContentWithImage(screenClass) {
 }
 
 // Функция для переключения экранов
-function switchScreen(fromScreenClass, toScreenClass) {
-    const fromScreen = document.querySelector(`.${fromScreenClass}`);
-    const toScreen = document.querySelector(`.${toScreenClass}`);
+function switchScreen(toScreenClass) {
+    // Скрываем все экраны
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
     
-    if (fromScreen && toScreen) {
-        // Скрываем все экраны
-        document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.remove('active');
-        });
-        
-        // Показываем целевой экран
+    // Скрываем меню паузы
+    document.querySelector('.pause-menu').classList.remove('active');
+    
+    // Показываем целевой экран
+    const toScreen = document.querySelector(`.${toScreenClass}`);
+    if (toScreen) {
         toScreen.classList.add('active');
-        
-        // Обновляем размеры для нового экрана
         syncContentWithImage(toScreenClass);
     }
 }
@@ -48,7 +47,6 @@ function isFullscreen() {
               document.webkitFullscreenElement ||
               document.mozFullScreenElement ||
               document.msFullscreenElement ||
-              // Проверяем размеры окна для F11
               window.innerHeight === screen.height);
 }
 
@@ -89,11 +87,10 @@ function handleFullscreenChange() {
     // Обновляем размеры контента
     updateAllScreens();
     
-    // Обновляем текст кнопки
-    const fullscreenBtn = document.querySelector('.fullscreen-btn');
-    if (fullscreenBtn) {
-        fullscreenBtn.textContent = fullscreen ? 'Обычный экран' : 'Полный экран';
-    }
+    // Обновляем текст всех кнопок полноэкранного режима
+    document.querySelectorAll('.fullscreen-btn').forEach(btn => {
+        btn.textContent = fullscreen ? 'Обычный экран' : 'Полный экран';
+    });
 }
 
 // Обработчик нажатия F11
@@ -106,28 +103,26 @@ function handleKeyPress(event) {
 // Проверяем размеры окна при изменении размера
 function handleResize() {
     updateAllScreens();
-    handleFullscreenChange(); // Проверяем состояние полноэкранного режима
+    handleFullscreenChange();
 }
 
 // Инициализация при загрузке
 window.addEventListener('load', function() {    
     updateAllScreens();
     
-    // Добавляем обработчик для кнопки "Новая игра"
-    const newGameBtn = document.querySelector('.new-game-btn');
-    if (newGameBtn) {
-        newGameBtn.addEventListener('click', function() {
-            switchScreen('main-screen', 'tier0_shop');
+    // Инициализация навигации по экранам
+    document.querySelectorAll('[data-screen-target]').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetScreen = this.getAttribute('data-screen-target');
+            switchScreen(targetScreen);
         });
-    }
+    });
     
-    // Добавляем обработчик для кнопки полноэкранного режима
-    const fullscreenBtn = document.querySelector('.fullscreen-btn');
-    if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-    }
+    // Обработчики для кнопок полноэкранного режима
+    document.querySelectorAll('.fullscreen-btn').forEach(btn => {
+        btn.addEventListener('click', toggleFullscreen);
+    });
     
-    // Обновляем состояние после небольшой задержки
     setTimeout(handleFullscreenChange, 500);
 });
 
@@ -149,5 +144,22 @@ document.querySelectorAll('.background').forEach(img => {
     observer.observe(img);
 });
 
-// Дополнительная проверка каждую секунду на случай если F11 не отслеживается
+const pauseBtn = document.querySelector('.pause-btn')
+const activeScreen = pauseBtn.parentElement.parentElement.parentElement
+const pauseMenu = document.querySelector('.pause-menu')
+const continueMenuBtn = pauseMenu.querySelector('.continue-btn')
+const tomainMenuBtn = pauseMenu.querySelector('.main-screen-btn')
+const settingsMenuBtn = pauseMenu.querySelector('.settings-btn')
+pauseBtn.addEventListener('click', () => {
+    activeScreen.classList.toggle('brightness')
+    pauseMenu.classList.toggle('active')
+})
+continueMenuBtn.addEventListener('click', () => {
+    pauseMenu.classList.remove('active')
+    activeScreen.classList.remove('brightness')
+})
+tomainMenuBtn.addEventListener('click', () => {
+    activeScreen.classList.remove('brightness')
+})
+
 setInterval(handleFullscreenChange, 1000);
