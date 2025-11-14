@@ -12,19 +12,27 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-<section class="pause-menu">
+<section class="menu center-menu pause-menu">
     <div class="btn main-screen-btn" data-screen-target="main-screen">Главное меню</div>
     <div class="btn continue-btn">Продолжить</div>
     <div class="btn settings-btn">Настройки</div>
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
+
+<section class="menu center-menu registration-menu">
+    <div class="btn exit-btn" style="width: fit-content; padding-inline: 10px;">← Назад</div>
+    <input type="text" class="btn input" placeholder="Никнейм">
+    <input type="password" class="btn input" placeholder="Пароль">
+    <div class="btn">Создать аккаунт</div>
+</section>
+
 <section class="screen main-screen active">
     <div class="image-container">
         <img src="../../media/title.jpeg" alt="" class="background">
         <div class="content">
-            <div class="menu">
-                <div class="btn new-game-btn" data-screen-target="tier0_shop">Новая игра</div>
-                <div class="btn">Продолжить</div>
+            <div class="menu main-menu">
+                <div class="btn new-game-btn">Новая игра</div>
+                <div class="btn" data-screen-target="tier0_shop">Продолжить</div>
                 <div class="btn">Настройки</div>
                 <div class="btn fullscreen-btn">Полный экран</div>
             </div>
@@ -43,6 +51,8 @@
         </div>
     </div>
 </section>
-<script src="{% static "js/script.js" %}"></script>
+<script src="{% static "js/base.js" %}"></script>
+<script src="{% static "js/main-menu.js" %}"></script>
+<script src="{% static "js/tier0-shop.js" %}"></script>
 </body>
 </html>
