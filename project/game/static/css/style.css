@@ -202,3 +202,42 @@ input::placeholder {
 .registration-menu.active {
     display: flex;
 }
+
+.money-info {
+    width: fit-content;
+    padding: 0;
+    flex-direction: row;
+    background-color: transparent;
+    border: 0;
+    left: 20px;
+    top: 20px;
+    position: absolute;
+}
+
+.money-info.brightness {
+    filter: brightness(40%);
+}
+
+
+.money-info img {
+    width: 500px;
+    opacity: 0.9;
+}
+
+.money-info .money {
+    position: absolute;
+    left: 25%;
+    top: 19%;
+    color: #e5d0ba;
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.money-info .money-per-second {
+    position: absolute;
+    left: 67%;
+    top: 19%;
+    color: #e5d0ba;
+    font-size: 4rem;
+    line-height: 4rem;
+}

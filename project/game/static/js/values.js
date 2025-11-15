@@ -1,0 +1,1 @@
+export const mainScreenContinueBtn = document.querySelector(".main-screen .continue-btn")
