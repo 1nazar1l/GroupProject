@@ -4,7 +4,7 @@ const pauseMenu = document.querySelector('.pause-menu')
 const continueMenuBtn = pauseMenu.querySelector('.continue-btn')
 const tomainMenuBtn = pauseMenu.querySelector('.main-screen-btn')
 const settingsMenuBtn = pauseMenu.querySelector('.settings-btn')
-const moneyInfo = document.querySelector('.shop.active .money-info')
+const moneyInfo = document.querySelector('.active_shop .money-info')
 
 pauseBtn.addEventListener('click', () => {
     activeScreen.classList.toggle('brightness')
