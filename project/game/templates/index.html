@@ -19,29 +19,62 @@
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
 
-<section class="menu center-menu registration-menu">
+<section class="menu center-menu create-save-menu">
+    <div class="exit btn">Назад</div>
+    <input name="username" type="text" class="btn input" placeholder="Имя персонажа" autocomplete="off" required>
+    <button class="btn" type="submit">СОЗДАТЬ</button>
+</section>
+
+{% if not request.user.is_authenticated %}
+<section class="menu center-menu registration-menu active">
     <form action="{% url "create_account" %}" method="post">
         {% csrf_token %}
-        <div class="btn exit-btn" style="width: fit-content; padding-inline: 10px;">← Назад</div>
         <input name="username" type="text" class="btn input" placeholder="Никнейм" required>
         <input name="password" type="password" class="btn input" placeholder="Пароль" required>
         <button class="btn" type="submit" >Создать аккаунт</button>
     </form>
 </section>
+{% endif %}
 
+<section class="menu center-menu choose-save-menu">
+    <div class="exit btn">Назад</div>
+    <div class="saves-block">
+        <div class="save-block">
+            <div class="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="save-block">
+            <div class="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="save-block">
+            <div class="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if request.user.is_authenticated %}
 <section class="screen main-screen active">
     <div class="image-container">
         <img src="../../media/title.jpeg" alt="" class="background">
         <div class="content">
             <div class="menu main-menu">
-                <div class="btn new-game-btn">Новая игра</div>
-                <div class="btn continue-btn" data-screen-target="tier0_shop">Продолжить</div>
+                <div class="btn new-save-btn">Новая игра</div>
+                <div class="btn continue-btn">Продолжить</div>
                 <div class="btn">Настройки</div>
                 <div class="btn fullscreen-btn">Полный экран</div>
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
 <section class="screen tier0_shop shop active_shop">
     <div class="image-container">

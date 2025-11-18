@@ -6,6 +6,11 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 
 from django.conf import settings
 def start_game(request):
+    saves = {}
+    if request.user.is_authenticated:
+        user = request.user
+
+    print(user.saves)
     return render(request, "index.html", context={
         "media_url": settings.MEDIA_ROOT,
     })
@@ -19,9 +24,10 @@ def create_account(request):
         user = User.objects.create_user(
             username=username,
             password=password,
-            progress={
-                "money": 100,
-                "shop_tier": "tier0"
+            saves={
+                "save1": {},
+                "save2": {},
+                "save3": {},
             }
         )
 
