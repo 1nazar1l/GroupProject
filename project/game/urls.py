@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.start_game, name='start_game'),
+    path('create_account/', views.create_account, name='create_account'),
 ]
 
 if settings.DEBUG:

@@ -8,6 +8,11 @@ html {
     user-select: none;
 }
 
+button {
+    outline: none;
+    border: 0;
+}
+
 :root {
     --primary-text: #1E293B;
     --background: #FFFFFF;
@@ -84,6 +89,12 @@ section.screen .content {
     flex-direction: column;
     gap: 30px;
     z-index: 1000;
+}
+
+.registration-menu form {
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .center-menu {

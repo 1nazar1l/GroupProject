@@ -20,10 +20,13 @@
 </section>
 
 <section class="menu center-menu registration-menu">
-    <div class="btn exit-btn" style="width: fit-content; padding-inline: 10px;">← Назад</div>
-    <input type="text" class="btn input" placeholder="Никнейм">
-    <input type="password" class="btn input" placeholder="Пароль">
-    <div class="btn">Создать аккаунт</div>
+    <form action="{% url "create_account" %}" method="post">
+        {% csrf_token %}
+        <div class="btn exit-btn" style="width: fit-content; padding-inline: 10px;">← Назад</div>
+        <input name="username" type="text" class="btn input" placeholder="Никнейм" required>
+        <input name="password" type="password" class="btn input" placeholder="Пароль" required>
+        <button class="btn" type="submit" >Создать аккаунт</button>
+    </form>
 </section>
 
 <section class="screen main-screen active">
