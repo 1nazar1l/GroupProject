@@ -241,3 +241,20 @@ input::placeholder {
     font-size: 4rem;
     line-height: 4rem;
 }
+
+.plus {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgrey;
+    border: 2px solid grey;
+    font-size: 4rem;
+    color: white;
+    border-radius: 50%;
+    left: 10%;
+    top: 40%;
+
+}
