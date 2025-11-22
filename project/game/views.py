@@ -9,10 +9,18 @@ def start_game(request):
     saves = {}
     if request.user.is_authenticated:
         user = request.user
+        saves = user.saves
+    
+    print(saves)
+    saves_count = 0
+    for item in saves:
+        if not item == {}:
+            saves_count += 1
 
-    print(user.saves)
     return render(request, "index.html", context={
         "media_url": settings.MEDIA_ROOT,
+        "saves": saves,
+        "saves_count": saves_count
     })
 
 def create_account(request):
@@ -35,4 +43,33 @@ def create_account(request):
         if user is not None:
             login(request, user)
         
+    return redirect("start_game")
+
+def create_save(request):
+    User = get_user_model()
+    user = User.objects.get(id=request.user.id)
+    if request.POST:
+        username = request.POST.get("username")
+        if user.saves["save1"] == {}:
+            user.saves["save1"] = {
+                "username": username,
+                "shop": "tier0",
+                "day": 0,
+                "capital": 100
+            }
+        elif user.saves["save2"] == {}:
+            user.saves["save2"] = {
+                "username": username,
+                "shop": "tier0",
+                "day": 0,
+                "capital": 100
+            }
+        elif user.saves["save3"] == {}:
+            user.saves["save3"] = {
+                "username": username,
+                "shop": "tier0",
+                "day": 0,
+                "capital": 100
+            }
+        user.save()
     return redirect("start_game")

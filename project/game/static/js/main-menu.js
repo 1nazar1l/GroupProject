@@ -28,3 +28,28 @@ createSaveMenu.querySelector('.exit').addEventListener('click', () => {
     createSaveMenu.classList.remove('active')
     mainMenu.classList.remove('hidden')
 })
+
+// Добавляем обработчик ко всем блокам
+document.querySelectorAll('.save-block').forEach(block => {
+    block.addEventListener('click', function(event) {
+        // Предотвращаем всплытие события, если нужно
+        event.stopPropagation();
+
+        mainScreen.classList.add('brightness')
+        mainMenu.classList.add('hidden')
+        createSaveMenu.classList.add('active')
+
+        chooseSaveMenu.classList.remove('active')
+    });
+});
+
+document.querySelectorAll('.choose-save-block').forEach(block => {
+    block.addEventListener('click', function(event) {
+        // Предотвращаем всплытие события, если нужно
+        event.stopPropagation();
+        mainScreen.classList.remove('brightness')
+        mainMenu.classList.remove('hidden')
+        createSaveMenu.classList.remove('active')
+        chooseSaveMenu.classList.remove('active')
+    });
+});

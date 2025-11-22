@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     # Группировка полей в форме редактирования
     fieldsets = UserAdmin.fieldsets + (
         ('Дополнительная информация', {
-            'fields': ('description', 'avatar', 'progress')
+            'fields': ('description', 'avatar', 'saves')
         }),
     )
     

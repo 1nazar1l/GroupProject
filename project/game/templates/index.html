@@ -20,9 +20,12 @@
 </section>
 
 <section class="menu center-menu create-save-menu">
-    <div class="exit btn">Назад</div>
-    <input name="username" type="text" class="btn input" placeholder="Имя персонажа" autocomplete="off" required>
-    <button class="btn" type="submit">СОЗДАТЬ</button>
+    <form action="{% url "create_save" %}" id="create_save_form" method="post" style="width: 100%;">
+        {% csrf_token %}
+        <div class="exit btn">Назад</div>
+        <input from="create_save_form" name="username" type="text" class="btn input" placeholder="Имя персонажа" autocomplete="off" required>
+        <button from="create_save_form" class="btn" type="submit">СОЗДАТЬ</button>
+    </form>
 </section>
 
 {% if not request.user.is_authenticated %}
@@ -39,24 +42,20 @@
 <section class="menu center-menu choose-save-menu">
     <div class="exit btn">Назад</div>
     <div class="saves-block">
-        <div class="save-block">
-            <div class="cross">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="save-block">
-            <div class="cross">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="save-block">
-            <div class="cross">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+        {% for save in saves.values %}
+            {% if save|length == 0 %}
+                <div class="save-block create-save">
+                    <div class="cross">
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="choose-save-block" data-screen-target="{{save.shop}}_shop">
+                    <span class="username">{{save.username}}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </section>
 

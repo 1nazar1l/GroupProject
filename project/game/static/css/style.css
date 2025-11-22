@@ -278,6 +278,12 @@ input::placeholder {
     display: flex;
 }
 
+.create-save-menu #create_save_form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .save-block{
     border-radius: 20px;
     border: 5px solid #d9834f;
@@ -286,7 +292,6 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    flex-direction: row;
     transition: all .3s ease;
 }
 
@@ -295,6 +300,27 @@ input::placeholder {
     display: none;
 }
 
+.choose-save-block {
+    gap: 10px;
+    border-radius: 20px;
+    border: 5px solid #d9834f;
+    background-color: #f6b763;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    transition: all .3s ease;
+}
+
+.choose-save-block .username {
+    font-size: 3rem;
+    color: #f8be6e;
+    margin: 20px;
+    background-color: #965d2f;
+    padding: 10px;
+    border-radius: 10px;
+}
 .choose-save-menu.active {
     display: flex;
 }
@@ -305,6 +331,10 @@ input::placeholder {
 }
 
 .save-block:hover {
+    transform: scale(1.05);
+}
+
+.choose-save-block:hover {
     transform: scale(1.05);
 }
 
