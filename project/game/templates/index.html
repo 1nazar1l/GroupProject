@@ -42,7 +42,7 @@
 <section class="menu center-menu choose-save-menu">
     <div class="exit btn">Назад</div>
     <div class="saves-block">
-        {% for save in saves.values %}
+        {% for save_key, save in saves.items %}
             {% if save|length == 0 %}
                 <div class="save-block create-save">
                     <div class="cross">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="choose-save-block" data-screen-target="{{save.shop}}_shop">
+                <div class="choose-save-block" data-save-key="{{save_key}}" data-screen-target="{{save.shop}}_shop">
                     <span class="username">{{save.username}}</span>
                 </div>
             {% endif %}

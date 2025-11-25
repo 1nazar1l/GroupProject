@@ -1,26 +1,32 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.utils.text import slugify
+import json
+import os
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
 from django.conf import settings
+
+
+def get_user_json_path(user):
+    """Вернуть путь к файлу username.json для конкретного пользователя."""
+    jsons_dir = os.path.join(settings.MEDIA_ROOT, "jsons")
+    os.makedirs(jsons_dir, exist_ok=True)
+    safe_username = slugify(user.username) or f"user_{user.id}"
+    filename = f"{safe_username}.json"
+    return os.path.join(jsons_dir, filename)
 def start_game(request):
     saves = {}
     if request.user.is_authenticated:
         user = request.user
         saves = user.saves
-    
-    print(saves)
-    saves_count = 0
-    for item in saves:
-        if not item == {}:
-            saves_count += 1
 
     return render(request, "index.html", context={
         "media_url": settings.MEDIA_ROOT,
         "saves": saves,
-        "saves_count": saves_count
     })
 
 def create_account(request):
@@ -50,26 +56,85 @@ def create_save(request):
     user = User.objects.get(id=request.user.id)
     if request.POST:
         username = request.POST.get("username")
+        save_data = {
+            "username": username,
+            "shop": "tier0",
+            "day": 0,
+            "capital": 100
+        }
+        
         if user.saves["save1"] == {}:
-            user.saves["save1"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
+            user.saves["save1"] = save_data
+            save_key = "save1"
         elif user.saves["save2"] == {}:
-            user.saves["save2"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
+            user.saves["save2"] = save_data
+            save_key = "save2"
         elif user.saves["save3"] == {}:
-            user.saves["save3"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
-        user.save()
+            user.saves["save3"] = save_data
+            save_key = "save3"
+        else:
+            save_key = None
+        
+        if save_key:
+            user.save()
+            
+            # Создаем/обновляем JSON файл пользователя
+            user_json_path = get_user_json_path(user)
+            with open(user_json_path, 'w', encoding='utf-8') as f:
+                json.dump(save_data, f, ensure_ascii=False, indent=2)
+    
     return redirect("start_game")
+
+@require_http_methods(["GET"])
+def get_save_data(request):
+    """Получить данные сохранения по ключу (save1, save2, save3)"""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Not authenticated"}, status=401)
+    
+    save_key = request.GET.get("save_key")
+    if not save_key or save_key not in ["save1", "save2", "save3"]:
+        return JsonResponse({"error": "Invalid save_key"}, status=400)
+    
+    user = request.user
+    save_data = user.saves.get(save_key, {})
+    
+    if not save_data:
+        return JsonResponse({"error": "Save not found"}, status=404)
+    
+    return JsonResponse({"success": True, "save_data": save_data})
+
+@require_http_methods(["POST"])
+def save_temp_json(request):
+    """Сохранить временный JSON файл для текущего пользователя"""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Not authenticated"}, status=401)
+    
+    try:
+        data = json.loads(request.body)
+        user_json_path = get_user_json_path(request.user)
+
+        # Сохраняем JSON файл пользователя
+        with open(user_json_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        return JsonResponse({"success": True, "message": "Temp JSON saved"})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@require_http_methods(["GET"])
+def load_temp_json(request):
+    """Загрузить временный JSON файл для текущего пользователя"""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Not authenticated"}, status=401)
+    
+    user_json_path = get_user_json_path(request.user)
+    
+    if not os.path.exists(user_json_path):
+        return JsonResponse({"error": "Temp JSON not found"}, status=404)
+    
+    try:
+        with open(user_json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return JsonResponse({"success": True, "data": data})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
