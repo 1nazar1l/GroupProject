@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/get_save_data/', views.get_save_data, name='get_save_data'),
     path('api/save_temp_json/', views.save_temp_json, name='save_temp_json'),
     path('api/load_temp_json/', views.load_temp_json, name='load_temp_json'),
+    path('api/update_save/', views.update_save, name='update_save'),
 ]
 
 if settings.DEBUG:

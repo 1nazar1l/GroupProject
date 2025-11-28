@@ -94,11 +94,23 @@ async function loadSave(saveKey) {
 }
 
 // Функция для обновления игровых данных на странице
-function updateGameData(saveData) {
-    // Обновляем деньги, если есть элемент
-    const moneyElement = document.querySelector('.active_shop .money');
-    if (moneyElement && saveData.capital !== undefined) {
-        moneyElement.textContent = saveData.capital;
+function updateGameData(saveData, screenSelector = null) {
+    // Если указан селектор экрана, обновляем на нем, иначе на активном
+    const selector = screenSelector || '.active_shop';
+    const screen = screenSelector ? document.querySelector(screenSelector) : document.querySelector(selector);
+    
+    if (screen) {
+        // Обновляем деньги, если есть элемент
+        const moneyElement = screen.querySelector('.money');
+        if (moneyElement && saveData.capital !== undefined) {
+            moneyElement.textContent = saveData.capital;
+        }
+    } else {
+        // Fallback: ищем на активном экране
+        const moneyElement = document.querySelector('.active_shop .money');
+        if (moneyElement && saveData.capital !== undefined) {
+            moneyElement.textContent = saveData.capital;
+        }
     }
     
     // Можно добавить обновление других данных здесь

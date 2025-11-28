@@ -121,6 +121,50 @@ def save_temp_json(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+@require_http_methods(["POST"])
+def update_save(request):
+    """Обновить сохранение пользователя (например, тир магазина)"""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Not authenticated"}, status=401)
+    
+    try:
+        data = json.loads(request.body)
+        shop = data.get("shop")
+        
+        if not shop:
+            return JsonResponse({"error": "shop parameter required"}, status=400)
+        
+        User = get_user_model()
+        user = User.objects.get(id=request.user.id)
+        
+        # Находим активное сохранение (первое непустое)
+        save_key = None
+        for key in ["save1", "save2", "save3"]:
+            if user.saves.get(key, {}):
+                save_key = key
+                break
+        
+        if not save_key:
+            return JsonResponse({"error": "No active save found"}, status=404)
+        
+        # Обновляем поле shop в сохранении
+        if user.saves[save_key]:
+            user.saves[save_key]["shop"] = shop
+            user.save()
+            
+            # Обновляем временный JSON файл
+            user_json_path = get_user_json_path(user)
+            if os.path.exists(user_json_path):
+                with open(user_json_path, 'r', encoding='utf-8') as f:
+                    temp_data = json.load(f)
+                temp_data["shop"] = shop
+                with open(user_json_path, 'w', encoding='utf-8') as f:
+                    json.dump(temp_data, f, ensure_ascii=False, indent=2)
+        
+        return JsonResponse({"success": True, "message": "Save updated", "shop": shop})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 @require_http_methods(["GET"])
 def load_temp_json(request):
     """Загрузить временный JSON файл для текущего пользователя"""
