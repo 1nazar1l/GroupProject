@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-<script type="module" src="{% static "js/base.js" %}"></script>
 <section class="menu center-menu pause-menu">
     <div class="btn continue-btn">Продолжить</div>
     <a href="{% url "start_game" %}">
@@ -27,9 +26,8 @@
 {% include "tier0_5_screen.html" with save=save %}
 {% endif %}
 
-{% comment %} <script type="module" src="{% static "js/base.js" %}"></script> {% endcomment %}
+<script type="module" src="{% static "js/base.js" %}"></script>
 <script type="module" src="{% static "js/values.js" %}"></script>
 <script type="module" src="{% static "js/tier0-shop.js" %}"></script>
-<script type="module" src="{% static "js/shop.js" %}"></script>
 </body>
 </html>

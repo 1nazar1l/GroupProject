@@ -5,6 +5,8 @@ const continueMenuBtn = pauseMenu.querySelector('.continue-btn')
 const tomainMenuBtn = pauseMenu.querySelector('.main-screen-btn')
 const settingsMenuBtn = pauseMenu.querySelector('.settings-btn')
 const moneyInfo = document.querySelector('.active_shop .money-info')
+const brushArea = document.querySelector('.brush_area')
+const brush = document.querySelector('.brush')
 
 pauseBtn.addEventListener('click', () => {
     activeScreen.classList.toggle('brightness')
@@ -21,3 +23,11 @@ tomainMenuBtn.addEventListener('click', () => {
     moneyInfo.classList.remove('brightness')
     
 })
+
+brushArea.addEventListener('click', () => {
+    brush.classList.add('active');
+    brushArea.classList.add('hidden');
+    setTimeout(() => {
+        brush.classList.remove('active');
+    }, 2000);
+});
