@@ -5,6 +5,8 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
 from django.conf import settings
+import json
+
 def start_game(request):
     saves = {}
     if request.user.is_authenticated:
@@ -72,4 +74,16 @@ def create_save(request):
                 "capital": 100
             }
         user.save()
+    return redirect("start_game")
+
+def game(request):
+    if request.POST:
+        key = request.POST.get("save")
+        user = request.user
+        save_data = user.saves.get(key, {}) 
+
+        return render(request, "game.html", {
+            "save": save_data
+        })
+    
     return redirect("start_game")

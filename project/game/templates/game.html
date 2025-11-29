@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/fonts.css" %}">
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+<script type="module" src="{% static "js/base.js" %}"></script>
+<section class="menu center-menu pause-menu">
+    <div class="btn continue-btn">Продолжить</div>
+    <a href="{% url "start_game" %}">
+        <div class="btn main-screen-btn">Главное меню</div>
+    </a>
+    <div class="btn settings-btn">Настройки</div>
+    <div class="btn fullscreen-btn">Полный экран</div>
+</section>
+{% if save.shop == "tier0" %}
+{% include "tier0_screen.html" with save=save %}
+{% elif save.shop == "tier0_5" %}
+{% include "tier0_5_screen.html" with save=save %}
+{% endif %}
+
+{% comment %} <script type="module" src="{% static "js/base.js" %}"></script> {% endcomment %}
+<script type="module" src="{% static "js/values.js" %}"></script>
+<script type="module" src="{% static "js/tier0-shop.js" %}"></script>
+<script type="module" src="{% static "js/shop.js" %}"></script>
+</body>
+</html>
