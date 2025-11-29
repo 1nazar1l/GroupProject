@@ -1,5 +1,5 @@
 const pauseBtn = document.querySelector('.pause-btn')
-let activeScreen = pauseBtn.parentElement.parentElement.parentElement
+const activeScreen = document.querySelector('.active_shop')
 const pauseMenu = document.querySelector('.pause-menu')
 const continueMenuBtn = pauseMenu.querySelector('.continue-btn')
 const tomainMenuBtn = pauseMenu.querySelector('.main-screen-btn')
@@ -24,10 +24,14 @@ tomainMenuBtn.addEventListener('click', () => {
     
 })
 
-brushArea.addEventListener('click', () => {
+brushArea.addEventListener('click', (e) => {
+    e.preventDefault(); // Отменяем стандартное поведение
+    
     brush.classList.add('active');
     brushArea.classList.add('hidden');
+    
     setTimeout(() => {
         brush.classList.remove('active');
+        document.getElementById('nextTierForm').submit(); // Отправляем форму
     }, 2000);
 });

@@ -47,7 +47,7 @@
             {% else %}
                 <form action="{% url "game" %}" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="save" value="{{key}}">
+                    <input type="hidden" name="key" value="{{key}}">
                     <div class="choose-save-block">
                         <button type="submit" class="choose-save-btn"></button>
                         <span class="username">{{save.username}}</span>
@@ -76,7 +76,5 @@
 
 <script type="module" src="{% static "js/values.js" %}"></script>
 <script type="module" src="{% static "js/main-menu.js" %}"></script>
-{% comment %} <script type="module" src="{% static "js/tier0-shop.js" %}"></script> {% endcomment %}
-<script type="module" src="{% static "js/shop.js" %}"></script>
 </body>
 </html>

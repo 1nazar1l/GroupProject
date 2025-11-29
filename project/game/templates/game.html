@@ -21,7 +21,7 @@
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
 {% if save.shop == "tier0" %}
-{% include "tier0_screen.html" with save=save %}
+{% include "tier0_screen.html" with save=save save_key=save_key %}
 {% elif save.shop == "tier0_5" %}
 {% include "tier0_5_screen.html" with save=save %}
 {% endif %}

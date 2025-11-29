@@ -15,7 +15,14 @@
             <div class="brush">
                 <img src="../../media/svg/brush.png" alt="">
             </div>
-            <div class="click_area brush_area"></div>
+            <div class="click_area brush_area">
+                <form action="{% url "next_tier" %}" method="post" id="nextTierForm">
+                    {% csrf_token %}
+                    <button class="next-tier-btn" type="submit"></button>
+                    <input type="hidden" name="key" value={{save_key}}>
+                    <input type="hidden" name="next_tier" value="tier0_5">
+                </form>
+            </div>
         </div>
     </div>
 </section>

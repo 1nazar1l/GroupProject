@@ -76,14 +76,34 @@ def create_save(request):
         user.save()
     return redirect("start_game")
 
-def game(request):
+def next_tier(request):
     if request.POST:
-        key = request.POST.get("save")
+        key = request.POST.get("key")
+        next_tier = request.POST.get("next_tier")
         user = request.user
-        save_data = user.saves.get(key, {}) 
+        
+        # Обновляем данные
+        user.saves[key]["shop"] = next_tier
+        user.save()
+        
+        # Сохраняем ключ в сессии для game view
+        request.session['current_save_key'] = key
+        
+        return redirect('game')  # Редирект на game view
+    
+    return redirect("start_game")
 
+def game(request):
+    # Получаем ключ из сессии или из POST
+    key = request.session.get('current_save_key') or request.POST.get("key")
+    
+    if key:
+        user = request.user
+        save_data = user.saves.get(key, {})
+        
         return render(request, "game.html", {
-            "save": save_data
+            "save": save_data,
+            "save_key": key
         })
     
     return redirect("start_game")
