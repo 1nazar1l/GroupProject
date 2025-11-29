@@ -94,13 +94,17 @@ def next_tier(request):
     return redirect("start_game")
 
 def game(request):
-    # Получаем ключ из сессии или из POST
-    key = request.session.get('current_save_key') or request.POST.get("key")
-    
+    if request.method == 'POST':
+        key = request.POST.get("key")
+        if key:
+            request.session['current_save_key'] = key
+            return redirect("game")  # редирект после POST
+
+    # GET-запрос — безопасный рендер
+    key = request.session.get('current_save_key')
     if key:
         user = request.user
         save_data = user.saves.get(key, {})
-        
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key
