@@ -612,9 +612,10 @@ input::placeholder {
     left: 2%;
     height: 100px;
     aspect-ratio: 1 / 1;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: all 0.6s ease-in-out;
     z-index: -2;
+    pointer-events: none;
 }
 
 .map-block.active {
@@ -623,6 +624,7 @@ input::placeholder {
     height: 100%;
     transform: translate(-50%, 50%);
     z-index: 5;
+    pointer-events: all;
 }
 
 .map-block .back {
@@ -666,4 +668,46 @@ input::placeholder {
 .pause-btn.brightness {
     pointer-events: none;
     filter: brightness(40%);
+}
+
+.map-block .bank-area {
+    position: absolute;
+    width: 14.5%;
+    height: 18%;
+    content: "";
+    z-index: 6;
+    left: 42.6%;
+    top: 12.8%;
+}
+
+.map-block .casino-area {
+    position: absolute;
+    width: 14.5%;
+    height: 18.2%;
+    content: "";
+    z-index: 6;
+    left: 63.4%;
+    top: 12.8%;
+}
+
+.map-block .shop-area {
+    position: absolute;
+    width: 11.1%;
+    height: 19.1%;
+    content: "";
+    z-index: 6;
+    left: 44.45%;
+    top: 36.5%;
+}
+
+.click_area form {
+    width: 100%;
+    height: 100%;
+}
+
+.click_area form button {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }

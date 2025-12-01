@@ -19,6 +19,7 @@ continueMenuBtn.addEventListener('click', () => {
     moneyInfo.classList.remove('brightness')
     pauseBtn.classList.remove('brightness')
 })
+
 tomainMenuBtn.addEventListener('click', () => {
     activeScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')  

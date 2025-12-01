@@ -104,3 +104,24 @@ def game(request):
         })
     
     return redirect("start_game")
+
+def bank(request):
+    if request.method == 'POST':
+        key = request.POST.get("key")
+        if key:
+            request.session['current_save_key'] = key
+            return redirect("bank")
+
+    key = request.session.get('current_save_key')
+    if key:
+        user = request.user
+        save_data = user.saves.get(key, {})
+        return render(request, "bank.html", {
+            "save": save_data,
+            "save_key": key
+        })
+    
+    return redirect("start_game")
+
+def go_to_shop(request):
+    return redirect("game")

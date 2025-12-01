@@ -1,4 +1,3 @@
-import * as values from './pause.js';
 const minimapIcon = document.querySelector('.minimap-icon')
 const map = document.querySelector('.map-block')
 const shopScreen = document.querySelector('.screen')
@@ -9,7 +8,7 @@ const tomainMenuBtn = document.querySelector('.main-screen-btn')
 const shopArea = document.querySelector('.shop-area')
 const bankArea = document.querySelector('.bank-area')
 
-shopArea.addEventListener('click', () => {
+bankArea.addEventListener('click', () => {
     map.classList.remove('active')
     shopScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')

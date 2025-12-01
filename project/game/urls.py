@@ -9,7 +9,9 @@ urlpatterns = [
     path('create_account/', views.create_account, name='create_account'),
     path('create_save/', views.create_save, name='create_save'),
     path('game/', views.game, name='game'),
-    path('next_tier/', views.next_tier, name='next_tier')
+    path('next_tier/', views.next_tier, name='next_tier'),
+    path('bank/', views.bank, name='bank'),
+    path('shop/', views.go_to_shop, name='go_to_shop'),
 ]
 
 if settings.DEBUG:
