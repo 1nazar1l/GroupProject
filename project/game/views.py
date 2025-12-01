@@ -123,5 +123,20 @@ def bank(request):
     
     return redirect("start_game")
 
-def go_to_shop(request):
-    return redirect("game")
+def casino(request):
+    if request.method == 'POST':
+        key = request.POST.get("key")
+        if key:
+            request.session['current_save_key'] = key
+            return redirect("casino")
+
+    key = request.session.get('current_save_key')
+    if key:
+        user = request.user
+        save_data = user.saves.get(key, {})
+        return render(request, "casino.html", {
+            "save": save_data,
+            "save_key": key
+        })
+    
+    return redirect("start_game")

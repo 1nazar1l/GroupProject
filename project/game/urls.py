@@ -11,7 +11,7 @@ urlpatterns = [
     path('game/', views.game, name='game'),
     path('next_tier/', views.next_tier, name='next_tier'),
     path('bank/', views.bank, name='bank'),
-    path('shop/', views.go_to_shop, name='go_to_shop'),
+    path('casino/', views.casino, name='casino'),
 ]
 
 if settings.DEBUG:

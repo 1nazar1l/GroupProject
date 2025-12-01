@@ -28,7 +28,13 @@
                         <button></button>
                     </form>
                 </div>
-                <div class="click_area casino-area"></div>
+                <div class="click_area casino-area">
+                    <form action="{% url "casino" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="key" value={{save_key}}>
+                        <button></button>
+                    </form>
+                </div>
                 <div class="click_area shop-area"></div>
             </div>
         </div>
