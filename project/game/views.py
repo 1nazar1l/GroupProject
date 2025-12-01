@@ -76,10 +76,13 @@ def next_tier(request):
     if request.POST:
         key = request.POST.get("key")
         next_tier = request.POST.get("next_tier")
+        money = request.POST.get("money")
+
         user = request.user
         
         # Обновляем данные
         user.saves[key]["shop"] = next_tier
+        user.saves[key]["capital"] = money
         user.save()
         
         # Сохраняем ключ в сессии для game view

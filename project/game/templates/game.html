@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="{% static "css/fonts.css" %}">
     <link rel="stylesheet" href="{% static "css/base.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 </head>
 <body>
 <section class="menu center-menu pause-menu">
@@ -24,10 +28,13 @@
 {% include "tier0_screen.html" with save=save save_key=save_key %}
 {% elif save.shop == "tier0_5" %}
 {% include "tier0_5_screen.html" with save=save %}
+{% elif save.shop == "tier1" %}
+{% include "tier1_screen.html" with save=save %}
 {% endif %}
 
 <script type="module" src="{% static "js/base.js" %}"></script>
 <script type="module" src="{% static "js/values.js" %}"></script>
 <script type="module" src="{% static "js/tier0-shop.js" %}"></script>
+<script type="module" src="{% static "js/tier0_5-shop.js" %}"></script>
 </body>
 </html>
