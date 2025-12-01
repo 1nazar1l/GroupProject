@@ -24,17 +24,20 @@
     <div class="btn settings-btn">Настройки</div>
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
+
 {% if save.shop == "tier0" %}
 {% include "tier0_screen.html" with save=save save_key=save_key %}
+<script type="module" src="{% static "js/tier0-shop.js" %}"></script>
 {% elif save.shop == "tier0_5" %}
 {% include "tier0_5_screen.html" with save=save %}
+<script type="module" src="{% static "js/tier0_5-shop.js" %}"></script>
 {% elif save.shop == "tier1" %}
 {% include "tier1_screen.html" with save=save %}
+<script type="module" src="{% static "js/tier1-shop.js" %}"></script>
 {% endif %}
 
+<script type="module" src="{% static "js/shop.js" %}"></script>
 <script type="module" src="{% static "js/base.js" %}"></script>
 <script type="module" src="{% static "js/values.js" %}"></script>
-<script type="module" src="{% static "js/tier0-shop.js" %}"></script>
-<script type="module" src="{% static "js/tier0_5-shop.js" %}"></script>
 </body>
 </html>
