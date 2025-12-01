@@ -53,22 +53,16 @@ def create_save(request):
             "username": username,
             "shop": "tier0",
             "day": 0,
-            "capital": 100
+            "capital": 500
         }
         
         if user.saves["save1"] == {}:
             user.saves["save1"] = save_data
-            save_key = "save1"
         elif user.saves["save2"] == {}:
             user.saves["save2"] = save_data
-            save_key = "save2"
         elif user.saves["save3"] == {}:
-            user.saves["save3"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
+            user.saves["save3"] = save_data
+
         user.save()
     return redirect("start_game")
 
