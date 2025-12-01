@@ -459,6 +459,7 @@ input::placeholder {
     height: 50%;
     right: 0;
     bottom: 14%;
+
 }
 
 .brush_area form {
@@ -475,4 +476,5 @@ input::placeholder {
     opacity: 0;
     left: 0;
     top: 0;
+
 }

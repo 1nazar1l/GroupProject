@@ -7,12 +7,27 @@ function syncContentWithImage(screenClass) {
     
     if (!background || !content) return;
     
-    const imgRect = background.getBoundingClientRect();
-    content.style.width = imgRect.width + 'px';
-    content.style.height = imgRect.height + 'px';
-    content.style.position = 'absolute';
-    content.style.left = '50%';
-    content.style.transform = 'translateX(-50%)';
+    // Проверяем, загружено ли изображение
+    const sync = () => {
+        const imgRect = background.getBoundingClientRect();
+        if (imgRect.width > 0 && imgRect.height > 0) {
+            content.style.width = imgRect.width + 'px';
+            content.style.height = imgRect.height + 'px';
+            content.style.position = 'absolute';
+            content.style.left = '50%';
+            content.style.transform = 'translateX(-50%)';
+        }
+    };
+    
+    // Если изображение уже загружено, синхронизируем сразу
+    if (background.complete && background.naturalWidth > 0) {
+        sync();
+    } else {
+        // Иначе ждем загрузки изображения
+        background.addEventListener('load', sync, { once: true });
+        // Также пробуем синхронизировать сразу на случай, если изображение уже загружено
+        sync();
+    }
 }
 
 // Функция для переключения экранов
@@ -29,7 +44,10 @@ function switchScreen(toScreenClass) {
     const toScreen = document.querySelector(`.${toScreenClass}`);
     if (toScreen) {
         toScreen.classList.add('active');
-        syncContentWithImage(toScreenClass);
+        // Добавляем небольшую задержку для синхронизации после того, как изображение загрузится
+        setTimeout(() => {
+            syncContentWithImage(toScreenClass);
+        }, 50);
     }
 }
 
@@ -145,3 +163,11 @@ document.querySelectorAll('.background').forEach(img => {
 });
 
 setInterval(handleFullscreenChange, 1000);
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}

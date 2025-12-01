@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.utils.text import slugify
+import json
+import os
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
@@ -12,17 +16,10 @@ def start_game(request):
     if request.user.is_authenticated:
         user = request.user
         saves = user.saves
-    
-    print(saves)
-    saves_count = 0
-    for item in saves:
-        if not item == {}:
-            saves_count += 1
 
     return render(request, "index.html", context={
         "media_url": settings.MEDIA_ROOT,
         "saves": saves,
-        "saves_count": saves_count
     })
 
 def create_account(request):
@@ -52,20 +49,19 @@ def create_save(request):
     user = User.objects.get(id=request.user.id)
     if request.POST:
         username = request.POST.get("username")
+        save_data = {
+            "username": username,
+            "shop": "tier0",
+            "day": 0,
+            "capital": 100
+        }
+        
         if user.saves["save1"] == {}:
-            user.saves["save1"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
+            user.saves["save1"] = save_data
+            save_key = "save1"
         elif user.saves["save2"] == {}:
-            user.saves["save2"] = {
-                "username": username,
-                "shop": "tier0",
-                "day": 0,
-                "capital": 100
-            }
+            user.saves["save2"] = save_data
+            save_key = "save2"
         elif user.saves["save3"] == {}:
             user.saves["save3"] = {
                 "username": username,
