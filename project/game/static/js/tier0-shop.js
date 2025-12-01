@@ -8,21 +8,21 @@ const moneyInfo = document.querySelector('.active_shop .money-info')
 const brushArea = document.querySelector('.brush_area')
 const brush = document.querySelector('.brush')
 
-// Функция для получения CSRF токена
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+pauseBtn.addEventListener('click', () => {
+    activeScreen.classList.toggle('brightness')
+    moneyInfo.classList.toggle('brightness')
+    pauseMenu.classList.toggle('active')
+})
+continueMenuBtn.addEventListener('click', () => {
+    pauseMenu.classList.remove('active')
+    activeScreen.classList.remove('brightness')
+    moneyInfo.classList.remove('brightness')
+})
+tomainMenuBtn.addEventListener('click', () => {
+    activeScreen.classList.remove('brightness')
+    moneyInfo.classList.remove('brightness')
+    
+})
 
 brushArea.addEventListener('click', (e) => {
     e.preventDefault(); // Отменяем стандартное поведение

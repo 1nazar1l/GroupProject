@@ -476,5 +476,5 @@ input::placeholder {
     opacity: 0;
     left: 0;
     top: 0;
-
+    cursor: pointer;
 }
