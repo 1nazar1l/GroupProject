@@ -2,10 +2,13 @@ html {
     width: 100%;
     height: 100%;
     font-family: "Jersey 10", sans-serif;
-    /* Убирает выделение текста */
     -moz-user-select: none; 
     -khtml-user-select: none; 
     user-select: none;
+}
+
+a {
+    text-decoration: none;
 }
 
 button {
@@ -33,6 +36,31 @@ body {
     position: relative;
     overflow: hidden;
     background-color: #94A3B8;
+}
+
+/* Добавь в CSS */
+.image-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* или contain в зависимости от нужного поведения */
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 section.screen {
@@ -294,6 +322,16 @@ input::placeholder {
     height: auto;
     aspect-ratio: 1 / 1;
     transition: all .3s ease;
+    position: relative;
+}
+
+.choose-save-block .choose-save-btn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
 }
 
 .choose-save-block .username {
@@ -342,4 +380,396 @@ input::placeholder {
 
 .cross span:nth-child(2) {
     transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.brush {
+    width: 80px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10%;
+    top: 50%;
+}
+
+.brush.active {
+    animation: simple-animation 2s steps(1) 1;
+}
+
+@keyframes simple-animation {
+  0%, 33% {
+    top: 35%;
+    right: 10%;
+  }
+  34%, 66% {
+    top: 50%;
+    right: 6%;
+  }
+  67%, 100% { 
+    top: 68%;
+    right: 7%;
+  }
+}
+
+.brush img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    opacity: 0;
+}
+
+.brush.active img {
+    opacity: 1;
+    animation: clear_web ease 0.6s 4 reverse;
+}
+
+@keyframes clear_web {
+    0% {
+        transform: rotate(210deg) scaleX(-1);
+    }
+
+    50% {
+        transform: rotate(150deg) scaleX(-1);
+    }
+
+    100% {
+        transform: rotate(210deg) scaleX(-1);
+    }
+}
+
+.click_area {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    background-color: yellow;
+    cursor: pointer;
+}
+
+.click_area.hidden {
+    opacity: 0;
+    display: none;
+}
+
+.click_area:hover {
+    opacity: 0.2;
+}
+
+.brush_area {
+    position: absolute;
+    width: 13.5%;
+    height: 50%;
+    right: 0;
+    bottom: 14%;
+
+}
+
+.brush_area form {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.brush_area .next-tier-btn {
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.update-wallpaper-btn {
+    position: absolute;
+    left: 64%;
+    top: 9%;
+    color: #e5d0ba;
+    font-size: 4rem;
+    line-height: 4rem;
+    display: flex;
+    flex-direction: row;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.update-wallpaper-btn .brush-img.active {
+    width: 50px;
+    aspect-ratio: 1 / 1;
+    transform: rotate(90deg);
+    opacity: 0.5;
+    display: block;
+}
+
+.update-wallpaper-btn .brush-img {
+    display: none;
+}
+
+.update-wallpaper-btn .brush-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.update-wallpaper-btn .confirm-block {
+    align-items: center;
+    gap: 10px;
+    display: none;
+    position: relative;
+    width: 200px;
+    height: 70px;
+}
+
+.update-wallpaper-btn .confirm-block.active {
+    display: flex;
+    justify-content: center;
+}
+
+.update-wallpaper-btn .confirm-block .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.update-wallpaper-btn .confirm-block.active .next-tier-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.update-wallpaper-btn .confirm-block i {
+    color: rgb(115 190 115);
+    font-size: 3rem;
+}
+
+.update-wallpaper-btn .coin-block {
+    width: 35px;
+    aspect-ratio: 1 / 1;
+}
+
+.update-wallpaper-btn .coin-block img {
+    width: 100%;
+    height: 100%;
+}
+
+.minimap-icon {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 2%;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.minimap-icon .back {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.minimap-icon .icon {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    aspect-ratio: 1 / 1;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.minimap-icon.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+    cursor: alias;
+}
+
+.map-block.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+    cursor: alias;
+}
+
+.map-block {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 2%;
+    height: 100px;
+    aspect-ratio: 1 / 1;
+    transition: all 0.6s ease-in-out;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.map-block.active {
+    left: 50%;
+    bottom: 50%;
+    height: 100%;
+    transform: translate(-50%, 50%);
+    z-index: 5;
+    pointer-events: all;
+}
+
+.map-block .back {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.map-block .border {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.map-block .map {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 79%;
+    aspect-ratio: 1 / 1;
+    z-index: 1;
+}
+
+.screen.brightness .background {
+    filter: brightness(40%);
+}
+
+.money-info.brightness {
+    filter: brightness(40%);
+}
+
+.pause-btn.brightness {
+    pointer-events: none;
+    filter: brightness(40%);
+}
+
+.map-block .bank-area {
+    position: absolute;
+    width: 14.5%;
+    height: 18%;
+    content: "";
+    z-index: 6;
+    left: 42.6%;
+    top: 12.8%;
+}
+
+.map-block .casino-area {
+    position: absolute;
+    width: 14.5%;
+    height: 18.2%;
+    content: "";
+    z-index: 6;
+    left: 63.4%;
+    top: 12.8%;
+}
+
+.map-block .shop-area {
+    position: absolute;
+    width: 11.1%;
+    height: 19.1%;
+    content: "";
+    z-index: 6;
+    left: 44.45%;
+    top: 36.5%;
+}
+
+.click_area form {
+    width: 100%;
+    height: 100%;
+}
+
+.click_area form button {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.tablet-icon {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 10%;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.tablet-icon .back {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.tablet-icon .icon {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 58%;
+    opacity: 0.7;
+    /* aspect-ratio: 1 / 1; */
+    z-index: 1;
+}
+
+.tablet-icon.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+    cursor: alias;
+}
+
+.tablet-block {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 11%;
+    height: 80px;
+    transition: all 0.6s ease-in-out;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.tablet-block.active {
+    left: 50%;
+    bottom: 50%;
+    height: 100%;
+    transform: translate(-50%, 50%);
+    z-index: 5;
+    pointer-events: all;
+}
+
+.tablet-block .tablet {
+    height: 100%;
 }

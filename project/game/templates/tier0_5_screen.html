@@ -1,0 +1,34 @@
+<section class="screen tier0_5_shop shop active_shop active">
+    <div class="image-container">
+        <img src="../../media/tier0_5_shop.jpg" alt="" class="background">
+        <div class="content">
+            <button class="pause-btn btn">
+                <span></span>
+                <span></span>
+            </button>
+            <section class="money-info">
+                <img src="../../media/svg/money.png" alt="">
+                <div class="money-content"></div>
+                <span class="money">{{ save.capital }}</span>
+                <span class="money-per-second">0.1</span>
+            </section>
+            <div class="update-wallpaper-btn">
+                <div class="brush-img active"><img src="../../media/svg/brush.png" alt=""></div>
+                <div class="confirm-block">
+                    <form action="{% url "next_tier" %}" method="post" id="nextTierForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="key" value={{save_key}}>
+                        <input type="hidden" name="next_tier" value="tier1">
+                        <input type="hidden" name="money" id="money" value="{{save.capital}}">
+                        <button class="next-tier-btn" type="submit"></button>
+                    </form>
+
+                    <img src="../../media/svg/rect-back.png" alt="" class="back">
+                    <div class="coin-block"><img src="../../media/svg/coin.png" alt=""></div>
+                    <span>150</span>
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

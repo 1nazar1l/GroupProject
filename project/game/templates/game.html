@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/fonts.css" %}">
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</head>
+<body>
+<section class="menu center-menu pause-menu">
+    <div class="btn continue-btn">Продолжить</div>
+    <a href="{% url "start_game" %}">
+        <div class="btn main-screen-btn">Главное меню</div>
+    </a>
+    <div class="btn settings-btn">Настройки</div>
+    <div class="btn fullscreen-btn">Полный экран</div>
+</section>
+
+{% if save.shop == "tier0" %}
+{% include "tier0_screen.html" with save=save save_key=save_key %}
+<script type="module" src="{% static "js/tier0-shop.js" %}"></script>
+{% elif save.shop == "tier0_5" %}
+{% include "tier0_5_screen.html" with save=save save_key=save_key %}
+<script type="module" src="{% static "js/tier0_5-shop.js" %}"></script>
+{% elif save.shop == "tier1" %}
+{% include "tier1_screen.html" with save=save save_key=save_key %}
+<script type="module" src="{% static "js/tier1-shop.js" %}"></script>
+{% endif %}
+
+<script type="module" src="{% static "js/pause.js" %}"></script>
+<script type="module" src="{% static "js/map.js" %}"></script>
+<script type="module" src="{% static "js/tablet.js" %}"></script>
+<script type="module" src="{% static "js/base.js" %}"></script>
+<script type="module" src="{% static "js/values.js" %}"></script>
+</body>
+</html>

@@ -12,13 +12,7 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-<section class="menu center-menu pause-menu">
-    <div class="btn continue-btn">Продолжить</div>
-    <div class="btn main-screen-btn" data-screen-target="main-screen">Главное меню</div>
-    <div class="btn settings-btn">Настройки</div>
-    <div class="btn fullscreen-btn">Полный экран</div>
-</section>
-
+<script type="module" src="{% static "js/base.js" %}"></script>
 <section class="menu center-menu create-save-menu">
     <form action="{% url "create_save" %}" id="create_save_form" method="post" style="width: 100%;">
         {% csrf_token %}
@@ -42,7 +36,7 @@
 <section class="menu center-menu choose-save-menu">
     <div class="exit btn">Назад</div>
     <div class="saves-block">
-        {% for save in saves.values %}
+        {% for key, save in saves.items %}
             {% if save|length == 0 %}
                 <div class="save-block create-save">
                     <div class="cross">
@@ -51,9 +45,14 @@
                     </div>
                 </div>
             {% else %}
-                <div class="choose-save-block" data-screen-target="{{save.shop}}_shop">
-                    <span class="username">{{save.username}}</span>
-                </div>
+                <form action="{% url "game" %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="key" value="{{key}}">
+                    <div class="choose-save-block">
+                        <button type="submit" class="choose-save-btn"></button>
+                        <span class="username">{{save.username}}</span>
+                        </div>
+                </form>
             {% endif %}
         {% endfor %}
     </div>
@@ -75,27 +74,7 @@
 </section>
 {% endif %}
 
-<section class="screen tier0_shop shop active_shop">
-    <div class="image-container">
-        <img src="../../media/tier0_shop.jpg" alt="" class="background">
-        <div class="content">
-            <button class="pause-btn btn">
-                <span></span>
-                <span></span>
-            </button>
-            <section class="money-info">
-                <img src="../../media/svg/money.png" alt="">
-                <div class="money-content"></div>
-                <span class="money">0.1</span>
-                <span class="money-per-second">0.1</span>
-            </section>
-        </div>
-    </div>
-</section>
-<script type="module" src="{% static "js/base.js" %}"></script>
 <script type="module" src="{% static "js/values.js" %}"></script>
 <script type="module" src="{% static "js/main-menu.js" %}"></script>
-<script type="module" src="{% static "js/tier0-shop.js" %}"></script>
-<script type="module" src="{% static "js/shop.js" %}"></script>
 </body>
 </html>

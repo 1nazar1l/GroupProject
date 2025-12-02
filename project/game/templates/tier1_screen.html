@@ -1,0 +1,49 @@
+<section class="screen tier1_shop shop active_shop active">
+    <div class="image-container">
+        <img src="../../media/tier1_shop.jpg" alt="" class="background">
+        <div class="content">
+            <button class="pause-btn btn">
+                <span></span>
+                <span></span>
+            </button>
+            <section class="money-info">
+                <img src="../../media/svg/money.png" alt="">
+                <div class="money-content"></div>
+                <span class="money">{{ save.capital }}</span>
+                <span class="money-per-second">0.1</span>
+            </section>
+            <div class="minimap-icon">
+                <img src="../../media/svg/square-back.png" alt="" class="back">
+                <img src="../../media/svg/icon_map.png" alt="" class="icon">
+            </div>
+            <div class="map-block">
+                <img src="../../media/svg/square-back.png" alt="" class="back">
+                <img src="../../media/svg/square-border.png" alt="" class="border">
+                <img src="../../media/map.jpg" alt="" class="map">
+
+                <div class="click_area bank-area">
+                    <form action="{% url "bank" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="key" value={{save_key}}>
+                        <button></button>
+                    </form>
+                </div>
+                <div class="click_area casino-area">
+                    <form action="{% url "casino" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="key" value={{save_key}}>
+                        <button></button>
+                    </form>
+                </div>
+                <div class="click_area shop-area"></div>
+            </div>
+            <div class="tablet-icon">
+                <img src="../../media/svg/square-back.png" alt="" class="back">
+                <img src="../../media/svg/tablet_icon.png" alt="" class="icon">
+            </div>
+            <div class="tablet-block">
+                <img src="../../media/svg/tablet.png" alt="" class="tablet">
+            </div>
+        </div>
+    </div>
+</section>
