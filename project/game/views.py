@@ -80,12 +80,36 @@ def next_tier(request):
         user.saves[key]["capital"] = money
         if next_tier == "tier1":
             user.saves[key]["inventory"] = {
-                "cookie": 0,
-                "candy": 0,
-                "chocolate": 0,
-                "soda": 0,
-                "energy_drink": 0,
-                "chewing_gum": 0
+                "cookie": {
+                    "name": "Печенье",
+                    "count": 0,
+                    "price": 0
+                },
+                "candy": {
+                    "name": "Конфеты",
+                    "count": 0,
+                    "price": 0
+                },
+                "chocolate": {
+                    "name": "Шоколад",
+                    "count": 0,
+                    "price": 0
+                },
+                "soda": {
+                    "name": "Газировка",
+                    "count": 0,
+                    "price": 0
+                },
+                "energy_drink": {
+                    "name": "Энергетик",
+                    "count": 0,
+                    "price": 0
+                },
+                "chewing_gum": {
+                    "name": "Жвачка",
+                    "count": 0,
+                    "price": 0
+                }
             }
         user.save()
         

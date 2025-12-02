@@ -1,0 +1,87 @@
+<div class="tablet-icon">
+  <img src="../../media/svg/square-back.png" alt="" class="back" />
+  <img src="../../media/svg/tablet_icon.png" alt="" class="icon" />
+</div>
+<div class="tablet-block">
+  <img src="../../media/svg/tablet.png" alt="" class="tablet" />
+  <div class="tablet-content">
+    <div class="changeable-content tablet-shop-screen active">
+      <div class="tablet-title">Каталог магазина</div>
+      <div class="products">
+        {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %} {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="changeable-content tablet-order-screen">
+      <div class="tablet-title">Каталог магазина2</div>
+      <div class="products">
+        {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %} {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="changeable-content tablet-messages-screen">
+      <div class="tablet-title">Каталог магазина3</div>
+      <div class="products">
+        {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %} {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="changeable-content tablet-settings-screen">
+      <div class="tablet-title">Каталог магазина4</div>
+      <div class="products">
+        {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %} {% for key, product in save.inventory.items %}
+        <div class="product">
+          <span class="product-name">{{product.name}}</span>
+          <span class="product-count">{{product.count}} шт</span>
+          <span class="product-price">{{product.price}}$</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="actions">
+      <i class="fa-solid fa-house tablet-shop-icon active"></i>
+      <i class="fa-solid fa-truck tablet-order-icon"></i>
+      <i class="fa-solid fa-message tablet-message-icon"></i>
+      <i class="fa-solid fa-gear tablet-settings-icon"></i>
+    </div>
+  </div>
+</div>
