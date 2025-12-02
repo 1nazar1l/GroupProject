@@ -591,6 +591,7 @@ input::placeholder {
     width: 70%;
     aspect-ratio: 1 / 1;
     z-index: 1;
+    opacity: 0.7;
 }
 
 .minimap-icon.brightness {
@@ -612,7 +613,6 @@ input::placeholder {
     left: 2%;
     height: 100px;
     aspect-ratio: 1 / 1;
-    /* cursor: pointer; */
     transition: all 0.6s ease-in-out;
     z-index: -2;
     pointer-events: none;
@@ -710,4 +710,66 @@ input::placeholder {
     height: 100%;
     opacity: 0;
     cursor: pointer;
+}
+
+.tablet-icon {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 10%;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.tablet-icon .back {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.tablet-icon .icon {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 58%;
+    opacity: 0.7;
+    /* aspect-ratio: 1 / 1; */
+    z-index: 1;
+}
+
+.tablet-icon.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+    cursor: alias;
+}
+
+.tablet-block {
+    position: absolute;
+    content: "";
+    bottom: 5%;
+    left: 11%;
+    height: 80px;
+    transition: all 0.6s ease-in-out;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.tablet-block.active {
+    left: 50%;
+    bottom: 50%;
+    height: 100%;
+    transform: translate(-50%, 50%);
+    z-index: 5;
+    pointer-events: all;
+}
+
+.tablet-block .tablet {
+    height: 100%;
 }

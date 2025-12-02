@@ -53,7 +53,8 @@ def create_save(request):
             "username": username,
             "shop": "tier0",
             "day": 0,
-            "capital": 500
+            "capital": 500,
+            "inventory": {}
         }
         
         if user.saves["save1"] == {}:
@@ -77,6 +78,15 @@ def next_tier(request):
         # Обновляем данные
         user.saves[key]["shop"] = next_tier
         user.saves[key]["capital"] = money
+        if next_tier == "tier1":
+            user.saves[key]["inventory"] = {
+                "cookie": 0,
+                "candy": 0,
+                "chocolate": 0,
+                "soda": 0,
+                "energy_drink": 0,
+                "chewing_gum": 0
+            }
         user.save()
         
         # Сохраняем ключ в сессии для game view
