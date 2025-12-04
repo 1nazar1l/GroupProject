@@ -7,26 +7,23 @@ function syncContentWithImage(screenClass) {
     
     if (!background || !content) return;
     
-    // Проверяем, загружено ли изображение
-    const sync = () => {
-        const imgRect = background.getBoundingClientRect();
-        if (imgRect.width > 0 && imgRect.height > 0) {
-            content.style.width = imgRect.width + 'px';
-            content.style.height = imgRect.height + 'px';
-            content.style.position = 'absolute';
-            content.style.left = '50%';
-            content.style.transform = 'translateX(-50%)';
-        }
-    };
+    // Синхронизируем сразу без проверок
+    const imgRect = background.getBoundingClientRect();
+    content.style.width = imgRect.width + 'px';
+    content.style.height = imgRect.height + 'px';
+    content.style.position = 'absolute';
+    content.style.left = '50%';
+    content.style.transform = 'translateX(-50%)';
     
-    // Если изображение уже загружено, синхронизируем сразу
-    if (background.complete && background.naturalWidth > 0) {
-        sync();
-    } else {
-        // Иначе ждем загрузки изображения
-        background.addEventListener('load', sync, { once: true });
-        // Также пробуем синхронизировать сразу на случай, если изображение уже загружено
-        sync();
+    // Дополнительная синхронизация при загрузке изображения (на всякий случай)
+    if (!background.complete) {
+        background.addEventListener('load', function() {
+            const rect = background.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                content.style.width = rect.width + 'px';
+                content.style.height = rect.height + 'px';
+            }
+        }, { once: true });
     }
 }
 
@@ -44,10 +41,8 @@ function switchScreen(toScreenClass) {
     const toScreen = document.querySelector(`.${toScreenClass}`);
     if (toScreen) {
         toScreen.classList.add('active');
-        // Добавляем небольшую задержку для синхронизации после того, как изображение загрузится
-        setTimeout(() => {
-            syncContentWithImage(toScreenClass);
-        }, 50);
+        // Без задержки
+        syncContentWithImage(toScreenClass);
     }
 }
 
@@ -68,6 +63,7 @@ function updateAllScreens() {
         "tier7_shop",
         "tier8_shop", 
         "tier9_shop", 
+        "gameplay"
     ];
     screens.forEach(screenClass => {
         syncContentWithImage(screenClass);
@@ -129,7 +125,7 @@ function handleFullscreenChange() {
 // Обработчик нажатия F11
 function handleKeyPress(event) {
     if (event.key === 'F11') {
-        setTimeout(handleFullscreenChange, 100);
+        handleFullscreenChange(); // Без задержки
     }
 }
 
@@ -160,7 +156,7 @@ window.addEventListener('load', function() {
         btn.addEventListener('click', toggleFullscreen);
     });
     
-    setTimeout(handleFullscreenChange, 500);
+    handleFullscreenChange(); // Без задержки
 });
 
 // Слушаем события изменения размера
@@ -181,7 +177,7 @@ document.querySelectorAll('.background').forEach(img => {
     observer.observe(img);
 });
 
-setInterval(handleFullscreenChange, 1000);
+setInterval(handleFullscreenChange, 1000); // Оставляем для периодической проверки
 
 function sleep(milliseconds) {
   const date = Date.now();

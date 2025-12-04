@@ -1121,7 +1121,77 @@ input::placeholder {
 
 .start-day-btn span {
     position: relative;
-    z-index: 10;
     font-size: 3rem;
     color: #e5d0ba;
+}
+
+.start-day-btn form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.start-day-btn form button{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.clock {
+    position: absolute;
+}
+
+.clock {
+    position: absolute;
+    right: 2%;
+    bottom: 2%;
+    width: 200px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.clock.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+}
+
+.clock img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.clock span {
+    position: relative;
+    font-size: 5rem;
+    color: #e5d0ba;
+}
+
+.clock form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.clock form button{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }

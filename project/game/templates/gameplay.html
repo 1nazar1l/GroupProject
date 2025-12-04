@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/fonts.css" %}">
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</head>
+<body>
+<section class="menu center-menu pause-menu">
+    <div class="btn continue-btn">Продолжить</div>
+    <a href="{% url "start_game" %}">
+        <div class="btn main-screen-btn">Главное меню</div>
+    </a>
+    <div class="btn settings-btn">Настройки</div>
+    <div class="btn fullscreen-btn">Полный экран</div>
+</section>
+
+<section class="screen gameplay shop active_shop active">
+    <div class="image-container">
+        <img src="../../media/{{save.shop}}_shop-morning.jpeg" alt="" class="background">
+        <div class="content">
+            <button class="pause-btn btn">
+                <span></span>
+                <span></span>
+            </button>
+            <section class="money-info">
+                <img src="../../media/svg/money.png" alt="">
+                <div class="money-content"></div>
+                <span class="money">{{ save.capital }}</span>
+                <span class="money-per-second">0.1</span>
+            </section>
+            <div class="clock">
+                <img src="../../media/svg/rect-back.png" alt="">
+                <span>9:00</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module" src="{% static "js/pause.js" %}"></script>
+{% comment %} <script type="module" src="{% static "js/map.js" %}"></script> {% endcomment %}
+{% comment %} <script type="module" src="{% static "js/tablet.js" %}"></script> {% endcomment %}
+<script type="module" src="{% static "js/clock.js" %}"></script>
+<script type="module" src="{% static "js/base.js" %}"></script>
+<script type="module" src="{% static "js/values.js" %}"></script>
+</body>
+</html>

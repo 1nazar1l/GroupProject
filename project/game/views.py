@@ -248,3 +248,21 @@ def update_prices(request):
         return redirect('game')
     
     return redirect('game')
+
+def gameplay(request):
+    if request.method == 'POST':
+        key = request.POST.get("key")
+        if key:
+            request.session['current_save_key'] = key
+            return redirect("gameplay")
+
+    key = request.session.get('current_save_key')
+    if key:
+        user = request.user
+        save_data = user.saves.get(key, {})
+        return render(request, "gameplay.html", {
+            "save": save_data,
+            "save_key": key
+        })
+    
+    return redirect("start_game")
