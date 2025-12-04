@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.conf import settings
 import json
 
+from .models import ProductToOrder
+
 def start_game(request):
     saves = {}
     if request.user.is_authenticated:
@@ -125,16 +127,18 @@ def game(request):
         key = request.POST.get("key")
         if key:
             request.session['current_save_key'] = key
-            return redirect("game")  # редирект после POST
+            return redirect("game")
 
-    # GET-запрос — безопасный рендер
     key = request.session.get('current_save_key')
     if key:
+        products_to_order = ProductToOrder.objects.all()
+
         user = request.user
         save_data = user.saves.get(key, {})
         return render(request, "game.html", {
             "save": save_data,
-            "save_key": key
+            "save_key": key,
+            "products_to_order": products_to_order
         })
     
     return redirect("start_game")
@@ -174,3 +178,42 @@ def casino(request):
         })
     
     return redirect("start_game")
+
+def process_order(request):
+    if request.method == 'POST':
+        total_price = request.POST.get('total_price')
+        total_count = request.POST.get('total_count')
+
+        products_to_order = ProductToOrder.objects.all()
+        
+        # Получаем массивы товаров
+        product_ids = request.POST.getlist('product_id[]')
+        product_names = request.POST.getlist('product_name[]')
+        product_counts = request.POST.getlist('product_count[]')
+        save_key = request.POST.get('save_key')
+
+        user = request.user
+        # print("\n" + "="*50)
+        # print("ПОЛУЧЕН ЗАКАЗ:")
+        # print(f"Общая стоимость: {total_price}$")
+        # print(f"Общее количество: {total_count} шт.")
+        # print("\nДетали заказа:")
+        # print("ids", product_ids)
+        
+        for mas_num, product_id in enumerate(product_ids):
+            product = products_to_order.get(id=product_id)
+            print(f"mas_num: {mas_num}, product_id: {product_id}, product: {product}, product_count: {product_counts[mas_num]}")
+
+            product_count = int(user.saves[save_key]["inventory"][product.icon_name]["count"])
+            product_count += int(product_counts[mas_num])
+
+            user.saves[save_key]["inventory"][product.icon_name]["count"] = product_count
+        
+        user_capital = float(user.saves[save_key]["capital"])
+        user_capital -= float(total_price)
+        user.saves[save_key]["capital"] = user_capital
+        user.save()
+
+        return redirect('game')
+    
+    return redirect('start_game')

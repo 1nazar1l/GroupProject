@@ -12,6 +12,7 @@ urlpatterns = [
     path('next_tier/', views.next_tier, name='next_tier'),
     path('bank/', views.bank, name='bank'),
     path('casino/', views.casino, name='casino'),
+    path('process_order/', views.process_order, name='process_order'),
 ]
 
 if settings.DEBUG:

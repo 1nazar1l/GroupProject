@@ -14,31 +14,74 @@
           <span class="product-count">{{product.count}} шт</span>
           <span class="product-price">{{product.price}}$</span>
         </div>
-        {% endfor %} {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
-        </div>
         {% endfor %}
       </div>
     </div>
     <div class="changeable-content tablet-order-screen">
-      <div class="tablet-title">Каталог магазина2</div>
-      <div class="products">
-        {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
+      <div class="tablet-title">Товары для заказа</div>
+      <div class="order-result">
+        <div class="all-price">
+          <span>Итоговая стоимость:</span>
+          <span id="total-price">0$</span>
         </div>
-        {% endfor %} {% for key, product in save.inventory.items %}
-        <div class="product">
+        <div class="all-product-count">
+          <span>Количество товаров</span>
+          <span id="total-count">0</span>
+        </div>
+      </div>
+
+      <!-- Форма для отправки данных -->
+      <form id="order-form" method="post" action="{% url 'process_order' %}">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="total_price"
+          id="form-total-price"
+          value="0"
+        />
+        <input type="hidden" name="save_key" value="{{save_key}}">
+        <input
+          type="hidden"
+          name="total_count"
+          id="form-total-count"
+          value="0"
+        />
+        <!-- Динамические поля для каждого товара будут добавлены через JS -->
+      </form>
+
+      <div class="products">
+        {% for product in products_to_order %}
+        <div
+          class="product"
+          data-product-id="{{ product.id }}"
+          data-product-price="{{ product.price }}"
+        >
+          <span class="product-icon">
+            <img
+              src="../../media/svg/products/{{product.icon_name}}.png"
+              alt=""
+            />
+          </span>
           <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
           <span class="product-price">{{product.price}}$</span>
+          <div class="actions">
+            <span class="add-icon">
+              <button class="add-button action-button" type="button">
+                <span class="plus-icon"></span>
+              </button>
+            </span>
+            <span class="order-product-count">0</span>
+            <span class="remove-icon">
+              <button class="remove-button action-button" type="button">
+                <span class="minus-icon"></span>
+              </button>
+            </span>
+          </div>
         </div>
         {% endfor %}
+        <button class="complete-order-btn" type="button" id="complete-order">
+          Заказать
+        </button>
       </div>
     </div>
     <div class="changeable-content tablet-messages-screen">
@@ -77,7 +120,7 @@
         {% endfor %}
       </div>
     </div>
-    <div class="actions">
+    <div class="tablet-actions">
       <i class="fa-solid fa-house tablet-shop-icon active"></i>
       <i class="fa-solid fa-truck tablet-order-icon"></i>
       <i class="fa-solid fa-message tablet-message-icon"></i>

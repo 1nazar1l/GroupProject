@@ -87,3 +87,109 @@ tabletSettingsIcon.addEventListener('click', () => {
     tabletMessageScreen.classList.remove('active')
     tabletSettingsScreen.classList.add('active')
 })
+// Находим все кнопки добавления и удаления ТОЛЬКО на экране заказа
+document.querySelectorAll('.tablet-order-screen .add-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.stopPropagation();
+        
+        const productElement = this.closest('.product');
+        const countElement = productElement.querySelector('.order-product-count'); // Изменено
+        
+        let currentCount = parseInt(countElement.textContent) || 0;
+        currentCount++;
+        countElement.textContent = currentCount;
+        
+        updateOrderTotals();
+    });
+});
+
+document.querySelectorAll('.tablet-order-screen .remove-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.stopPropagation();
+        
+        const productElement = this.closest('.product');
+        const countElement = productElement.querySelector('.order-product-count'); // Изменено
+        
+        let currentCount = parseInt(countElement.textContent) || 0;
+        if (currentCount > 0) {
+            currentCount--;
+            countElement.textContent = currentCount;
+            
+            updateOrderTotals();
+        }
+    });
+});
+
+function updateOrderTotals() {
+    let totalPrice = 0;
+    let totalCount = 0;
+    
+    // Считаем только товары на экране заказа
+    document.querySelectorAll('.tablet-order-screen .product').forEach(product => {
+        const countElement = product.querySelector('.order-product-count'); // Изменено
+        const priceElement = product.querySelector('.product-price');
+        
+        const count = parseInt(countElement.textContent) || 0;
+        const priceText = priceElement.textContent;
+        const price = parseFloat(priceText.replace('$', '')) || 0;
+        
+        totalCount += count;
+        totalPrice += count * price;
+    });
+    
+    const totalPriceSpan = document.getElementById('total-price');
+    const totalCountSpan = document.getElementById('total-count');
+    
+    if (totalPriceSpan) totalPriceSpan.textContent = totalPrice.toFixed(2) + '$';
+    if (totalCountSpan) totalCountSpan.textContent = totalCount;
+    
+    const formTotalPrice = document.getElementById('form-total-price');
+    const formTotalCount = document.getElementById('form-total-count');
+    
+    if (formTotalPrice) formTotalPrice.value = totalPrice.toFixed(2);
+    if (formTotalCount) formTotalCount.value = totalCount;
+}
+
+function prepareOrderForm() {
+    const form = document.getElementById('order-form');
+    
+    const oldProductFields = form.querySelectorAll('input[name^="product_"]');
+    oldProductFields.forEach(field => field.remove());
+    
+    // Используем только товары на экране заказа
+    document.querySelectorAll('.tablet-order-screen .product').forEach(product => {
+        const productId = product.getAttribute('data-product-id');
+        const productName = product.querySelector('.product-name').textContent;
+        const countElement = product.querySelector('.order-product-count'); // Изменено
+        const count = parseInt(countElement.textContent) || 0;
+        
+        if (count > 0 && productId) {
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = `product_id[]`;
+            idInput.value = productId;
+            form.appendChild(idInput);
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'hidden';
+            nameInput.name = `product_name[]`;
+            nameInput.value = productName;
+            form.appendChild(nameInput);
+            
+            const countInput = document.createElement('input');
+            countInput.type = 'hidden';
+            countInput.name = `product_count[]`;
+            countInput.value = count;
+            form.appendChild(countInput);
+        }
+    });
+    
+    return true;
+}
+
+document.getElementById('complete-order').addEventListener('click', function() {
+    prepareOrderForm();
+    document.getElementById('order-form').submit();
+});
+
+document.addEventListener('DOMContentLoaded', updateOrderTotals);
