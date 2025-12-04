@@ -13,6 +13,7 @@ urlpatterns = [
     path('bank/', views.bank, name='bank'),
     path('casino/', views.casino, name='casino'),
     path('process_order/', views.process_order, name='process_order'),
+    path('update-prices/', views.update_prices, name='update_prices'),
 ]
 
 if settings.DEBUG:

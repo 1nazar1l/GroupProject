@@ -6,16 +6,47 @@
   <img src="../../media/svg/tablet.png" alt="" class="tablet" />
   <div class="tablet-content">
     <div class="changeable-content tablet-shop-screen active">
-      <div class="tablet-title">Каталог магазина</div>
-      <div class="products">
-        {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
+      <div class="tablet-title">Каталог магазина</div>        
+        <div class="order-result">
+          <div class="all-price">
+            <span>Стоимость всех товаров:</span>
+            <span>{{sum_prices_purchased}}$</span>
+          </div>
+          <div class="all-product-count">
+            <span>Количество товаров</span>
+            <span>{{number_items_purchased}}</span>
+          </div>
         </div>
-        {% endfor %}
-      </div>
+
+        <div class="products">
+          <form method="POST" action="{% url 'update_prices' %}">
+            {% csrf_token %}
+            <input type="hidden" name="save_key" value="{{ save_key }}">
+            {% for product_key, product in save.inventory.items %}
+            <div class="product">
+              <span class="product-icon">
+                <img src="../../media/svg/products/{{product_key}}.png" alt="">
+              </span>
+              <span class="product-name">{{product.name}}</span>
+              <span class="product-count">{{product.count}}</span>
+              <input 
+                class="change-price-input" 
+                type="number" 
+                name="price_{{ product_key }}"
+                value="{{ product.price }}" 
+                placeholder="0"
+                min="0"
+              >
+              <div class="coin-icon"><img src="../../media/svg/coin.png" alt=""></div>
+            </div>
+            {% endfor %}
+            
+            <!-- Меняем кнопку на submit -->
+            <button class="complete-order-btn" type="submit">
+              Обновить информацию
+            </button>
+          </form>
+        </div>
     </div>
     <div class="changeable-content tablet-order-screen">
       <div class="tablet-title">Товары для заказа</div>

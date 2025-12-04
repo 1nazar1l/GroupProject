@@ -87,6 +87,7 @@ tabletSettingsIcon.addEventListener('click', () => {
     tabletMessageScreen.classList.remove('active')
     tabletSettingsScreen.classList.add('active')
 })
+
 // Находим все кнопки добавления и удаления ТОЛЬКО на экране заказа
 document.querySelectorAll('.tablet-order-screen .add-button').forEach(button => {
     button.addEventListener('click', function(event) {

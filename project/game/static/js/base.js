@@ -141,6 +141,10 @@ function handleResize() {
 
 // Инициализация при загрузке
 window.addEventListener('load', function() {    
+    document.addEventListener('dragstart', function(event) {
+        event.preventDefault();
+    });
+    
     updateAllScreens();
     
     // Инициализация навигации по экранам

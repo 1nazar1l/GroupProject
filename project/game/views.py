@@ -131,6 +131,8 @@ def game(request):
 
     key = request.session.get('current_save_key')
     if key:
+        number_items_purchased = 0
+        sum_prices_purchased = 0
         products_to_order = ProductToOrder.objects.all()
 
         user = request.user
@@ -138,9 +140,10 @@ def game(request):
         save_data = user.saves.get(key, {})
         
         if "inventory" in save_data:
-            products_count = sum([item["count"] for item in save_data["inventory"].values()])
+            number_items_purchased = sum([item["count"] for item in save_data["inventory"].values()])
+            sum_prices_purchased = sum([item["price"] * item["count"] for item in save_data["inventory"].values()])
             
-            if save_data.get("shop") == "tier1" and products_count != 0:
+            if save_data.get("shop") == "tier1" and number_items_purchased != 0:
                 save_data["shop"] = "tier2"
                 
                 user.saves[key] = save_data
@@ -149,7 +152,9 @@ def game(request):
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key,
-            "products_to_order": products_to_order
+            "products_to_order": products_to_order,
+            "number_items_purchased": number_items_purchased,
+            "sum_prices_purchased": sum_prices_purchased
         })
     
     return redirect("start_game")
@@ -220,3 +225,26 @@ def process_order(request):
         return redirect('game')
     
     return redirect('start_game')
+
+def update_prices(request):
+    if request.method == 'POST':
+        save_key = request.POST.get('save_key')
+        
+        user = request.user
+        if save_key in user.saves:
+            save_data = user.saves[save_key]
+            inventory = save_data.get('inventory', {})
+            
+            for key, value in request.POST.items():
+                if key.startswith('price_'):
+                    product_key = key.replace('price_', '')
+                    if product_key in inventory:
+                        inventory[product_key]['price'] = int(value) if value else 0
+            
+            save_data['inventory'] = inventory
+            user.saves[save_key] = save_data
+            user.save()
+
+        return redirect('game')
+    
+    return redirect('game')
