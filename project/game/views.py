@@ -217,8 +217,8 @@ def process_order(request):
 
             user.saves[save_key]["inventory"][product.icon_name]["count"] = product_count
         
-        user_capital = float(user.saves[save_key]["capital"])
-        user_capital -= float(total_price)
+        user_capital = int(user.saves[save_key]["capital"])
+        user_capital -= int(float(total_price))
         user.saves[save_key]["capital"] = user_capital
         user.save()
 
