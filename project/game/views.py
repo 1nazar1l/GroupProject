@@ -134,7 +134,18 @@ def game(request):
         products_to_order = ProductToOrder.objects.all()
 
         user = request.user
+        
         save_data = user.saves.get(key, {})
+        
+        if "inventory" in save_data:
+            products_count = sum([item["count"] for item in save_data["inventory"].values()])
+            
+            if save_data.get("shop") == "tier1" and products_count != 0:
+                save_data["shop"] = "tier2"
+                
+                user.saves[key] = save_data
+                user.save()
+        
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key,
@@ -182,23 +193,15 @@ def casino(request):
 def process_order(request):
     if request.method == 'POST':
         total_price = request.POST.get('total_price')
-        total_count = request.POST.get('total_count')
 
         products_to_order = ProductToOrder.objects.all()
         
         # Получаем массивы товаров
         product_ids = request.POST.getlist('product_id[]')
-        product_names = request.POST.getlist('product_name[]')
         product_counts = request.POST.getlist('product_count[]')
         save_key = request.POST.get('save_key')
 
         user = request.user
-        # print("\n" + "="*50)
-        # print("ПОЛУЧЕН ЗАКАЗ:")
-        # print(f"Общая стоимость: {total_price}$")
-        # print(f"Общее количество: {total_count} шт.")
-        # print("\nДетали заказа:")
-        # print("ids", product_ids)
         
         for mas_num, product_id in enumerate(product_ids):
             product = products_to_order.get(id=product_id)

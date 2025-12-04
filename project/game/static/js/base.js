@@ -53,7 +53,22 @@ function switchScreen(toScreenClass) {
 
 // Функция для обновления всех экранов
 function updateAllScreens() {
-    const screens = ["main-screen", "tier0_shop", "tier0_5_shop", "tier1_shop", "bank", "casino"];
+    const screens = [
+        "main-screen", 
+        "tier0_shop", 
+        "tier0_5_shop", 
+        "tier1_shop", 
+        "bank", 
+        "casino", 
+        "tier2_shop", 
+        "tier3_shop", 
+        "tier4_shop",
+        "tier5_shop", 
+        "tier6_shop", 
+        "tier7_shop",
+        "tier8_shop", 
+        "tier9_shop", 
+    ];
     screens.forEach(screenClass => {
         syncContentWithImage(screenClass);
     });
