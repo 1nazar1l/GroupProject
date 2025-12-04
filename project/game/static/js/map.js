@@ -8,7 +8,7 @@ const continueMenuBtn = document.querySelector('.continue-btn')
 const tomainMenuBtn = document.querySelector('.main-screen-btn')
 const shopArea = document.querySelector('.shop-area')
 const bankArea = document.querySelector('.bank-area')
-
+const startDayBtn = document.querySelector('.start-day-btn')
 
 minimapIcon.addEventListener('click', () => {
     map.classList.toggle('active')
@@ -16,11 +16,13 @@ minimapIcon.addEventListener('click', () => {
     moneyInfo.classList.toggle('brightness')
     pauseBtn.classList.toggle('brightness')
     tabletIcon.classList.toggle('brightness')
+    startDayBtn.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     minimapIcon.classList.add('brightness')
     map.classList.add('brightness')
+    startDayBtn.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {

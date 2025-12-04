@@ -6,6 +6,7 @@ const moneyInfo = document.querySelector('.money-info')
 const pauseBtn = document.querySelector('.pause-btn')
 const continueMenuBtn = document.querySelector('.continue-btn')
 const tomainMenuBtn = document.querySelector('.main-screen-btn')
+const startDayBtn = document.querySelector('.start-day-btn')
 
 const tabletMainIcon = document.querySelector('.tablet-shop-icon')
 const tabletOrderIcon = document.querySelector('.tablet-order-icon')
@@ -23,21 +24,25 @@ tabletIcon.addEventListener('click', () => {
     moneyInfo.classList.toggle('brightness')
     pauseBtn.classList.toggle('brightness')
     mapIcon.classList.toggle('brightness')
+    startDayBtn.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     tabletIcon.classList.add('brightness')
     tablet.classList.add('brightness')
+    startDayBtn.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
+    startDayBtn.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
+    startDayBtn.classList.remove('brightness')
 })
 
 tabletMainIcon.addEventListener('click', () => {

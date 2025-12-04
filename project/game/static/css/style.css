@@ -1093,3 +1093,35 @@ input::placeholder {
     cursor: pointer;
     font-weight: bold;
 }
+
+.start-day-btn {
+    position: absolute;
+    right: 2%;
+    bottom: 5%;
+    width: 350px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.start-day-btn.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+}
+
+.start-day-btn img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.start-day-btn span {
+    position: relative;
+    z-index: 10;
+    font-size: 3rem;
+    color: #e5d0ba;
+}
