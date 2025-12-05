@@ -24,7 +24,7 @@
     <div class="btn settings-btn">Настройки</div>
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
-
+<input type="hidden" value={{filtered_products}}>
 <section class="screen gameplay shop active_shop active">
     <div class="image-container">
         <img src="../../media/{{save.shop}}_shop-morning.jpeg" alt="" class="background">
@@ -42,14 +42,16 @@
             <div class="clock">
                 <img src="../../media/svg/rect-back.png" alt="">
                 <span>9:00</span>
+                {% comment %} {{filtered_products}} {% endcomment %}
             </div>
+            {% include "tablet.html" with gamestate='play'%}
         </div>
     </div>
 </section>
 
 <script type="module" src="{% static "js/pause.js" %}"></script>
 {% comment %} <script type="module" src="{% static "js/map.js" %}"></script> {% endcomment %}
-{% comment %} <script type="module" src="{% static "js/tablet.js" %}"></script> {% endcomment %}
+<script type="module" src="{% static "js/tablet.js" %}"></script>
 <script type="module" src="{% static "js/gameplay.js" %}"></script>
 <script type="module" src="{% static "js/clock.js" %}"></script>
 <script type="module" src="{% static "js/base.js" %}"></script>

@@ -260,9 +260,40 @@ def gameplay(request):
     if key:
         user = request.user
         save_data = user.saves.get(key, {})
+        products_to_order = ProductToOrder.objects.all()
+        
+        inventory = save_data.get("inventory", {})
+        filtered_products = {}
+        
+        for item_key, product in inventory.items():
+            try:
+                # Получаем базовую цену товара из справочника
+                base_product = products_to_order.get(icon_name=item_key)
+                base_price = float(base_product.price)
+                user_price = float(product.get("price", 0))
+                
+                # Рассчитываем наценку в процентах
+                if user_price > 0 and base_price > 0:
+                    markup_percentage = ((user_price - base_price) / base_price) * 100
+                    
+                    # Если наценка меньше 40%, добавляем товар
+                    if markup_percentage < 40:
+                        # Добавляем рассчитанную наценку в данные товара
+                        product_with_markup = product.copy()
+                        product_with_markup["markup_percentage"] = round(markup_percentage, 2)
+                        product_with_markup["base_price"] = base_price
+                        filtered_products[item_key] = product_with_markup
+                        
+            except (ProductToOrder.DoesNotExist, ValueError, TypeError):
+                # Пропускаем товары с ошибками
+                continue
+
+        print(filtered_products)
+        
         return render(request, "gameplay.html", {
             "save": save_data,
-            "save_key": key
+            "save_key": key,
+            "filtered_products": filtered_products  # Только товары с наценкой < 40%
         })
     
     return redirect("start_game")

@@ -4,158 +4,209 @@
 </div>
 <div class="tablet-block">
   <img src="../../media/svg/tablet.png" alt="" class="tablet" />
-  <div class="tablet-content">
-    <div class="changeable-content tablet-shop-screen active">
-      <div class="tablet-title">Каталог магазина</div>        
+  {% if gamestate == 'wait' %}
+    <div class="tablet-content">
+      <div class="changeable-content tablet-shop-screen active">
+        <div class="tablet-title">Каталог магазина</div>        
+          <div class="order-result">
+            <div class="all-price">
+              <span>Стоимость всех товаров:</span>
+              <span>{{sum_prices_purchased}}$</span>
+            </div>
+            <div class="all-product-count">
+              <span>Количество товаров</span>
+              <span>{{number_items_purchased}}</span>
+            </div>
+          </div>
+
+          <div class="products">
+            <form method="POST" action="{% url 'update_prices' %}">
+              {% csrf_token %}
+              <input type="hidden" name="save_key" value="{{ save_key }}">
+              {% for product_key, product in save.inventory.items %}
+              <div class="product">
+                <span class="product-icon">
+                  <img src="../../media/svg/products/{{product_key}}.png" alt="">
+                </span>
+                <span class="product-name">{{product.name}}</span>
+                <span class="product-count">{{product.count}}</span>
+                <input 
+                  class="change-price-input" 
+                  type="number" 
+                  name="price_{{ product_key }}"
+                  value="{{ product.price }}" 
+                  placeholder="0"
+                  min="0"
+                >
+                <div class="coin-icon"><img src="../../media/svg/coin.png" alt=""></div>
+              </div>
+              {% endfor %}
+              
+              <!-- Меняем кнопку на submit -->
+              <button class="complete-order-btn" type="submit">
+                Обновить информацию
+              </button>
+            </form>
+          </div>
+      </div>
+      <div class="changeable-content tablet-order-screen">
+        <div class="tablet-title">Товары для заказа</div>
         <div class="order-result">
           <div class="all-price">
-            <span>Стоимость всех товаров:</span>
-            <span>{{sum_prices_purchased}}$</span>
+            <span>Итоговая стоимость:</span>
+            <span id="total-price">0$</span>
           </div>
           <div class="all-product-count">
             <span>Количество товаров</span>
-            <span>{{number_items_purchased}}</span>
+            <span id="total-count">0</span>
+          </div>
+        </div>
+
+        <!-- Форма для отправки данных -->
+        <form id="order-form" method="post" action="{% url 'process_order' %}">
+          {% csrf_token %}
+          <input
+            type="hidden"
+            name="total_price"
+            id="form-total-price"
+            value="0"
+          />
+          <input type="hidden" name="save_key" value="{{save_key}}">
+          <input
+            type="hidden"
+            name="total_count"
+            id="form-total-count"
+            value="0"
+          />
+          <!-- Динамические поля для каждого товара будут добавлены через JS -->
+        </form>
+
+        <div class="products">
+          {% for product in products_to_order %}
+          <div
+            class="product"
+            data-product-id="{{ product.id }}"
+            data-product-price="{{ product.price }}"
+          >
+            <span class="product-icon">
+              <img
+                src="../../media/svg/products/{{product.icon_name}}.png"
+                alt=""
+              />
+            </span>
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-price">{{product.price}}$</span>
+            <div class="actions">
+              <span class="add-icon">
+                <button class="add-button action-button" type="button">
+                  <span class="plus-icon"></span>
+                </button>
+              </span>
+              <span class="order-product-count">0</span>
+              <span class="remove-icon">
+                <button class="remove-button action-button" type="button">
+                  <span class="minus-icon"></span>
+                </button>
+              </span>
+            </div>
+          </div>
+          {% endfor %}
+          <button class="complete-order-btn" type="button" id="complete-order">
+            Заказать
+          </button>
+        </div>
+      </div>
+      <div class="changeable-content tablet-messages-screen">
+        <div class="tablet-title">Каталог магазина3</div>
+        <div class="products">
+          {% for key, product in save.inventory.items %}
+          <div class="product">
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-count">{{product.count}} шт</span>
+            <span class="product-price">{{product.price}}$</span>
+          </div>
+          {% endfor %} {% for key, product in save.inventory.items %}
+          <div class="product">
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-count">{{product.count}} шт</span>
+            <span class="product-price">{{product.price}}$</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="changeable-content tablet-settings-screen">
+        <div class="tablet-title">Каталог магазина4</div>
+        <div class="products">
+          {% for key, product in save.inventory.items %}
+          <div class="product">
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-count">{{product.count}} шт</span>
+            <span class="product-price">{{product.price}}$</span>
+          </div>
+          {% endfor %} {% for key, product in save.inventory.items %}
+          <div class="product">
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-count">{{product.count}} шт</span>
+            <span class="product-price">{{product.price}}$</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="tablet-actions">
+        <i class="fa-solid fa-house tablet-shop-icon active"></i>
+        <i class="fa-solid fa-truck tablet-order-icon"></i>
+        <i class="fa-solid fa-message tablet-message-icon"></i>
+        <i class="fa-solid fa-gear tablet-settings-icon"></i>
+      </div>
+    </div>
+  {% elif gamestate == 'play' %}
+    <div class="tablet-content">
+      <div class="changeable-content tablet-order-screen active">
+        <div class="tablet-title">Составление заказ</div>
+        <div class="order-result">
+          <div class="all-price">
+            <span>Итоговая стоимость:</span>
+            <span>0$</span>
+          </div>
+          <div class="all-product-count">
+            <span>Количество товаров</span>
+            <span>0</span>
           </div>
         </div>
 
         <div class="products">
-          <form method="POST" action="{% url 'update_prices' %}">
-            {% csrf_token %}
-            <input type="hidden" name="save_key" value="{{ save_key }}">
-            {% for product_key, product in save.inventory.items %}
-            <div class="product">
-              <span class="product-icon">
-                <img src="../../media/svg/products/{{product_key}}.png" alt="">
+          {% for product_key, product in save.inventory.items %}
+          <div
+            class="product"
+          >
+            <span class="product-icon">
+              <img
+                src="../../media/svg/products/{{product_key}}.png"
+                alt=""
+              />
+            </span>
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-price">{{product.price}}$</span>
+            <div class="actions">
+              <span class="add-icon">
+                <button class="add-button action-button" type="button">
+                  <span class="plus-icon"></span>
+                </button>
               </span>
-              <span class="product-name">{{product.name}}</span>
-              <span class="product-count">{{product.count}}</span>
-              <input 
-                class="change-price-input" 
-                type="number" 
-                name="price_{{ product_key }}"
-                value="{{ product.price }}" 
-                placeholder="0"
-                min="0"
-              >
-              <div class="coin-icon"><img src="../../media/svg/coin.png" alt=""></div>
+              <span class="order-product-count">0</span>
+              <span class="remove-icon">
+                <button class="remove-button action-button" type="button">
+                  <span class="minus-icon"></span>
+                </button>
+              </span>
             </div>
-            {% endfor %}
-            
-            <!-- Меняем кнопку на submit -->
-            <button class="complete-order-btn" type="submit">
-              Обновить информацию
-            </button>
-          </form>
-        </div>
-    </div>
-    <div class="changeable-content tablet-order-screen">
-      <div class="tablet-title">Товары для заказа</div>
-      <div class="order-result">
-        <div class="all-price">
-          <span>Итоговая стоимость:</span>
-          <span id="total-price">0$</span>
-        </div>
-        <div class="all-product-count">
-          <span>Количество товаров</span>
-          <span id="total-count">0</span>
-        </div>
-      </div>
-
-      <!-- Форма для отправки данных -->
-      <form id="order-form" method="post" action="{% url 'process_order' %}">
-        {% csrf_token %}
-        <input
-          type="hidden"
-          name="total_price"
-          id="form-total-price"
-          value="0"
-        />
-        <input type="hidden" name="save_key" value="{{save_key}}">
-        <input
-          type="hidden"
-          name="total_count"
-          id="form-total-count"
-          value="0"
-        />
-        <!-- Динамические поля для каждого товара будут добавлены через JS -->
-      </form>
-
-      <div class="products">
-        {% for product in products_to_order %}
-        <div
-          class="product"
-          data-product-id="{{ product.id }}"
-          data-product-price="{{ product.price }}"
-        >
-          <span class="product-icon">
-            <img
-              src="../../media/svg/products/{{product.icon_name}}.png"
-              alt=""
-            />
-          </span>
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-price">{{product.price}}$</span>
-          <div class="actions">
-            <span class="add-icon">
-              <button class="add-button action-button" type="button">
-                <span class="plus-icon"></span>
-              </button>
-            </span>
-            <span class="order-product-count">0</span>
-            <span class="remove-icon">
-              <button class="remove-button action-button" type="button">
-                <span class="minus-icon"></span>
-              </button>
-            </span>
           </div>
+          {% endfor %}
+          <button class="complete-order-btn" type="button">
+            Отдать
+          </button>
         </div>
-        {% endfor %}
-        <button class="complete-order-btn" type="button" id="complete-order">
-          Заказать
-        </button>
       </div>
     </div>
-    <div class="changeable-content tablet-messages-screen">
-      <div class="tablet-title">Каталог магазина3</div>
-      <div class="products">
-        {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
-        </div>
-        {% endfor %} {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="changeable-content tablet-settings-screen">
-      <div class="tablet-title">Каталог магазина4</div>
-      <div class="products">
-        {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
-        </div>
-        {% endfor %} {% for key, product in save.inventory.items %}
-        <div class="product">
-          <span class="product-name">{{product.name}}</span>
-          <span class="product-count">{{product.count}} шт</span>
-          <span class="product-price">{{product.price}}$</span>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="tablet-actions">
-      <i class="fa-solid fa-house tablet-shop-icon active"></i>
-      <i class="fa-solid fa-truck tablet-order-icon"></i>
-      <i class="fa-solid fa-message tablet-message-icon"></i>
-      <i class="fa-solid fa-gear tablet-settings-icon"></i>
-    </div>
-  </div>
+  {% endif %}
 </div>
