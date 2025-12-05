@@ -9,6 +9,11 @@ const shopArea = document.querySelector('.shop-area')
 const bankArea = document.querySelector('.bank-area')
 const startDayBtn = document.querySelector('.start-day-btn')
 const clock = document.querySelector('.clock');
+const tabletIcon = document.querySelector('.tablet-icon')
+
+tabletIcon.addEventListener('click', () => {
+    clock.classList.toggle('brightness')
+})
 
 pauseBtn.addEventListener('click', () => {
     clock.classList.add('brightness')
@@ -403,3 +408,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✅ Система покупателей инициализирована');
 });
+
