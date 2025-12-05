@@ -192,6 +192,58 @@ function generatePeoplesForDay() {
     return peoples;
 }
 
+// Функция для обновления блока заказов на странице
+function updateOrdersBlock() {
+    const ordersBlock = document.querySelector('.orders-block');
+    if (!ordersBlock) return;
+    
+    // Находим контейнер для заказов (внутри orders-block, после img)
+    const existingOrders = ordersBlock.querySelectorAll('.order-block');
+    existingOrders.forEach(order => order.remove());
+    
+    // Получаем всех активных покупателей
+    const activePeoples = Object.keys(peoples).filter(key => 
+        peoples[key].isActive && !peoples[key].hasVisited
+    );
+    
+    // Создаем блоки для каждого активного покупателя
+    activePeoples.forEach(key => {
+        const person = peoples[key];
+        
+        // Создаем блок заказа
+        const orderBlock = document.createElement('div');
+        orderBlock.className = 'order-block';
+        
+        // Создаем имя покупателя
+        const buyerName = document.createElement('div');
+        buyerName.className = 'buyer-name';
+        buyerName.textContent = person.name;
+        
+        // Создаем контейнер для товаров
+        const buyerProducts = document.createElement('div');
+        buyerProducts.className = 'buyer-products';
+        
+        // Добавляем товары
+        if (person.purchases && person.purchases.length > 0) {
+            person.purchases.forEach(purchase => {
+                const buyerProduct = document.createElement('div');
+                buyerProduct.className = 'buyer-product';
+                
+                const productSpan = document.createElement('span');
+                productSpan.textContent = `${purchase.name} - ${purchase.quantity}шт.`;
+                
+                buyerProduct.appendChild(productSpan);
+                buyerProducts.appendChild(buyerProduct);
+            });
+        }
+        
+        // Собираем блок
+        orderBlock.appendChild(buyerName);
+        orderBlock.appendChild(buyerProducts);
+        ordersBlock.appendChild(orderBlock);
+    });
+}
+
 // Функция для проверки, пришел ли покупатель
 function checkPeoplesArrivalSimple(currentTime) {
     if (arrivalTimes.includes(currentTime)) {
@@ -215,6 +267,9 @@ function checkPeoplesArrivalSimple(currentTime) {
                 } else {
                     console.log('🛒 Покупатель ничего не хочет покупать');
                 }
+                
+                // Обновляем блок заказов
+                updateOrdersBlock();
                 
                 // Удаляем время из массива
                 const index = arrivalTimes.indexOf(currentTime);
@@ -311,6 +366,9 @@ function markPeopleAsServed(peopleId) {
             console.log(`💰 Продано товаров на сумму: ${result.totalAmount}$`);
             console.log('📦 Проданные товары:', result.soldItems);
             
+            // Обновляем блок заказов
+            updateOrdersBlock();
+            
             return result;
         } else {
             console.log(`❌ Не удалось обслужить покупателя ${peoples[peopleId].name}: ${result.message}`);
@@ -372,6 +430,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 arrivalTimes = [];
+                // Обновляем блок заказов
+                updateOrdersBlock();
             }
         }
     }
