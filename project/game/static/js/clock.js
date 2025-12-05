@@ -2,6 +2,9 @@ function formatTime(num) {
     return num < 10 ? '0' + num : num;
 }
 
+let clockInterval = null;
+let isClockPaused = false;
+
 function updateClock() {
     const clockElement = document.querySelector('.clock span');
     if (!clockElement) return;
@@ -10,7 +13,7 @@ function updateClock() {
     const [hours, minutes] = currentTime.split(':').map(Number);
     
     let newHours = hours;
-    let newMinutes = minutes + 3;
+    let newMinutes = minutes + 1;
     
     if (newMinutes >= 60) {
         newMinutes = 0;
@@ -53,6 +56,43 @@ function updateBackground(hours) {
     }
 }
 
+// Функция запуска часов
+function startClock() {
+    if (!clockInterval) {
+        clockInterval = setInterval(updateClock, 333);
+        isClockPaused = false;
+        console.log('Часы запущены');
+    }
+}
+
+// Функция остановки часов
+function stopClock() {
+    if (clockInterval) {
+        clearInterval(clockInterval);
+        clockInterval = null;
+        isClockPaused = true;
+        console.log('Часы остановлены');
+    }
+}
+
+// Функция переключения паузы
+function toggleClockPause() {
+    if (isClockPaused) {
+        startClock();
+    } else {
+        stopClock();
+    }
+}
+
+// Функция возобновления часов
+function resumeClock() {
+    // Если часы остановлены, запускаем их
+    if (isClockPaused) {
+        startClock();
+    }
+    // Если часы уже работают, ничего не делаем
+}
+
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     const clockElement = document.querySelector('.clock span');
@@ -66,6 +106,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const [hours] = clockSpan.textContent.split(':').map(Number);
         updateBackground(hours);
     }
+    
+    // Запускаем часы
+    startClock();
+    
+    // Добавляем обработчик кнопки паузы
+    const pauseBtn = document.querySelector('.pause-btn');
+    if (pauseBtn) {
+        pauseBtn.addEventListener('click', toggleClockPause);
+    }
+    
+    // Добавляем обработчик кнопки продолжения
+    const continueMenuBtn = document.querySelector('.continue-btn');
+    if (continueMenuBtn) {
+        continueMenuBtn.addEventListener('click', resumeClock);
+    }
 });
-
-setInterval(updateClock, 1000);
