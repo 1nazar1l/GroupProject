@@ -22,11 +22,6 @@ tomainMenuBtn.addEventListener('click', () => {
     clock.classList.remove('brightness')
 })
 
-let peoples = {};
-let maxPeoplesPerDay = 0;
-let todayPeoples = 0;
-let arrivalTimes = []; // Массив времен прибытия покупателей
-
 // Функция для генерации случайного числа в диапазоне
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -62,38 +57,18 @@ function generatePeopleName(index) {
     return names[randomNameIndex];
 }
 
-// Функция для генерации покупателей на день
-function generatePeoplesForDay() {
-    peoples = {};
-    arrivalTimes = []; // Очищаем массив времен
-    maxPeoplesPerDay = getRandomInt(8, 10);
-    todayPeoples = 0;
-    
-    console.log(`На сегодня ${maxPeoplesPerDay} покупателей`);
-    
-    for (let i = 1; i <= maxPeoplesPerDay; i++) {
-        const time = generateRandomTime();
-        
-        peoples[`people${i}`] = {
-            "name": generatePeopleName(i),
-            "time": time.formatted,
-            "hour": time.hour,
-            "minute": time.minute,
-            "hasVisited": false,
-            "isActive": false
-        };
-        
-        // Добавляем время в массив для быстрой проверки
-        arrivalTimes.push(time.formatted);
-    }
-    
-    // Сортируем времена прибытия
-    sortPeoplesByTime();
-    
-    console.log("Времена прибытия покупателей:", arrivalTimes);
-    console.log("Сгенерированные покупатели:", peoples);
-    
-    return peoples;
+// Глобальные переменные
+let filteredProducts = window.filteredProducts || {}; // Используем данные из window
+let peoples = {};
+let maxPeoplesPerDay = 0;
+let todayPeoples = 0;
+let arrivalTimes = [];
+
+// Функция для получения случайных уникальных элементов из массива
+function getRandomItems(array, count) {
+    if (array.length === 0) return [];
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
 // Функция для сортировки покупателей по времени
@@ -119,23 +94,124 @@ function sortPeoplesByTime() {
     });
 }
 
-// Упрощенная проверка прибытия покупателей
+// Функция для генерации списка покупок покупателя
+function generatePurchaseList() {
+    const items = [];
+    let totalCost = 0;
+    
+    // Получаем доступные товары (только те, у которых count > 0)
+    const availableProducts = Object.keys(filteredProducts).filter(productId => 
+        filteredProducts[productId] && 
+        filteredProducts[productId].count > 0
+    );
+    
+    console.log('Доступные товары с количеством > 0:', availableProducts);
+    
+    if (availableProducts.length === 0) {
+        console.log('Нет доступных товаров для покупки');
+        return { items: [], totalCost: 0 };
+    }
+    
+    // Определяем сколько товаров купит покупатель (1-4 или меньше)
+    const maxItemsToBuy = Math.min(4, availableProducts.length);
+    const itemsCount = getRandomInt(1, maxItemsToBuy);
+    
+    console.log(`Покупатель выберет ${itemsCount} товаров из ${availableProducts.length}`);
+    
+    // Выбираем случайные товары (без повторений)
+    const selectedProducts = getRandomItems(availableProducts, itemsCount);
+    
+    console.log('Выбранные товары:', selectedProducts);
+    
+    // Для каждого выбранного товара определяем количество
+    selectedProducts.forEach(productId => {
+        const product = filteredProducts[productId];
+        if (!product) return;
+        
+        const maxQuantity = Math.min(3, product.count || 0); // Не больше 3 и не больше доступного количества
+        
+        if (maxQuantity > 0) {
+            const quantity = getRandomInt(1, maxQuantity);
+            const itemCost = quantity * product.price;
+            
+            items.push({
+                id: productId,
+                name: product.name,
+                quantity: quantity,
+                price: product.price,
+                total: itemCost
+            });
+            
+            totalCost += itemCost;
+            console.log(`Добавлен товар: ${product.name}, количество: ${quantity}, цена: ${product.price}`);
+        }
+    });
+    
+    console.log('Итоговый список покупок:', items);
+    return { items, totalCost: Math.round(totalCost * 100) / 100 };
+}
+
+// Функция для генерации покупателей на день
+function generatePeoplesForDay() {
+    peoples = {};
+    arrivalTimes = [];
+    maxPeoplesPerDay = getRandomInt(8, 10);
+    todayPeoples = 0;
+    
+    console.log(`На сегодня ${maxPeoplesPerDay} покупателей`);
+    console.log('Текущие доступные товары:', filteredProducts);
+    
+    for (let i = 1; i <= maxPeoplesPerDay; i++) {
+        const time = generateRandomTime();
+        
+        // Генерируем список покупок для покупателя
+        const purchaseList = generatePurchaseList();
+        
+        peoples[`people${i}`] = {
+            "name": generatePeopleName(i),
+            "time": time.formatted,
+            "hour": time.hour,
+            "minute": time.minute,
+            "hasVisited": false,
+            "isActive": false,
+            "purchases": purchaseList.items,
+            "totalCost": purchaseList.totalCost
+        };
+        
+        arrivalTimes.push(time.formatted);
+    }
+    
+    sortPeoplesByTime();
+    
+    console.log("Сгенерированные покупатели:", peoples);
+    return peoples;
+}
+
+// Функция для проверки, пришел ли покупатель
 function checkPeoplesArrivalSimple(currentTime) {
-    // Проверяем, есть ли текущее время в массиве времен прибытия
     if (arrivalTimes.includes(currentTime)) {
-        // Находим всех покупателей с таким временем
         Object.keys(peoples).forEach(key => {
             const person = peoples[key];
             
             if (person.time === currentTime && !person.hasVisited && !person.isActive) {
-                // Активируем покупателя
                 person.isActive = true;
                 todayPeoples++;
                 
                 console.log(`⚠️ Покупатель прибыл! Имя: ${person.name}, Время: ${person.time}`);
                 console.log(`Осталось покупателей сегодня: ${maxPeoplesPerDay - todayPeoples}`);
                 
-                // Удаляем время из массива, чтобы не проверять снова
+                // Показываем информацию о покупках
+                if (person.purchases && person.purchases.length > 0) {
+                    console.log('🛒 Список покупок:');
+                    person.purchases.forEach((item, index) => {
+                        console.log(`   ${index + 1}. ${item.name}: ${item.quantity} шт. × ${item.price}$ = ${item.total}$`);
+                    });
+                    console.log(`💰 Итого: ${person.totalCost}$`);
+                } else {
+                    console.log('🛒 Покупатель ничего не хочет покупать');
+                }
+                
+                // Удаляем время из массива
                 const index = arrivalTimes.indexOf(currentTime);
                 if (index > -1) {
                     arrivalTimes.splice(index, 1);
@@ -143,42 +219,6 @@ function checkPeoplesArrivalSimple(currentTime) {
             }
         });
     }
-}
-
-// Функция для отметки покупателя как обслуженного
-function markPeopleAsServed(peopleId) {
-    if (peoples[peopleId]) {
-        peoples[peopleId].hasVisited = true;
-        peoples[peopleId].isActive = false;
-        console.log(`✅ Покупатель ${peoples[peopleId].name} обслужен`);
-    }
-}
-
-// Функция для получения активных покупателей
-function getActivePeoples() {
-    return Object.keys(peoples).filter(key => 
-        peoples[key].isActive && !peoples[key].hasVisited
-    );
-}
-
-// Функция для получения следующего покупателя
-function getNextPeople() {
-    const activePeoples = getActivePeoples();
-    if (activePeoples.length > 0) {
-        return peoples[activePeoples[0]];
-    }
-    return null;
-}
-
-// Функция для сброса дня
-function resetDay() {
-    Object.keys(peoples).forEach(key => {
-        peoples[key].hasVisited = false;
-        peoples[key].isActive = false;
-    });
-    
-    todayPeoples = 0;
-    console.log("День сброшен");
 }
 
 // Функция для проверки нового дня
@@ -202,33 +242,123 @@ function checkNewDay(currentHour, currentMinute) {
     }
 }
 
+// Функция для обновления количества товаров после покупки
+function updateProductQuantity(productId, quantitySold) {
+    if (filteredProducts[productId]) {
+        filteredProducts[productId].count -= quantitySold;
+        
+        // Если товар закончился, удаляем его из доступных
+        if (filteredProducts[productId].count <= 0) {
+            delete filteredProducts[productId];
+            console.log(`Товар ${productId} закончился`);
+        }
+        
+        console.log(`Обновлено количество товара ${productId}: осталось ${filteredProducts[productId]?.count || 0}`);
+    }
+}
+
+// Функция для обработки покупки покупателя
+function processCustomerPurchase(peopleId) {
+    const customer = peoples[peopleId];
+    if (!customer || !customer.purchases || customer.purchases.length === 0) {
+        return { success: false, message: "У покупателя нет покупок" };
+    }
+    
+    let totalSold = 0;
+    const soldItems = [];
+    
+    // Проверяем, все ли товары еще доступны в нужном количестве
+    for (const purchase of customer.purchases) {
+        const product = filteredProducts[purchase.id];
+        if (!product || product.count < purchase.quantity) {
+            return { 
+                success: false, 
+                message: `Недостаточно товара: ${purchase.name}` 
+            };
+        }
+    }
+    
+    // Продаем товары
+    for (const purchase of customer.purchases) {
+        updateProductQuantity(purchase.id, purchase.quantity);
+        totalSold += purchase.total;
+        soldItems.push(purchase);
+    }
+    
+    return {
+        success: true,
+        customerName: customer.name,
+        soldItems: soldItems,
+        totalAmount: totalSold
+    };
+}
+
+// Функция для отметки покупателя как обслуженного
+function markPeopleAsServed(peopleId) {
+    if (peoples[peopleId]) {
+        const result = processCustomerPurchase(peopleId);
+        
+        if (result.success) {
+            peoples[peopleId].hasVisited = true;
+            peoples[peopleId].isActive = false;
+            
+            console.log(`✅ Покупатель ${peoples[peopleId].name} обслужен`);
+            console.log(`💰 Продано товаров на сумму: ${result.totalAmount}$`);
+            console.log('📦 Проданные товары:', result.soldItems);
+            
+            return result;
+        } else {
+            console.log(`❌ Не удалось обслужить покупателя ${peoples[peopleId].name}: ${result.message}`);
+            return result;
+        }
+    }
+    return { success: false, message: "Покупатель не найден" };
+}
+
+// Функция для получения активных покупателей
+function getActivePeoples() {
+    return Object.keys(peoples).filter(key => 
+        peoples[key].isActive && !peoples[key].hasVisited
+    );
+}
+
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Доступные товары из window:', filteredProducts);
+    
+    // Проверяем, есть ли товары с количеством > 0
+    const availableProducts = Object.keys(filteredProducts).filter(productId => 
+        filteredProducts[productId] && 
+        filteredProducts[productId].count > 0
+    );
+    
+    console.log('Товары с количеством > 0:', availableProducts);
+    
+    if (availableProducts.length === 0) {
+        console.log('⚠️ Внимание: Нет доступных товаров для продажи!');
+    }
+    
     // Генерируем покупателей на первый день
     generatePeoplesForDay();
     
     let lastCheckedTime = '';
+    let checkInterval = null;
     
-    // Проверяем каждую секунду (или чаще, если нужно)
-    setInterval(function() {
+    // Функция для проверки времени и покупателей
+    function checkTimeAndPeoples() {
         const clockElement = document.querySelector('.clock span');
         if (!clockElement) return;
         
         const currentTime = clockElement.textContent;
         
-        // Проверяем только если время изменилось
         if (currentTime !== lastCheckedTime) {
             lastCheckedTime = currentTime;
             
             const [currentHour, currentMinute] = currentTime.split(':').map(Number);
             
-            // Проверяем новый день
             checkNewDay(currentHour, currentMinute);
-            
-            // Упрощенная проверка прибытия покупателей
             checkPeoplesArrivalSimple(currentTime);
             
-            // Если магазин закрыт, сбрасываем активных
             if (currentHour >= 21) {
                 Object.keys(peoples).forEach(key => {
                     if (peoples[key].isActive) {
@@ -236,10 +366,31 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log(`⏰ Магазин закрыт, покупатель ${peoples[key].name} ушел`);
                     }
                 });
-                arrivalTimes = []; // Очищаем оставшиеся времена
+                arrivalTimes = [];
             }
         }
-    }, 1000); // Проверяем каждую секунду
+    }
+    
+    // Запускаем проверку покупателей
+    function startCustomerChecker() {
+        if (!checkInterval) {
+            // ТУТ МЕНЯТЬ СКОРОСТЬ ВРЕМЕНИ
+            checkInterval = setInterval(checkTimeAndPeoples, 333);
+            console.log('Проверка покупателей запущена');
+        }
+    }
+    
+    // Останавливаем проверку
+    function stopCustomerChecker() {
+        if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+            console.log('Проверка покупателей остановлена');
+        }
+    }
+    
+    // Запускаем проверку
+    startCustomerChecker();
     
     // Быстрая проверка после загрузки
     setTimeout(function() {
@@ -249,5 +400,6 @@ document.addEventListener('DOMContentLoaded', function() {
             checkPeoplesArrivalSimple(currentTime);
         }
     }, 500);
+    
+    console.log('✅ Система покупателей инициализирована');
 });
-
