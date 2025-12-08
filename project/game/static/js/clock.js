@@ -4,6 +4,17 @@ function formatTime(num) {
 
 let clockInterval = null;
 let isClockPaused = false;
+let clockIntervalMs = 333;
+const clockIntervalAfter21 = 1000;
+let clockAfter21Activated = false;
+
+function setClockInterval(ms) {
+    if (clockInterval) {
+        clearInterval(clockInterval);
+    }
+    clockIntervalMs = ms;
+    clockInterval = setInterval(updateClock, clockIntervalMs);
+}
 
 function updateClock() {
     const clockElement = document.querySelector('.clock span');
@@ -28,6 +39,12 @@ function updateClock() {
     
     // Проверяем и обновляем фон при изменении времени
     updateBackground(newHours);
+
+    // После 21:00 замедляем скорость до 1000 мс за минуту (однократно)
+    if (newHours >= 21 && !clockAfter21Activated) {
+        clockAfter21Activated = true;
+        setClockInterval(clockIntervalAfter21);
+    }
 }
 
 function updateBackground(hours) {
@@ -59,7 +76,7 @@ function updateBackground(hours) {
 // Функция запуска часов
 function startClock() {
     if (!clockInterval) {
-        clockInterval = setInterval(updateClock, 333);
+        setClockInterval(clockIntervalMs);
         isClockPaused = false;
         console.log('Часы запущены');
     }

@@ -69,6 +69,7 @@ let maxPeoplesPerDay = 0;
 let todayPeoples = 0;
 let arrivalTimes = [];
 let hasGeneratedToday = false;
+let endOfDayActivated = false;
 
 // Функция для получения случайных уникальных элементов из массива
 function getRandomItems(array, count) {
@@ -488,6 +489,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             checkNewDay(currentHour, currentMinute);
             checkPeoplesArrivalSimple(currentTime);
+            
+            // Активация конца дня в 21:00
+            if (currentHour >= 21 && !endOfDayActivated) {
+                endOfDayActivated = true;
+                const endDayBlock = document.querySelector('.end-day-block');
+                if (endDayBlock) {
+                    endDayBlock.classList.add('active');
+                }
+                
+                // Увеличиваем длительность игровой минуты до 1000 мс после 21:00
+                if (checkInterval) {
+                    clearInterval(checkInterval);
+                }
+                checkInterval = setInterval(checkTimeAndPeoples, 1000);
+            }
             
             if (currentHour >= 21) {
                 Object.keys(peoples).forEach(key => {
