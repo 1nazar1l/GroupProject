@@ -1224,3 +1224,42 @@ input::placeholder {
     font-size: 1.5rem;
     color: #e5d0ba;
 }
+
+.end-day-block {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 450px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    display: none;
+    pointer-events: none;
+}
+
+.end-day-block.active {
+    display: flex;
+    pointer-events: all;
+}
+
+.end-day-block img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+}
+
+.end-day-block span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    z-index: 5;
+    font-size: 3rem;
+    color: #e5d0ba;
+    width: 100%;
+}
