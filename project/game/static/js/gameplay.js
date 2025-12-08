@@ -281,6 +281,67 @@ function checkPeoplesArrivalSimple(currentTime) {
     }
 }
 
+// Получаем id первого активного покупателя
+function getFirstActivePeopleId() {
+    const active = Object.keys(peoples).filter(key =>
+        peoples[key].isActive && !peoples[key].hasVisited
+    );
+    return active.length ? active[0] : null;
+}
+
+// Собираем заказ из планшета (по названиям и количествам)
+function collectTabletOrder() {
+    const products = [];
+
+    document.querySelectorAll('.tablet-order-screen .product').forEach(productEl => {
+        const nameEl = productEl.querySelector('.product-name');
+        const countEl = productEl.querySelector('.order-product-count');
+        const priceEl = productEl.querySelector('.product-price');
+
+        if (!nameEl || !countEl) return;
+
+        const quantity = parseInt(countEl.textContent) || 0;
+        if (quantity <= 0) return;
+
+        const name = nameEl.textContent.trim();
+        const price = priceEl ? parseFloat(priceEl.textContent.replace('$', '')) || 0 : 0;
+
+        products.push({ name, quantity, price });
+    });
+
+    return products;
+}
+
+// Проверяем соответствие заказа активному покупателю
+function isOrderCorrectForCustomer(orderItems, customer) {
+    if (!customer || !Array.isArray(customer.purchases)) return false;
+
+    // Строим карту заказов и ожидаемых покупок по имени
+    const orderMap = {};
+    orderItems.forEach(item => {
+        orderMap[item.name] = (orderMap[item.name] || 0) + item.quantity;
+    });
+
+    const expectedMap = {};
+    customer.purchases.forEach(item => {
+        expectedMap[item.name] = (expectedMap[item.name] || 0) + item.quantity;
+    });
+
+    const orderNames = Object.keys(orderMap);
+    const expectedNames = Object.keys(expectedMap);
+
+    if (orderNames.length !== expectedNames.length) return false;
+
+    return expectedNames.every(name => orderMap[name] === expectedMap[name]);
+}
+
+// Сбрасываем счетчики заказа
+function resetTabletOrder() {
+    document.querySelectorAll('.tablet-order-screen .order-product-count').forEach(counter => {
+        counter.textContent = '0';
+    });
+}
+
 // Функция для проверки нового дня
 function checkNewDay(currentHour, currentMinute) {
     if (currentHour === 9 && currentMinute === 0) {
@@ -467,5 +528,75 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
     
     console.log('✅ Система покупателей инициализирована');
+
+    // Привязка кнопок увеличения/уменьшения товаров (каптчур, чтобы не задвоить обработчики из tablet.js)
+    const tabletOrderScreen = document.querySelector('.tablet-order-screen');
+    if (tabletOrderScreen) {
+        tabletOrderScreen.addEventListener('click', function(event) {
+            const addBtn = event.target.closest('.add-button');
+            const removeBtn = event.target.closest('.remove-button');
+
+            if (addBtn || removeBtn) {
+                event.stopImmediatePropagation();
+                const productElement = (addBtn || removeBtn).closest('.product');
+                if (!productElement) return;
+
+                const countElement = productElement.querySelector('.order-product-count');
+                if (!countElement) return;
+
+                let currentCount = parseInt(countElement.textContent) || 0;
+
+                if (addBtn) currentCount++;
+                if (removeBtn && currentCount > 0) currentCount--;
+
+                countElement.textContent = currentCount;
+            }
+        }, true);
+    }
+
+    // Кнопка "Отдать" — проверка заказа с активным покупателем
+    const completeOrderBtn = document.querySelector('.complete-order-btn');
+    if (completeOrderBtn) {
+        completeOrderBtn.addEventListener('click', function() {
+            const peopleId = getFirstActivePeopleId();
+            if (!peopleId) {
+                console.log('Нет активных покупателей');
+                return;
+            }
+
+            const customer = peoples[peopleId];
+            const orderItems = collectTabletOrder();
+
+            if (!orderItems.length) {
+                console.log('Заказ пустой');
+                return;
+            }
+
+            const isCorrect = isOrderCorrectForCustomer(orderItems, customer);
+
+            if (!isCorrect) {
+                console.log('Неправильный заказ, покупатель остается в магазине');
+                return;
+            }
+
+            const result = markPeopleAsServed(peopleId);
+            if (result.success) {
+                // Обновляем деньги на экране
+                const moneyEl = document.querySelector('.money');
+                if (moneyEl) {
+                    const currentMoney = parseFloat((moneyEl.textContent || moneyEl.innerText || '0').replace(/\s/g, '')) || 0;
+                    const newMoney = Math.round((currentMoney + result.totalAmount) * 100) / 100;
+                    moneyEl.textContent = newMoney;
+                    if (moneyEl.hasAttribute('value')) {
+                        moneyEl.setAttribute('value', newMoney);
+                    }
+                }
+
+                resetTabletOrder();
+            } else {
+                console.log('Не удалось обслужить покупателя:', result.message);
+            }
+        });
+    }
 });
 
