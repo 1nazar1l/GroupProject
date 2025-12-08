@@ -68,6 +68,7 @@ let peoples = {};
 let maxPeoplesPerDay = 0;
 let todayPeoples = 0;
 let arrivalTimes = [];
+let hasGeneratedToday = false;
 
 // Функция для получения случайных уникальных элементов из массива
 function getRandomItems(array, count) {
@@ -111,6 +112,10 @@ function generatePurchaseList() {
     );
     
     console.log('Доступные товары с количеством > 0:', availableProducts);
+    if (availableProducts.length) {
+        const countsInfo = availableProducts.map(pid => `${pid}: ${filteredProducts[pid].count}`);
+        console.log('Остатки по товарам:', countsInfo);
+    }
     
     if (availableProducts.length === 0) {
         console.log('Нет доступных товаров для покупки');
@@ -147,6 +152,13 @@ function generatePurchaseList() {
                 total: itemCost
             });
             
+            // Резервируем товар сразу при раздаче покупателям
+            filteredProducts[productId].count -= quantity;
+            if (filteredProducts[productId].count <= 0) {
+                delete filteredProducts[productId];
+                console.log(`Товар ${product.name} закончился при раздаче покупателям`);
+            }
+            
             totalCost += itemCost;
             console.log(`Добавлен товар: ${product.name}, количество: ${quantity}, цена: ${product.price}`);
         }
@@ -162,15 +174,18 @@ function generatePeoplesForDay() {
     arrivalTimes = [];
     maxPeoplesPerDay = getRandomInt(8, 10);
     todayPeoples = 0;
+    hasGeneratedToday = true;
     
     console.log(`На сегодня ${maxPeoplesPerDay} покупателей`);
     console.log('Текущие доступные товары:', filteredProducts);
     
     for (let i = 1; i <= maxPeoplesPerDay; i++) {
-        const time = generateRandomTime();
-        
         // Генерируем список покупок для покупателя
         const purchaseList = generatePurchaseList();
+        // Если покупок нет — отправляем на 23:00 (после закрытия)
+        const time = (purchaseList.items && purchaseList.items.length > 0)
+            ? generateRandomTime()
+            : { hour: 23, minute: 0, formatted: '23:00' };
         
         peoples[`people${i}`] = {
             "name": generatePeopleName(i),
@@ -344,9 +359,13 @@ function resetTabletOrder() {
 
 // Функция для проверки нового дня
 function checkNewDay(currentHour, currentMinute) {
-    if (currentHour === 9 && currentMinute === 0) {
+    if (currentHour === 9 && currentMinute === 0 && !hasGeneratedToday) {
         generatePeoplesForDay();
         console.log("🎉 Начался новый рабочий день!");
+    }
+    
+    if (currentHour === 21 && currentMinute === 0) {
+        hasGeneratedToday = false; // готовим к следующему дню при повторном запуске
     }
     
     if (currentHour === 21) {
@@ -388,20 +407,7 @@ function processCustomerPurchase(peopleId) {
     let totalSold = 0;
     const soldItems = [];
     
-    // Проверяем, все ли товары еще доступны в нужном количестве
     for (const purchase of customer.purchases) {
-        const product = filteredProducts[purchase.id];
-        if (!product || product.count < purchase.quantity) {
-            return { 
-                success: false, 
-                message: `Недостаточно товара: ${purchase.name}` 
-            };
-        }
-    }
-    
-    // Продаем товары
-    for (const purchase of customer.purchases) {
-        updateProductQuantity(purchase.id, purchase.quantity);
         totalSold += purchase.total;
         soldItems.push(purchase);
     }
