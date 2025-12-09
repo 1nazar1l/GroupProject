@@ -10,23 +10,28 @@ const bankArea = document.querySelector('.bank-area')
 const startDayBtn = document.querySelector('.start-day-btn')
 const clock = document.querySelector('.clock');
 const tabletIcon = document.querySelector('.tablet-icon')
+const ordersBlock = document.querySelector('.orders-block')
 
 const timeSpeed = 333
 
 tabletIcon.addEventListener('click', () => {
     clock.classList.toggle('brightness')
+    ordersBlock.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     clock.classList.add('brightness')
+    ordersBlock.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     clock.classList.remove('brightness')
+    ordersBlock.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     clock.classList.remove('brightness')
+    ordersBlock.classList.remove('brightness')
 })
 
 // Функция для генерации случайного числа в диапазоне

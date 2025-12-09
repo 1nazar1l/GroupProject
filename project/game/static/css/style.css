@@ -1207,6 +1207,11 @@ input::placeholder {
     justify-content: center;
 }
 
+.orders-block.brightness {
+    filter: brightness(40%);
+    cursor: none;
+    pointer-events: none;
+}
 .orders-block img {
     position: absolute;
     top: 0;
