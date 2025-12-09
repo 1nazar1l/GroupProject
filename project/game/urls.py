@@ -15,6 +15,7 @@ urlpatterns = [
     path('process_order/', views.process_order, name='process_order'),
     path('update-prices/', views.update_prices, name='update_prices'),
     path('gameplay/', views.gameplay, name='gameplay'),
+    path('end_day/', views.end_day, name='end_day'),
 ]
 
 if settings.DEBUG:

@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.utils.text import slugify
 import json
+import ast
 import os
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
@@ -287,8 +288,6 @@ def gameplay(request):
             except (ProductToOrder.DoesNotExist, ValueError, TypeError):
                 # Пропускаем товары с ошибками
                 continue
-
-        print(filtered_products)
         
         return render(request, "gameplay.html", {
             "save": save_data,
@@ -297,3 +296,63 @@ def gameplay(request):
         })
     
     return redirect("start_game")
+
+def end_day(request):
+    if request.method == "POST":
+        save_key = request.POST.get("save_key")
+        money_earned = request.POST.get("moneyVal")
+        money_earned = int(float(money_earned))
+        raw_filtered = request.POST.get("filtered_products", "")
+        product_keys = []
+
+        if raw_filtered:
+            parsed = None
+            # Пытаемся разобрать JSON; если не вышло — пробуем literal_eval
+            try:
+                parsed = json.loads(raw_filtered)
+            except Exception:
+                try:
+                    parsed = json.loads(raw_filtered.replace("'", '"'))
+                except Exception:
+                    try:
+                        parsed = ast.literal_eval(raw_filtered)
+                    except Exception:
+                        parsed = None
+
+            if isinstance(parsed, dict):
+                product_keys = list(parsed.keys())
+
+        user = request.user
+        # Получаем текущие сохранения пользователя
+        # Предполагаю, что user.saves это JSONField или подобное
+        saves = user.saves  # Если это dict
+        save_data = saves.get(save_key, {})
+        capital = int(save_data["capital"])
+        capital += money_earned
+        save_data["capital"] = capital
+        inventory = save_data.get("inventory", {})
+        
+        # Обновляем количество товаров
+        for item_key, product in inventory.items():
+            if item_key in product_keys:
+                try:
+                    # Получаем новое количество из POST
+                    product_count = int(request.POST.get(item_key, product.get("count", 0)))
+                    product["count"] = product_count
+                except (ValueError, TypeError):
+                    # Если что-то пошло не так, оставляем текущее значение
+                    pass
+        
+        # Сохраняем обновленный инвентарь
+        save_data["inventory"] = inventory
+        
+        # Обновляем данные сохранения
+        saves[save_key] = save_data
+        
+        # Сохраняем обновленные сохранения пользователя
+        user.saves = saves
+        
+        # Не забываем сохранить объект пользователя
+        user.save()
+                
+    return redirect("game")

@@ -51,7 +51,7 @@ if (productsData) {
             </section>
             <div class="clock">
                 <img src="../../media/svg/rect-back.png" alt="">
-                <span>9:00</span>
+                <span>20:00</span>
                 {% comment %} {{filtered_products}} {% endcomment %}
             </div>
             {% include "tablet.html" with gamestate='play'%}
@@ -62,12 +62,30 @@ if (productsData) {
             </div>
             <div class="end-day-block">
                 <img src="../../media/svg/rect-back.png" alt="">
-                <span>Завершить день</span>
-                <input type="hidden" name="money_earned" value="0">
-                <input type="hidden" name="people_served" value="0">
-                <input type="hidden" name="people_left" value="0">
-                <input type="hidden" name="people_total" value="0">
-                <input type="hidden" name="people_total_cost" value="0">
+                <div class="end-day-block-content">
+                    <form action="{% url "end_day" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="filtered_products" value="{{ filtered_products }}">
+                        <input type="hidden" name="save_key" value="{{ save_key }}">
+                        <input type="hidden" id="moneyVal" name="moneyVal" value="0">
+                        {% for key, product in filtered_products.items %}
+                            <input type="hidden" name="{{key}}" id="{{key}}" value="{{product.count}}">
+                        {% endfor %}
+                        <div class="info-block">
+                            <span>Заработано денег за день:</span>
+                            <span id="money_earned">0</span>
+                        </div>
+                        <div class="info-block">
+                            <span>Обслужено покупателей:</span>
+                            <span id="people_served" name="people_served" value="">0</span>
+                        </div>
+                        <button type="submit">
+                            <div class="end-day-btn">
+                                <span>Завершить день</span>
+                            </div>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

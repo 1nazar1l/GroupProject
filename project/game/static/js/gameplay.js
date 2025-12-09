@@ -11,6 +11,8 @@ const startDayBtn = document.querySelector('.start-day-btn')
 const clock = document.querySelector('.clock');
 const tabletIcon = document.querySelector('.tablet-icon')
 
+const timeSpeed = 333
+
 tabletIcon.addEventListener('click', () => {
     clock.classList.toggle('brightness')
 })
@@ -70,6 +72,35 @@ let todayPeoples = 0;
 let arrivalTimes = [];
 let hasGeneratedToday = false;
 let endOfDayActivated = false;
+let moneyEarnedToday = 0;
+let peopleServedToday = 0;
+
+function updateEndDayStats() {
+    const moneyEl = document.getElementById('money_earned');
+    const moneyVal = document.getElementById('moneyVal')
+    const servedEl = document.getElementById('people_served');
+    if (moneyEl) moneyEl.textContent = moneyEarnedToday;
+
+    if (moneyVal) {
+        moneyVal.value = moneyEarnedToday;
+        moneyVal.setAttribute('value', moneyEarnedToday);
+    }
+
+    if (servedEl) servedEl.textContent = peopleServedToday;
+}
+
+// Уменьшаем значения скрытых полей по проданным товарам
+function updateHiddenInventory(soldItems) {
+    if (!Array.isArray(soldItems)) return;
+    soldItems.forEach(item => {
+        if (!item || !item.id) return;
+        const hiddenInput = document.getElementById(item.id);
+        if (!hiddenInput) return;
+        const current = parseInt(hiddenInput.value) || 0;
+        const next = Math.max(0, current - (item.quantity || 0));
+        hiddenInput.value = next;
+    });
+}
 
 // Функция для получения случайных уникальных элементов из массива
 function getRandomItems(array, count) {
@@ -176,6 +207,9 @@ function generatePeoplesForDay() {
     maxPeoplesPerDay = getRandomInt(8, 10);
     todayPeoples = 0;
     hasGeneratedToday = true;
+    moneyEarnedToday = 0;
+    peopleServedToday = 0;
+    updateEndDayStats();
     
     console.log(`На сегодня ${maxPeoplesPerDay} покупателей`);
     console.log('Текущие доступные товары:', filteredProducts);
@@ -437,6 +471,12 @@ function markPeopleAsServed(peopleId) {
             // Обновляем блок заказов
             updateOrdersBlock();
             
+            // Обновляем дневную статистику
+            moneyEarnedToday += result.totalAmount;
+            peopleServedToday += 1;
+            updateEndDayStats();
+            updateHiddenInventory(result.soldItems);
+            
             return result;
         } else {
             console.log(`❌ Не удалось обслужить покупателя ${peoples[peopleId].name}: ${result.message}`);
@@ -523,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function startCustomerChecker() {
         if (!checkInterval) {
             // ТУТ МЕНЯТЬ СКОРОСТЬ ВРЕМЕНИ
-            checkInterval = setInterval(checkTimeAndPeoples, 333);
+            checkInterval = setInterval(checkTimeAndPeoples, timeSpeed);
             console.log('Проверка покупателей запущена');
         }
     }
