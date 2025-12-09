@@ -767,6 +767,14 @@ input::placeholder {
     overflow: hidden;
 }
 
+.gameplay .tablet-icon {
+    left: 2%;
+}
+
+.gameplay .tablet-block {
+    left: 2%;
+}
+
 .tablet-block.active {
     left: 50%;
     bottom: 50%;
