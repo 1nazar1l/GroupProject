@@ -37,7 +37,11 @@ if (productsData) {
 
 <section class="screen gameplay shop active_shop active">
     <div class="image-container">
-        <img src="../../media/{{save.shop}}_shop-morning.jpeg" alt="" class="background">
+        {% if save.shop == "tier2_5" %}
+            <img src="../../media/tier2_shop-morning.jpeg" alt="" class="background">
+        {% else %}
+            <img src="../../media/{{save.shop}}_shop-morning.jpeg" alt="" class="background">
+        {% endif %}
         <div class="content">
             <button class="pause-btn btn">
                 <span></span>
@@ -90,6 +94,12 @@ if (productsData) {
         </div>
     </div>
 </section>
+
+<input type="hidden" id="maximum_lower_limit_people_by_day" value={{maximum_lower_limit_people_by_day}}>
+<input type="hidden" id="maximum_upper_limit_people_by_day" value={{maximum_upper_limit_people_by_day}}>
+<input type="hidden" id="products_by_people" value={{products_by_people}}>
+<input type="hidden" id="item_by_product" value={{item_by_product}}>
+<input type="hidden" id="tier" value={{save.shop}}>
 
 <script type="module" src="{% static "js/pause.js" %}"></script>
 {% comment %} <script type="module" src="{% static "js/map.js" %}"></script> {% endcomment %}

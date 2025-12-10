@@ -339,10 +339,58 @@ def gameplay(request):
                 # Пропускаем товары с ошибками
                 continue
         
+        tier = save_data.get("shop")
+
+        maximum_lower_limit_people_by_day = 8
+        maximum_upper_limit_people_by_day = 10
+        products_by_people = 4
+        item_by_product = 3
+
+        match tier:
+            case "tier2":
+                maximum_lower_limit_people_by_day = 8
+                maximum_upper_limit_people_by_day = 10
+                products_by_people = 4
+                item_by_product = 3
+            case "tier2_5":
+                maximum_lower_limit_people_by_day = 10
+                maximum_upper_limit_people_by_day = 12
+                products_by_people = 4
+                item_by_product = 4
+            case "tier3":
+                maximum_lower_limit_people_by_day = 10
+                maximum_upper_limit_people_by_day = 12
+                products_by_people = 4
+                item_by_product = 4
+            case "tier4":
+                maximum_lower_limit_people_by_day = 14
+                maximum_upper_limit_people_by_day = 16
+                products_by_people = 6
+                item_by_product = 5
+            case "tier5":
+                maximum_lower_limit_people_by_day = 14
+                maximum_upper_limit_people_by_day = 16
+                products_by_people = 6
+                item_by_product = 5
+            case "tier6":
+                maximum_lower_limit_people_by_day = 15
+                maximum_upper_limit_people_by_day = 17
+                products_by_people = 6
+                item_by_product = 6
+            case _:
+                maximum_lower_limit_people_by_day = 8
+                maximum_upper_limit_people_by_day = 10
+                products_by_people = 4
+                item_by_product = 3
+        
         return render(request, "gameplay.html", {
             "save": save_data,
             "save_key": key,
-            "filtered_products": filtered_products  # Только товары с наценкой < 40%
+            "filtered_products": filtered_products,
+            "maximum_lower_limit_people_by_day": maximum_lower_limit_people_by_day,
+            "maximum_upper_limit_people_by_day": maximum_upper_limit_people_by_day,
+            "products_by_people": products_by_people,
+            "item_by_product": item_by_product
         })
     
     return redirect("start_game")

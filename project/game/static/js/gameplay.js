@@ -1,7 +1,9 @@
-let maximumLowerLimitPeopleByDay = 8
-let maximumUpperLimitPeopleByDay = 10
-let productsByPeople = 4
-let itemByProduct = 3
+let maximumLowerLimitPeopleByDay = document.getElementById('maximum_lower_limit_people_by_day').value
+let maximumUpperLimitPeopleByDay = document.getElementById('maximum_upper_limit_people_by_day').value
+console.log(maximumLowerLimitPeopleByDay, maximumUpperLimitPeopleByDay)
+let productsByPeople = document.getElementById('products_by_people').value
+let itemByProduct = document.getElementById('item_by_product').value
+let tier = document.getElementById('tier').value
 
 const minimapIcon = document.querySelector('.minimap-icon')
 const map = document.querySelector('.map-block')
@@ -40,8 +42,14 @@ tomainMenuBtn.addEventListener('click', () => {
 })
 
 // Функция для генерации случайного числа в диапазоне
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+// function getRandomIntInclusive(min, max) {
+//     return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
+
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min); // Округляет min вверх
+  max = Math.floor(max); // Округляет max вниз
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // Функция для форматирования времени (часы:минуты)
@@ -51,8 +59,8 @@ function formatTime(num) {
 
 // Функция для генерации случайного времени между 9:00 и 21:00
 function generateRandomTime() {
-    const hour = getRandomInt(9, 20);
-    const minute = getRandomInt(0, 59);
+    const hour = getRandomIntInclusive(9, 20);
+    const minute = getRandomIntInclusive(0, 59);
     
     return {
         hour: hour,
@@ -70,7 +78,7 @@ function generatePeopleName(index) {
         "Александра", "Николай", "Ирина", "Артем", "Екатерина"
     ];
     
-    const randomNameIndex = getRandomInt(0, names.length - 1);
+    const randomNameIndex = getRandomIntInclusive(0, names.length - 1);
     return names[randomNameIndex];
 }
 
@@ -172,7 +180,7 @@ function generatePurchaseList() {
     
     // Определяем сколько товаров купит покупатель (1-4 или меньше)
     const maxItemsToBuy = Math.min(productsByPeople, availableProducts.length);
-    const itemsCount = getRandomInt(1, maxItemsToBuy);
+    const itemsCount = getRandomIntInclusive(1, maxItemsToBuy);
     
     console.log(`Покупатель выберет ${itemsCount} товаров из ${availableProducts.length}`);
     
@@ -189,7 +197,7 @@ function generatePurchaseList() {
         const maxQuantity = Math.min(itemByProduct, product.count || 0); // Не больше 3 и не больше доступного количества
         
         if (maxQuantity > 0) {
-            const quantity = getRandomInt(1, maxQuantity);
+            const quantity = getRandomIntInclusive(1, maxQuantity);
             const itemCost = quantity * product.price;
             
             items.push({
@@ -220,7 +228,11 @@ function generatePurchaseList() {
 function generatePeoplesForDay() {
     peoples = {};
     arrivalTimes = [];
-    maxPeoplesPerDay = getRandomInt(maximumLowerLimitPeopleByDay, maximumUpperLimitPeopleByDay);
+    maxPeoplesPerDay = getRandomIntInclusive(maximumLowerLimitPeopleByDay, maximumUpperLimitPeopleByDay);
+    if (maxPeoplesPerDay > 99) {
+        maxPeoplesPerDay = maxPeoplesPerDay.slice(-2);
+    }
+    console.log(`__________________________${maxPeoplesPerDay}`)
     todayPeoples = 0;
     hasGeneratedToday = true;
     moneyEarnedToday = 0;
