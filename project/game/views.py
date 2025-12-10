@@ -162,13 +162,28 @@ def game(request):
             messages = save_data["messages"]
             messages = {k: v for k, v in reversed(messages.items())}
         
+        target = 0
+        tier = save_data.get("shop")
+        capital = int(save_data.get("capital"))
+        match tier:
+            case "tier2":
+                target = 800
+            case "tier2_5":
+                target = 2000
+        
+        progress_bar_width = int(capital * 100 / target)
+        if progress_bar_width > 100:
+            progress_bar_width = 100
+
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key,
             "products_to_order": products_to_order,
             "number_items_purchased": number_items_purchased,
             "sum_prices_purchased": sum_prices_purchased,
-            "messages": messages
+            "messages": messages,
+            "progress_bar_width": progress_bar_width,
+            "target": target
         })
     
     return redirect("start_game")
