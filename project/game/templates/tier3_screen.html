@@ -1,6 +1,10 @@
-<section class="screen tier2_shop shop active_shop active">
+<section class="screen tier3_shop shop active_shop active">
     <div class="image-container">
-        <img src="../../media/tier2_shop.jpeg" alt="" class="background">
+        {% if save.shop == "tier2_5" %}
+            <img src="../../media/tier2_shop.jpeg" alt="" class="background">
+        {% elif save.shop == "tier3" %}
+            <img src="../../media/tier3_shop.jpg" alt="" class="background">
+        {% endif %}
         <div class="content">
             <button class="pause-btn btn">
                 <span></span>
@@ -44,7 +48,7 @@
                     {% csrf_token %}
                     <button type="submit"></button>
                     <input type="hidden" name="key" value={{save_key}}>
-                    <input type="hidden" name="next_tier" value="tier2_5">
+                    <input type="hidden" name="next_tier" value="tier4">
                     <input name="money" type="hidden" id="money" value="{{save.capital}}">
                     <div class="next-tier-btn-block">
                         <img src="../../media/icons/rect-back.png" alt="">

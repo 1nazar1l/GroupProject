@@ -78,50 +78,32 @@ def next_tier(request):
         money = request.POST.get("money")
 
         user = request.user
-        
-        # Обновляем данные
-        user.saves[key]["shop"] = next_tier
-        user.saves[key]["capital"] = money
-        if next_tier == "tier1":
-            user.saves[key]["inventory"] = {
-                "cookie": {
-                    "name": "Печенье",
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                },
-                "candy": {
-                    "name": "Конфеты",
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                },
-                "chocolate": {
-                    "name": "Шоколад",
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                },
-                "soda": {
-                    "name": "Газировка",
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                },
-                "energy_drink": {
-                    "name": "Энергетик",
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                },
-                "chewing_gum": {
-                    "name": "Жвачка",
+        save_data = user.saves.get(key, {})
+
+        products_to_order = ProductToOrder.objects.all()
+
+        save_data["shop"] = next_tier
+        save_data["capital"] = money
+
+        current_tier = 0
+
+        match next_tier:
+            case "tier1":
+                current_tier = 1
+            case "tier2_5":
+                current_tier = 3
+            case "tier3":
+                current_tier = 3
+
+        if current_tier != 0:
+            products = products_to_order.filter(tier=current_tier)
+            for product in products:
+                save_data["inventory"][product.icon_name] = {
+                    "name": product.name,
                     "count": 0,
                     "price": 0,
                     "markup_percentage": 0
                 }
-            }
-        # if next_tier == "tier2_5":
 
         user.save()
         
@@ -143,7 +125,6 @@ def game(request):
     if key:
         number_items_purchased = 0
         sum_prices_purchased = 0
-        products_to_order = ProductToOrder.objects.all()
 
         user = request.user
         
@@ -165,21 +146,28 @@ def game(request):
             messages = {k: v for k, v in reversed(messages.items())}
         
         target = 1
+        current_tier = 1
         tier = save_data.get("shop")
         capital = int(save_data.get("capital"))
         match tier:
             case "tier2":
                 target = 800
+                current_tier = 2
             case "tier2_5":
                 target = 2000
+                current_tier = 3
             case "tier3":
                 target = 2000
+                current_tier = 3
             case _:
                 target = 800
         
         progress_bar_width = int(capital * 100 / target)
         if progress_bar_width > 100:
             progress_bar_width = 100
+
+        products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
+        
 
         return render(request, "game.html", {
             "save": save_data,
@@ -245,6 +233,9 @@ def process_order(request):
         
         for mas_num, product_id in enumerate(product_ids):
             product = products_to_order.get(id=product_id)
+            if product.tier == 3 and user.saves[save_key]["shop"] == "tier2_5":
+                user.saves[save_key]["shop"] = "tier3"
+
             print(f"mas_num: {mas_num}, product_id: {product_id}, product: {product}, product_count: {product_counts[mas_num]}")
 
             product_count = int(user.saves[save_key]["inventory"][product.icon_name]["count"])
