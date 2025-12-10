@@ -121,6 +121,8 @@ def next_tier(request):
                     "markup_percentage": 0
                 }
             }
+        # if next_tier == "tier2_5":
+
         user.save()
         
         # Сохраняем ключ в сессии для game view
@@ -162,7 +164,7 @@ def game(request):
             messages = save_data["messages"]
             messages = {k: v for k, v in reversed(messages.items())}
         
-        target = 0
+        target = 1
         tier = save_data.get("shop")
         capital = int(save_data.get("capital"))
         match tier:
@@ -170,6 +172,10 @@ def game(request):
                 target = 800
             case "tier2_5":
                 target = 2000
+            case "tier3":
+                target = 2000
+            case _:
+                target = 800
         
         progress_bar_width = int(capital * 100 / target)
         if progress_bar_width > 100:

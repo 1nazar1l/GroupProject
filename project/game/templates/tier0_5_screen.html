@@ -7,13 +7,13 @@
                 <span></span>
             </button>
             <section class="money-info">
-                <img src="../../media/svg/money.png" alt="">
+                <img src="../../media/icons/money.png" alt="">
                 <div class="money-content"></div>
                 <span class="money">{{ save.capital }}</span>
                 <span class="money-per-second">0.1</span>
             </section>
             <div class="update-wallpaper-btn">
-                <div class="brush-img active"><img src="../../media/svg/brush.png" alt=""></div>
+                <div class="brush-img active"><img src="../../media/icons/brush.png" alt=""></div>
                 <div class="confirm-block">
                     <form action="{% url "next_tier" %}" method="post" id="nextTierForm">
                         {% csrf_token %}
@@ -23,8 +23,8 @@
                         <button class="next-tier-btn" type="submit"></button>
                     </form>
 
-                    <img src="../../media/svg/rect-back.png" alt="" class="back">
-                    <div class="coin-block"><img src="../../media/svg/coin.png" alt=""></div>
+                    <img src="../../media/icons/rect-back.png" alt="" class="back">
+                    <div class="coin-block"><img src="../../media/icons/coin.png" alt=""></div>
                     <span>150</span>
                     <i class="fa-solid fa-check"></i>
                 </div>

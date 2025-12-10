@@ -1,9 +1,9 @@
 <div class="tablet-icon">
-  <img src="../../media/svg/square-back.png" alt="" class="back" />
-  <img src="../../media/svg/tablet_icon.png" alt="" class="icon" />
+  <img src="../../media/icons/square-back.png" alt="" class="back" />
+  <img src="../../media/icons/tablet_icon.png" alt="" class="icon" />
 </div>
 <div class="tablet-block">
-  <img src="../../media/svg/tablet.png" alt="" class="tablet" />
+  <img src="../../media/icons/tablet.png" alt="" class="tablet" />
   {% if gamestate == 'wait' %}
     <div class="tablet-content">
       <div class="changeable-content tablet-shop-screen active">
@@ -26,7 +26,7 @@
               {% for product_key, product in save.inventory.items %}
               <div class="product">
                 <span class="product-icon">
-                  <img src="../../media/svg/products/{{product_key}}.png" alt="">
+                  <img src="../../media/icons/products/{{product_key}}.png" alt="">
                 </span>
                 <span class="product-name">{{product.name}}</span>
                 {% if product.markup_percentage <= 0 or product.markup_percentage > 68 %}
@@ -43,7 +43,7 @@
                   placeholder="0"
                   min="0"
                 >
-                <div class="coin-icon"><img src="../../media/svg/coin.png" alt=""></div>
+                <div class="coin-icon"><img src="../../media/icons/coin.png" alt=""></div>
               </div>
               {% endfor %}
               
@@ -95,7 +95,7 @@
           >
             <span class="product-icon">
               <img
-                src="../../media/svg/products/{{product.icon_name}}.png"
+                src="../../media/icons/products/{{product.icon_name}}.png"
                 alt=""
               />
             </span>
@@ -180,7 +180,7 @@
           >
             <span class="product-icon">
               <img
-                src="../../media/svg/products/{{product_key}}.png"
+                src="../../media/icons/products/{{product_key}}.png"
                 alt=""
               />
             </span>
