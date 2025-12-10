@@ -19,9 +19,9 @@
             </div>
           </div>
 
-          <div class="products">
-            <form method="POST" action="{% url 'update_prices' %}">
-              {% csrf_token %}
+          <form method="POST" action="{% url 'update_prices' %}">
+            <div class="products">
+                {% csrf_token %}
               <input type="hidden" name="save_key" value="{{ save_key }}">
               {% for product_key, product in save.inventory.items %}
               <div class="product">
@@ -43,11 +43,11 @@
               {% endfor %}
               
               <!-- Меняем кнопку на submit -->
-              <button class="complete-order-btn" type="submit">
-                Обновить информацию
-              </button>
-            </form>
-          </div>
+            </div>
+            <button class="complete-order-btn" type="submit">
+              Обновить информацию
+            </button>
+          </form>
       </div>
       <div class="changeable-content tablet-order-screen">
         <div class="tablet-title">Товары для заказа</div>

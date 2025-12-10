@@ -812,7 +812,7 @@ input::placeholder {
     width: 100%;
     display: flex;
     flex-direction: column;   
-    /* height: 55vh; */
+    height: 100%;
     overflow-y: scroll;
     flex: 1;
 }
@@ -933,7 +933,9 @@ input::placeholder {
 }
 
 .tablet-shop-screen form {
-    height: 100%;
+    height: 1%;
+    flex: 1;
+    padding-bottom: 57px;
 }
 
 .tablet-shop-screen .product .actions {
@@ -1092,7 +1094,7 @@ input::placeholder {
     justify-content: space-between;
 }
 
-.products .complete-order-btn {
+.complete-order-btn {
     width: 100%;
     font-size: 2rem;
     color: white;
