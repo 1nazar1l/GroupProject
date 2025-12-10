@@ -162,8 +162,11 @@ def game(request):
                 target = 2000
                 current_tier = 3
             case "tier4":
-                target = 5000
+                target = 10000
                 current_tier = 4
+            case "tier5":
+                target = 10000
+                current_tier = 5
             case _:
                 target = 800
         
