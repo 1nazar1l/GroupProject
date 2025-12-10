@@ -57,7 +57,8 @@ def create_save(request):
             "shop": "tier0",
             "day": 1,
             "capital": 500,
-            "inventory": {}
+            "inventory": {},
+            "messages": {}
         }
         
         if user.saves["save1"] == {}:
@@ -318,6 +319,7 @@ def end_day(request):
         save_key = request.POST.get("save_key")
         money_earned = request.POST.get("moneyVal")
         money_earned = int(float(money_earned))
+        people_served = request.POST.get("people_served")
         raw_filtered = request.POST.get("filtered_products", "")
         product_keys = []
 
@@ -351,19 +353,39 @@ def end_day(request):
         day += 1
         save_data["day"] = day
         inventory = save_data.get("inventory", {})
-        
         # Обновляем количество товаров
+        products_sold = 0
         for item_key, product in inventory.items():
             if item_key in product_keys:
                 try:
                     # Получаем новое количество из POST
-                    product_count = int(request.POST.get(item_key, product.get("count", 0)))
-                    product["count"] = product_count
+                    new_product_count = int(request.POST.get(item_key, product.get("count", 0)))
+                    products_sold += product["count"] - new_product_count
+
+                    product["count"] = new_product_count
                 except (ValueError, TypeError):
                     # Если что-то пошло не так, оставляем текущее значение
                     pass
         
+
+        messages = save_data.get("messages", {})
+        if messages == {}:
+            new_message_key = "1"
+        else:
+            messages_keys = list(messages.keys())
+            new_message_key = str(int(messages_keys[-1]) + 1)
+
+        messages[new_message_key] = {
+            "type": "end-day",
+            "info": [
+                f"Закончен день: {day-1}",
+                f"Заработано денег: {money_earned}",
+                f"Продано товаров: {products_sold}",
+                f"Денег на тот момент: {capital}"
+            ]
+        }
         # Сохраняем обновленный инвентарь
+        save_data["messages"] = messages
         save_data["inventory"] = inventory
         
         # Обновляем данные сохранения
