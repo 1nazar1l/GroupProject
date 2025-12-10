@@ -86,32 +86,38 @@ def next_tier(request):
                 "cookie": {
                     "name": "Печенье",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 },
                 "candy": {
                     "name": "Конфеты",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 },
                 "chocolate": {
                     "name": "Шоколад",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 },
                 "soda": {
                     "name": "Газировка",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 },
                 "energy_drink": {
                     "name": "Энергетик",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 },
                 "chewing_gum": {
                     "name": "Жвачка",
                     "count": 0,
-                    "price": 0
+                    "price": 0,
+                    "markup_percentage": 0
                 }
             }
         user.save()
@@ -230,6 +236,7 @@ def process_order(request):
 def update_prices(request):
     if request.method == 'POST':
         save_key = request.POST.get('save_key')
+        products_to_order = ProductToOrder.objects.all()
         
         user = request.user
         if save_key in user.saves:
@@ -241,6 +248,15 @@ def update_prices(request):
                     product_key = key.replace('price_', '')
                     if product_key in inventory:
                         inventory[product_key]['price'] = int(value) if value else 0
+
+                        base_product = products_to_order.get(icon_name=product_key)
+                        base_price = float(base_product.price)
+                        user_price = float(value)
+        
+                        # Рассчитываем наценку в процентах
+                        if user_price > 0 and base_price > 0:
+                            markup_percentage = ((user_price - base_price) / base_price) * 100
+                            inventory[product_key]['markup_percentage'] = int(markup_percentage)
             
             save_data['inventory'] = inventory
             user.saves[save_key] = save_data
