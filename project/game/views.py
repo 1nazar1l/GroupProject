@@ -96,6 +96,8 @@ def next_tier(request):
                 current_tier = 3
             case "tier4":
                 current_tier = 4
+            case "tier6":
+                current_tier = 6
 
         if current_tier != 0:
             products = products_to_order.filter(tier=current_tier)
