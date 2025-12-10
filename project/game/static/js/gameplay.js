@@ -84,6 +84,7 @@ function updateEndDayStats() {
     const moneyEl = document.getElementById('money_earned');
     const moneyVal = document.getElementById('moneyVal')
     const servedEl = document.getElementById('people_served');
+    const peopleVal = document.getElementById('peopleVal')
     if (moneyEl) moneyEl.textContent = moneyEarnedToday;
 
     if (moneyVal) {
@@ -92,6 +93,11 @@ function updateEndDayStats() {
     }
 
     if (servedEl) servedEl.textContent = peopleServedToday;
+
+    if (peopleVal) {
+        peopleVal.value = peopleServedToday;
+        peopleVal.setAttribute('value', peopleServedToday);
+    }
 }
 
 // Уменьшаем значения скрытых полей по проданным товарам

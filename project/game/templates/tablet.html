@@ -122,19 +122,13 @@
         </div>
       </div>
       <div class="changeable-content tablet-messages-screen">
-        <div class="tablet-title">Каталог магазина3</div>
+        <div class="tablet-title">Сообщения</div>
         <div class="products">
-          {% for key, product in save.inventory.items %}
-          <div class="product">
-            <span class="product-name">{{product.name}}</span>
-            <span class="product-count">{{product.count}} шт</span>
-            <span class="product-price">{{product.price}}$</span>
-          </div>
-          {% endfor %} {% for key, product in save.inventory.items %}
-          <div class="product">
-            <span class="product-name">{{product.name}}</span>
-            <span class="product-count">{{product.count}} шт</span>
-            <span class="product-price">{{product.price}}$</span>
+          {% for key, message in messages.items %}
+          <div class="message">
+            {% for text in message.info %}
+              <span>{{text}}</span>
+            {% endfor %}
           </div>
           {% endfor %}
         </div>

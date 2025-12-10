@@ -157,12 +157,18 @@ def game(request):
                 user.saves[key] = save_data
                 user.save()
         
+        messages = {}
+        if "messages" in save_data:
+            messages = save_data["messages"]
+            messages = {k: v for k, v in reversed(messages.items())}
+        
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key,
             "products_to_order": products_to_order,
             "number_items_purchased": number_items_purchased,
-            "sum_prices_purchased": sum_prices_purchased
+            "sum_prices_purchased": sum_prices_purchased,
+            "messages": messages
         })
     
     return redirect("start_game")
@@ -319,7 +325,7 @@ def end_day(request):
         save_key = request.POST.get("save_key")
         money_earned = request.POST.get("moneyVal")
         money_earned = int(float(money_earned))
-        people_served = request.POST.get("people_served")
+        people_served = request.POST.get("peopleVal")
         raw_filtered = request.POST.get("filtered_products", "")
         product_keys = []
 
@@ -381,6 +387,7 @@ def end_day(request):
                 f"Закончен день: {day-1}",
                 f"Заработано денег: {money_earned}",
                 f"Продано товаров: {products_sold}",
+                f"Обслужено покупателей {people_served}",
                 f"Денег на тот момент: {capital}"
             ]
         }

@@ -1309,3 +1309,26 @@ input::placeholder {
     padding: 10px;
     border-radius: 16px;
 }
+
+.tablet-messages-screen .products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.tablet-messages-screen .message {
+    width: 95%;
+    background-color: rgb(55, 125, 197);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 16px;
+}
+
+.tablet-messages-screen .message span {
+    width: 100%;
+    font-size: 2rem;
+    color: #E2E8F0;
+}
