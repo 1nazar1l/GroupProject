@@ -55,7 +55,7 @@ def create_save(request):
         save_data = {
             "username": username,
             "shop": "tier0",
-            "day": 0,
+            "day": 1,
             "capital": 500,
             "inventory": {}
         }
@@ -346,6 +346,10 @@ def end_day(request):
         capital = int(save_data["capital"])
         capital += money_earned
         save_data["capital"] = capital
+
+        day = int(save_data["day"])
+        day += 1
+        save_data["day"] = day
         inventory = save_data.get("inventory", {})
         
         # Обновляем количество товаров
