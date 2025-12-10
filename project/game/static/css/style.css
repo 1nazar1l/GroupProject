@@ -94,8 +94,8 @@ section.screen .content {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    object-fit: contain; 
-    max-width: 1280px;
+    background-size: contain;
+    /* aspect-ratio: 16 / 9; */
 }
 
 .main-menu {
@@ -1100,6 +1100,7 @@ input::placeholder {
     background-color: #df851d;
     cursor: pointer;
     font-weight: bold;
+    margin-top: auto;
 }
 
 .start-day-btn {
