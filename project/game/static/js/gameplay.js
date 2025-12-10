@@ -1,3 +1,8 @@
+let maximumLowerLimitPeopleByDay = 8
+let maximumUpperLimitPeopleByDay = 10
+let productsByPeople = 4
+let itemByProduct = 3
+
 const minimapIcon = document.querySelector('.minimap-icon')
 const map = document.querySelector('.map-block')
 const shopScreen = document.querySelector('.screen')
@@ -166,7 +171,7 @@ function generatePurchaseList() {
     }
     
     // Определяем сколько товаров купит покупатель (1-4 или меньше)
-    const maxItemsToBuy = Math.min(4, availableProducts.length);
+    const maxItemsToBuy = Math.min(productsByPeople, availableProducts.length);
     const itemsCount = getRandomInt(1, maxItemsToBuy);
     
     console.log(`Покупатель выберет ${itemsCount} товаров из ${availableProducts.length}`);
@@ -181,7 +186,7 @@ function generatePurchaseList() {
         const product = filteredProducts[productId];
         if (!product) return;
         
-        const maxQuantity = Math.min(3, product.count || 0); // Не больше 3 и не больше доступного количества
+        const maxQuantity = Math.min(itemByProduct, product.count || 0); // Не больше 3 и не больше доступного количества
         
         if (maxQuantity > 0) {
             const quantity = getRandomInt(1, maxQuantity);
@@ -215,7 +220,7 @@ function generatePurchaseList() {
 function generatePeoplesForDay() {
     peoples = {};
     arrivalTimes = [];
-    maxPeoplesPerDay = getRandomInt(8, 10);
+    maxPeoplesPerDay = getRandomInt(maximumLowerLimitPeopleByDay, maximumUpperLimitPeopleByDay);
     todayPeoples = 0;
     hasGeneratedToday = true;
     moneyEarnedToday = 0;
