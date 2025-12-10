@@ -293,8 +293,8 @@ def gameplay(request):
                 if user_price > 0 and base_price > 0:
                     markup_percentage = ((user_price - base_price) / base_price) * 100
                     
-                    # Если наценка меньше 40%, добавляем товар
-                    if markup_percentage < 40:
+                    # Если наценка меньше 68%, добавляем товар
+                    if markup_percentage < 68:
                         # Добавляем рассчитанную наценку в данные товара
                         product_with_markup = product.copy()
                         product_with_markup["markup_percentage"] = round(markup_percentage, 2)

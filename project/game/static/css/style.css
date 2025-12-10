@@ -857,7 +857,7 @@ input::placeholder {
 }
 
 .product-count {
-    width: 30%;
+    width: 15%;
 }
 
 .order-product-count {
@@ -951,7 +951,19 @@ input::placeholder {
 }
 
 .tablet-shop-screen .product-count {
+    margin-left: 10px;
+}
+
+.tablet-shop-screen .product-markup_percentage {
     margin-left: auto;
+}
+
+.tablet-shop-screen .product-markup_percentage.red {
+    color: red;
+}
+
+.tablet-shop-screen .product-markup_percentage.green {
+    color: green;
 }
 
 .tablet-shop-screen .coin-icon {

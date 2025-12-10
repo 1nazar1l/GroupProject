@@ -29,6 +29,11 @@
                   <img src="../../media/svg/products/{{product_key}}.png" alt="">
                 </span>
                 <span class="product-name">{{product.name}}</span>
+                {% if product.markup_percentage <= 0 or product.markup_percentage > 68 %}
+                  <span class="product-markup_percentage red">{{product.markup_percentage}}%</span>
+                  {% else %}
+                  <span class="product-markup_percentage green">{{product.markup_percentage}}%</span>
+                {% endif %}
                 <span class="product-count">{{product.count}}</span>
                 <input 
                   class="change-price-input" 
