@@ -40,6 +40,9 @@
 {% elif save.shop == "tier2_5" or save.shop == "tier3" %}
 {% include "tier3_screen.html" with save=save save_key=save_key %}
 <script type="module" src="{% static "js/tier3-shop.js" %}"></script>
+{% elif save.shop == "tier4"%}
+{% include "tier4_screen.html" with save=save save_key=save_key %}
+<script type="module" src="{% static "js/tier4-shop.js" %}"></script>
 {% endif %}
 
 <script type="module" src="{% static "js/pause.js" %}"></script>

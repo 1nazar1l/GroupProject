@@ -94,6 +94,8 @@ def next_tier(request):
                 current_tier = 3
             case "tier3":
                 current_tier = 3
+            case "tier4":
+                current_tier = 4
 
         if current_tier != 0:
             products = products_to_order.filter(tier=current_tier)
@@ -159,6 +161,9 @@ def game(request):
             case "tier3":
                 target = 2000
                 current_tier = 3
+            case "tier4":
+                target = 5000
+                current_tier = 4
             case _:
                 target = 800
         
@@ -168,7 +173,6 @@ def game(request):
 
         products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
         
-
         return render(request, "game.html", {
             "save": save_data,
             "save_key": key,
@@ -235,6 +239,9 @@ def process_order(request):
             product = products_to_order.get(id=product_id)
             if product.tier == 3 and user.saves[save_key]["shop"] == "tier2_5":
                 user.saves[save_key]["shop"] = "tier3"
+
+            if product.tier == 4 and user.saves[save_key]["shop"] == "tier4":
+                user.saves[save_key]["shop"] = "tier5"
 
             print(f"mas_num: {mas_num}, product_id: {product_id}, product: {product}, product_count: {product_counts[mas_num]}")
 
