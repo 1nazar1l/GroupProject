@@ -832,10 +832,13 @@ input::placeholder {
 
 .product {
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
-    /* width: 100%; */
     padding: 10px 6px;
+}
+
+.product.disabled {
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 .product .product-icon {
@@ -862,6 +865,10 @@ input::placeholder {
 
 .order-product-count {
     width: 20px;
+}
+
+.order-product-count.full {
+    color: rgb(255 255 101);
 }
 
 .tablet-order-screen .product-price {

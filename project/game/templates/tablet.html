@@ -89,7 +89,7 @@
         <div class="products">
           {% for product in products_to_order %}
           <div
-            class="product"
+            class="product {% if product.is_full %}disabled{% endif %}"
             data-product-id="{{ product.id }}"
             data-product-price="{{ product.price }}"
           >
@@ -102,6 +102,7 @@
             <span class="product-name">{{product.name}}</span>
             <span class="product-price">{{product.price}}$</span>
             <div class="actions">
+              <input type="hidden" class="max-can-buy" value={{product.products_count_to_purchase}}>
               <span class="add-icon">
                 <button class="add-button action-button" type="button">
                   <span class="plus-icon"></span>

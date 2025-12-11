@@ -108,12 +108,18 @@ document.querySelectorAll('.tablet-order-screen .add-button').forEach(button => 
         
         const productElement = this.closest('.product');
         const countElement = productElement.querySelector('.order-product-count'); // Изменено
+        const maxCanBuy = productElement.querySelector('.max-can-buy').value
         
         let currentCount = parseInt(countElement.textContent) || 0;
-        currentCount++;
-        countElement.textContent = currentCount;
-        
-        updateOrderTotals();
+        if (currentCount < maxCanBuy) {
+            currentCount++;
+            countElement.textContent = currentCount;
+            updateOrderTotals();
+        }
+
+        if (currentCount == maxCanBuy) {
+            countElement.classList.add('full')
+        }
     });
 });
 
@@ -126,6 +132,8 @@ document.querySelectorAll('.tablet-order-screen .remove-button').forEach(button 
         
         let currentCount = parseInt(countElement.textContent) || 0;
         if (currentCount > 0) {
+            countElement.classList.remove('full')
+
             currentCount--;
             countElement.textContent = currentCount;
             

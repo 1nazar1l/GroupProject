@@ -58,6 +58,7 @@ def create_save(request):
             "day": 1,
             "capital": 500,
             "max_markup_percentage": 68,
+            "max_product": 10,
             "inventory": {},
             "messages": {}
         }
@@ -86,6 +87,7 @@ def next_tier(request):
         save_data["shop"] = next_tier
         save_data["capital"] = money
         max_markup_percentage = 68
+        max_product = 10
 
         current_tier = 0
 
@@ -93,22 +95,26 @@ def next_tier(request):
             case "tier1":
                 current_tier = 1
                 max_markup_percentage = 68
+                max_product = 10
             case "tier2_5":
                 current_tier = 3
                 max_markup_percentage = 75
+                max_product = 12
             case "tier3":
                 current_tier = 3
                 max_markup_percentage = 75
+                max_product = 12
             case "tier4":
                 current_tier = 4
                 max_markup_percentage = 89
-            case "tier5":
-                max_markup_percentage = 100
+                max_product = 13
             case "tier6":
                 current_tier = 6
                 max_markup_percentage = 100
+                max_product = 15
         
         save_data["max_markup_percentage"] = max_markup_percentage
+        save_data["max_product"] = max_product
 
         if current_tier != 0:
             products = products_to_order.filter(tier=current_tier)
@@ -195,6 +201,16 @@ def game(request):
         products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
 
         max_markup_percentage = save_data.get("max_markup_percentage")
+        max_product = save_data.get("max_product")
+
+
+        inventory = save_data.get("inventory")
+        for order_product in products_to_order:
+            product = inventory.get(order_product.icon_name)
+            order_product.is_full = product["count"] >= max_product 
+
+
+            order_product.products_count_to_purchase = max_product - product["count"]
         
         return render(request, "game.html", {
             "save": save_data,
@@ -205,7 +221,7 @@ def game(request):
             "messages": messages,
             "progress_bar_width": progress_bar_width,
             "target": target,
-            "max_markup_percentage": max_markup_percentage
+            "max_markup_percentage": max_markup_percentage,
         })
     
     return redirect("start_game")
@@ -276,6 +292,7 @@ def process_order(request):
         
         user_capital = int(user.saves[save_key]["capital"])
         user_capital -= int(float(total_price))
+
         user.saves[save_key]["capital"] = user_capital
         user.save()
 
