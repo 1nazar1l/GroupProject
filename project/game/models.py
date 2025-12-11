@@ -28,4 +28,4 @@ class ProductToOrder(models.Model):
         verbose_name_plural = "Продукты для заказа"
 
     def __str__(self):
-        return f"Id {self.pk} - {self.name} - тир{self.tier} - {self.price}$ - {self.icon_name}"
+        return f"Id {self.pk} - тир{self.tier} - {self.name} - {self.price}$ - {self.icon_name}"
