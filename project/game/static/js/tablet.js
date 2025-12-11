@@ -193,9 +193,22 @@ function prepareOrderForm() {
     return true;
 }
 
-document.getElementById('complete-order').addEventListener('click', function() {
-    prepareOrderForm();
-    document.getElementById('order-form').submit();
+document.getElementById('complete-order').addEventListener('click', function(event) {
+    const moneyElement = document.querySelector('.money');
+    const formTotalPrice = document.getElementById('form-total-price').value;
+    const totalPriceText = document.getElementById('total-price');
+    
+    console.log(typeof formTotalPrice, typeof moneyElement.textContent);
+    
+    const moneyValue = parseFloat(moneyElement.textContent) || 0;
+    const formPriceValue = parseFloat(formTotalPrice) || 0;
+    
+    if (formPriceValue > moneyValue) {
+        event.preventDefault();
+        totalPriceText.classList.add('to_much');
+    } else {
+        prepareOrderForm();
+        document.getElementById('order-form').submit();
+    }
 });
-
 document.addEventListener('DOMContentLoaded', updateOrderTotals);
