@@ -7,6 +7,8 @@ const pauseBtn = document.querySelector('.pause-btn')
 const continueMenuBtn = document.querySelector('.continue-btn')
 const tomainMenuBtn = document.querySelector('.main-screen-btn')
 const startDayBtn = document.querySelector('.start-day-btn')
+const progressBar = document.querySelector('.progress-bar')
+const nextTierBtn = document.querySelector('.next-tier-btn')
 
 const tabletMainIcon = document.querySelector('.tablet-shop-icon')
 const tabletOrderIcon = document.querySelector('.tablet-order-icon')
@@ -25,24 +27,30 @@ tabletIcon.addEventListener('click', () => {
     pauseBtn.classList.toggle('brightness')
     mapIcon.classList.toggle('brightness')
     startDayBtn.classList.toggle('brightness')
+    progressBar.classList.toggle('brightness')
+    nextTierBtn.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     tabletIcon.classList.add('brightness')
     tablet.classList.add('brightness')
     startDayBtn.classList.add('brightness')
+    progressBar.classList.add('brightness')
+    nextTierBtn.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
     startDayBtn.classList.remove('brightness')
+    nextTierBtn.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
     startDayBtn.classList.remove('brightness')
+    nextTierBtn.classList.remove('brightness')
 })
 
 tabletMainIcon.addEventListener('click', () => {

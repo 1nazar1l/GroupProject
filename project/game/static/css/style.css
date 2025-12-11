@@ -1345,6 +1345,10 @@ input::placeholder {
     overflow: hidden;
 }
 
+.progress-bar.brightness {
+    filter: brightness(40%)
+}
+
 .progress-bar-back {
     position: absolute; 
     left: 0;
