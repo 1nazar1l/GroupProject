@@ -287,6 +287,8 @@ def casino(request):
     if key:
         user = request.user
         save_data = user.saves.get(key, {})
+
+        
         return render(request, "casino.html", {
             "save": save_data,
             "save_key": key
