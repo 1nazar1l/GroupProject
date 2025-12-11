@@ -116,8 +116,10 @@ def next_tier(request):
         save_data["max_markup_percentage"] = max_markup_percentage
         save_data["max_product"] = max_product
 
+        new_products_count = 0
         if current_tier != 0:
             products = products_to_order.filter(tier=current_tier)
+            new_products_count = products.count()
             for product in products:
                 if product.icon_name not in save_data["inventory"].keys():
                     save_data["inventory"][product.icon_name] = {
@@ -127,6 +129,34 @@ def next_tier(request):
                         "markup_percentage": 0
                     }
 
+
+        messages = save_data.get("messages", {})
+        if messages == {}:
+            new_message_key = "1"
+        else:
+            messages_keys = list(messages.keys())
+            new_message_key = str(int(messages_keys[-1]) + 1)
+
+        if current_tier != 0:
+            info_block = [
+                f"Поздравляю с переходом на новый уровень!!!",
+                f"Доступно новых товаров {new_products_count}",
+                f"Максимальная наценка для товаров {max_markup_percentage}%",
+                f"Максимальное количество товаров одного вида {max_product}",
+                f"Денег на тот момент: {save_data["capital"]}",
+                f"День: {save_data["day"]}",
+            ]
+            if current_tier != 1:
+                info_block.append(f"Больше покупателей в день!!!")
+                info_block.append(f"Покупатели могут брать больше покупок!!!")
+            messages[new_message_key] = {
+                "type": "next-tier",
+                "info": info_block
+            }
+
+
+        # Сохраняем обновленный инвентарь
+        save_data["messages"] = messages
         user.save()
         
         # Сохраняем ключ в сессии для game view
@@ -198,19 +228,21 @@ def game(request):
         if progress_bar_width > 100:
             progress_bar_width = 100
 
-        products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
-
         max_markup_percentage = save_data.get("max_markup_percentage")
         max_product = save_data.get("max_product")
 
-
         inventory = save_data.get("inventory")
-        for order_product in products_to_order:
-            product = inventory.get(order_product.icon_name)
-            order_product.is_full = product["count"] >= max_product 
 
+        products_to_order = {}
 
-            order_product.products_count_to_purchase = max_product - product["count"]
+        if inventory != {}:
+            products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
+
+            for order_product in products_to_order:
+                product = inventory.get(order_product.icon_name)
+                order_product.is_full = product["count"] >= max_product 
+
+                order_product.products_count_to_purchase = max_product - product["count"]
         
         return render(request, "game.html", {
             "save": save_data,
