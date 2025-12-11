@@ -57,6 +57,7 @@ def create_save(request):
             "shop": "tier0",
             "day": 1,
             "capital": 500,
+            "max_markup_percentage": 68,
             "inventory": {},
             "messages": {}
         }
@@ -84,30 +85,41 @@ def next_tier(request):
 
         save_data["shop"] = next_tier
         save_data["capital"] = money
+        max_markup_percentage = 68
 
         current_tier = 0
 
         match next_tier:
             case "tier1":
                 current_tier = 1
+                max_markup_percentage = 68
             case "tier2_5":
                 current_tier = 3
+                max_markup_percentage = 75
             case "tier3":
                 current_tier = 3
+                max_markup_percentage = 75
             case "tier4":
                 current_tier = 4
+                max_markup_percentage = 89
+            case "tier5":
+                max_markup_percentage = 100
             case "tier6":
                 current_tier = 6
+                max_markup_percentage = 100
+        
+        save_data["max_markup_percentage"] = max_markup_percentage
 
         if current_tier != 0:
             products = products_to_order.filter(tier=current_tier)
             for product in products:
-                save_data["inventory"][product.icon_name] = {
-                    "name": product.name,
-                    "count": 0,
-                    "price": 0,
-                    "markup_percentage": 0
-                }
+                if product.icon_name not in save_data["inventory"].keys():
+                    save_data["inventory"][product.icon_name] = {
+                        "name": product.name,
+                        "count": 0,
+                        "price": 0,
+                        "markup_percentage": 0
+                    }
 
         user.save()
         
@@ -153,6 +165,7 @@ def game(request):
         current_tier = 1
         tier = save_data.get("shop")
         capital = int(save_data.get("capital"))
+
         match tier:
             case "tier2":
                 target = 800
@@ -180,6 +193,8 @@ def game(request):
             progress_bar_width = 100
 
         products_to_order = ProductToOrder.objects.filter(tier__lte=current_tier).order_by('tier')
+
+        max_markup_percentage = save_data.get("max_markup_percentage")
         
         return render(request, "game.html", {
             "save": save_data,
@@ -189,7 +204,8 @@ def game(request):
             "sum_prices_purchased": sum_prices_purchased,
             "messages": messages,
             "progress_bar_width": progress_bar_width,
-            "target": target
+            "target": target,
+            "max_markup_percentage": max_markup_percentage
         })
     
     return redirect("start_game")

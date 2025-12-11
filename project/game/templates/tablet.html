@@ -29,7 +29,7 @@
                   <img src="../../media/icons/products/{{product_key}}.png" alt="">
                 </span>
                 <span class="product-name">{{product.name}}</span>
-                {% if product.markup_percentage <= 0 or product.markup_percentage > 68 %}
+                {% if product.markup_percentage <= 0 or product.markup_percentage > max_markup_percentage %}
                   <span class="product-markup_percentage red">{{product.markup_percentage}}%</span>
                   {% else %}
                   <span class="product-markup_percentage green">{{product.markup_percentage}}%</span>
