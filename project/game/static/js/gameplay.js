@@ -1,6 +1,5 @@
 let maximumLowerLimitPeopleByDay = document.getElementById('maximum_lower_limit_people_by_day').value
 let maximumUpperLimitPeopleByDay = document.getElementById('maximum_upper_limit_people_by_day').value
-console.log(maximumLowerLimitPeopleByDay, maximumUpperLimitPeopleByDay)
 let productsByPeople = document.getElementById('products_by_people').value
 let itemByProduct = document.getElementById('item_by_product').value
 let tier = document.getElementById('tier').value

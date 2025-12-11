@@ -347,6 +347,7 @@ def gameplay(request):
         products_to_order = ProductToOrder.objects.all()
         
         inventory = save_data.get("inventory", {})
+        max_markup_percentage = save_data.get("max_markup_percentage")
         filtered_products = {}
         
         for item_key, product in inventory.items():
@@ -360,8 +361,7 @@ def gameplay(request):
                 if user_price > 0 and base_price > 0:
                     markup_percentage = ((user_price - base_price) / base_price) * 100
                     
-                    # Если наценка меньше 68%, добавляем товар
-                    if markup_percentage < 68:
+                    if markup_percentage <= max_markup_percentage:
                         # Добавляем рассчитанную наценку в данные товара
                         product_with_markup = product.copy()
                         product_with_markup["markup_percentage"] = round(markup_percentage, 2)
