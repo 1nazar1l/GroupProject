@@ -21,6 +21,11 @@
         <button from="create_save_form" class="btn" type="submit">СОЗДАТЬ</button>
     </form>
 </section>
+<audio controls autoplay muted loop>
+  <source src="../../media/main.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="myAudio" src="sound.mp3" preload="auto"></audio>
 
 {% if not request.user.is_authenticated %}
 <section class="menu center-menu registration-menu active">

@@ -186,3 +186,10 @@ function sleep(milliseconds) {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
 }
+
+
+document.querySelectorAll(".button-click-sfx").forEach(button => {
+    button.addEventListener('click', function(event) {
+        
+    })
+})
