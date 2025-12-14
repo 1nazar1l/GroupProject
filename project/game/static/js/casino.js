@@ -9,11 +9,25 @@ const shopArea = document.querySelector('.shop-area')
 const bankArea = document.querySelector('.bank-area')
 const casinoArea = document.querySelector('.casino-area')
 
+const triangle = document.querySelector('.triangle')
+const wheel = document.querySelector('.wheel')
+const betValues = document.querySelector('.bet-values')
+
+minimapIcon.addEventListener('click', () => {
+    triangle.classList.toggle('brightness')
+    wheel.classList.toggle('brightness')
+    betValues.classList.toggle('brightness')
+})
+
 casinoArea.addEventListener('click', () => {
     map.classList.remove('active')
     shopScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')
     pauseBtn.classList.remove('brightness')
+
+    triangle.classList.remove('brightness')
+    wheel.classList.remove('brightness')
+    betValues.classList.remove('brightness')
 })
 
 const wheelContent = document.querySelector('.wheel-content');
