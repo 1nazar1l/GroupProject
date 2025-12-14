@@ -60,7 +60,8 @@ def create_save(request):
             "max_markup_percentage": 68,
             "max_product": 10,
             "inventory": {},
-            "messages": {}
+            "messages": {},
+            "bet_values": []
         }
         
         if user.saves["save1"] == {}:
@@ -91,6 +92,8 @@ def next_tier(request):
 
         current_tier = 0
 
+        bet_values = [5, 10, 15, 20, 25, 30]
+
         match next_tier:
             case "tier1":
                 current_tier = 1
@@ -100,21 +103,26 @@ def next_tier(request):
                 current_tier = 3
                 max_markup_percentage = 75
                 max_product = 12
+                bet_values = [20, 50, 60, 85, 100, 110]
             case "tier3":
                 current_tier = 3
                 max_markup_percentage = 75
                 max_product = 12
+                bet_values = [20, 50, 60, 85, 100, 110]
             case "tier4":
                 current_tier = 4
                 max_markup_percentage = 89
                 max_product = 13
+                bet_values = [70, 110, 130, 160, 180, 210]
             case "tier6":
                 current_tier = 6
                 max_markup_percentage = 100
                 max_product = 15
+                bet_values = [100, 150, 200, 250, 300, 400]
         
         save_data["max_markup_percentage"] = max_markup_percentage
         save_data["max_product"] = max_product
+        save_data["bet_values"] = bet_values
 
         new_products_count = 0
         if current_tier != 0:
@@ -140,6 +148,7 @@ def next_tier(request):
         if current_tier != 0:
             info_block = [
                 f"Поздравляю с переходом на новый уровень!!!",
+                f"Максимальная ставка в казино увеличина!",
                 f"Доступно новых товаров {new_products_count}",
                 f"Максимальная наценка для товаров {max_markup_percentage}%",
                 f"Максимальное количество товаров одного вида {max_product}",

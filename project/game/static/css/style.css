@@ -1593,6 +1593,7 @@ input::placeholder {
     border-radius: 20px;
 
 }
+
 .bet-values .bet {
     position: relative;
     display: flex;
@@ -1638,5 +1639,5 @@ input::placeholder {
    position: absolute;
    left: 49%;
    top: 10.6%;
-   z-index: 30;
+   z-index: 4;
 }
