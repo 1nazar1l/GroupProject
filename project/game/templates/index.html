@@ -29,6 +29,17 @@
         <input name="username" type="text" class="btn input" placeholder="Никнейм" required>
         <input name="password" type="password" class="btn input" placeholder="Пароль" required>
         <button class="btn" type="submit" >Создать аккаунт</button>
+        <button class="btn" type="button" id="show-auth-btn">Авторизоваться</button>
+    </form>
+</section>
+
+<section class="menu center-menu auth-menu">
+    <form action="{% url "auth_account" %}" method="post">
+        {% csrf_token %}
+        <input name="username" type="text" class="btn input" placeholder="Никнейм" required>
+        <input name="password" type="password" class="btn input" placeholder="Пароль" required>
+        <button class="btn" type="submit" >Войти</button>
+        <button class="btn" type="button" id="show-registration-btn">Зарегистрироваться</button>
     </form>
 </section>
 {% endif %}
@@ -76,5 +87,28 @@
 
 <script type="module" src="{% static "js/values.js" %}"></script>
 <script type="module" src="{% static "js/main-menu.js" %}"></script>
+<script>
+    // Переключение между формами регистрации и авторизации
+    document.addEventListener('DOMContentLoaded', function() {
+        const showAuthBtn = document.getElementById('show-auth-btn');
+        const showRegistrationBtn = document.getElementById('show-registration-btn');
+        const registrationMenu = document.querySelector('.registration-menu');
+        const authMenu = document.querySelector('.auth-menu');
+        
+        if (showAuthBtn && authMenu) {
+            showAuthBtn.addEventListener('click', function() {
+                if (registrationMenu) registrationMenu.classList.remove('active');
+                authMenu.classList.add('active');
+            });
+        }
+        
+        if (showRegistrationBtn && registrationMenu) {
+            showRegistrationBtn.addEventListener('click', function() {
+                if (authMenu) authMenu.classList.remove('active');
+                registrationMenu.classList.add('active');
+            });
+        }
+    });
+</script>
 </body>
 </html>

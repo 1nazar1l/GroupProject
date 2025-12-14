@@ -47,6 +47,17 @@ def create_account(request):
         
     return redirect("start_game")
 
+def auth_account(request):
+    if request.POST:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+        
+    return redirect("start_game")
+
 def create_save(request):
     User = get_user_model()
     user = User.objects.get(id=request.user.id)

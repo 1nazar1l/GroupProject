@@ -153,6 +153,12 @@ section.screen .content {
     flex-direction: column;
 }
 
+.auth-menu form {
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
 .center-menu {
     right: 50%;
     top: 50%;
@@ -267,6 +273,15 @@ input::placeholder {
 }
 
 .registration-menu.active {
+    display: flex;
+}
+
+.auth-menu {
+    width: fit-content;
+    display: none;
+}
+
+.auth-menu.active {
     display: flex;
 }
 
