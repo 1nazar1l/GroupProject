@@ -1290,6 +1290,11 @@ input::placeholder {
     pointer-events: none;
 }
 
+.end-day-block.active.brightness {
+    filter: brightness(40%);
+    pointer-events: none;
+}
+
 .end-day-block.active {
     display: flex;
     pointer-events: all;
@@ -1332,6 +1337,9 @@ input::placeholder {
     border: 1px solid rgba(211, 211, 211, 0.295);
     padding: 10px;
     border-radius: 16px;
+    background-color: inherit;
+    width: 100%;
+    margin-top: 8px;
 }
 
 .tablet-messages-screen .products {

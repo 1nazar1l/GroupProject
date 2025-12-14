@@ -17,6 +17,7 @@ const startDayBtn = document.querySelector('.start-day-btn')
 const clock = document.querySelector('.clock');
 const tabletIcon = document.querySelector('.tablet-icon')
 const ordersBlock = document.querySelector('.orders-block')
+const endDayBlock = document.querySelector('.end-day-block')
 
 const timeSpeed = 333
 
@@ -28,21 +29,25 @@ const cashBoxSound = new Audio('../../media/sfx/cash_box.mp3');
 tabletIcon.addEventListener('click', () => {
     clock.classList.toggle('brightness')
     ordersBlock.classList.toggle('brightness')
+    endDayBlock.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     clock.classList.add('brightness')
     ordersBlock.classList.add('brightness')
+    endDayBlock.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     clock.classList.remove('brightness')
     ordersBlock.classList.remove('brightness')
+    endDayBlock.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     clock.classList.remove('brightness')
     ordersBlock.classList.remove('brightness')
+    endDayBlock.classList.remove('brightness')
 })
 
 // Функция для генерации случайного числа в диапазоне
