@@ -77,8 +77,11 @@
             <div class="menu main-menu">
                 <div class="btn new-save-btn">Новая игра</div>
                 <div class="btn continue-btn">Продолжить</div>
-                <div class="btn">Настройки</div>
                 <div class="btn fullscreen-btn">Полный экран</div>
+                <form action="{% url "logout" %}" class="logout_form">
+                    <div class="btn">Выйти из аккаунта</div>
+                    <button type="submit" class="logout-btn"></button>
+                </form>
             </div>
         </div>
     </div>

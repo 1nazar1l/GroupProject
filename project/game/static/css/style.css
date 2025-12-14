@@ -190,6 +190,25 @@ section.screen .content {
     font-size: 2.2rem;
 }
 
+.logout_form {
+    position: relative;
+    font-size: 2.2rem;
+}
+
+.logout_form .btn{
+    font-size: 2.2rem;
+}
+
+.logout_form .logout-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    cursor: pointer;
+}
+
 .screen {
     display: none;
 }

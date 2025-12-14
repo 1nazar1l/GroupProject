@@ -58,6 +58,10 @@ def auth_account(request):
         
     return redirect("start_game")
 
+def sign_out(request):
+    logout(request)
+    return redirect("mainPage")
+
 def create_save(request):
     User = get_user_model()
     user = User.objects.get(id=request.user.id)
