@@ -188,8 +188,19 @@ function sleep(milliseconds) {
 }
 
 
-document.querySelectorAll(".button-click-sfx").forEach(button => {
-    button.addEventListener('click', function(event) {
-        
-    })
-})
+const clickSound = new Audio('../../media/sfx/base_click.mp3');
+let soundEnabled = false;
+
+document.addEventListener('click', function enableSound() {
+    soundEnabled = true;
+    document.removeEventListener('click', enableSound);
+    
+    clickSound.play().catch(console.error);
+});
+
+document.addEventListener('click', () => {
+    if (soundEnabled) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(console.error);
+    }
+});
