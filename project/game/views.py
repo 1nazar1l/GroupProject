@@ -277,24 +277,17 @@ def bank(request):
     return redirect("start_game")
 
 def casino(request):
-    if request.method == 'POST':
-        key = request.POST.get("key")
-        if key:
-            request.session['current_save_key'] = key
-            return redirect("casino")
+    key = request.POST.get("key")
+    user = request.user
+    save_data = user.saves.get(key, {})
 
-    key = request.session.get('current_save_key')
-    if key:
-        user = request.user
-        save_data = user.saves.get(key, {})
-
-        
-        return render(request, "casino.html", {
-            "save": save_data,
-            "save_key": key
-        })
     
-    return redirect("start_game")
+    return render(request, "casino.html", {
+        "save": save_data,
+        "save_key": key,
+        "current_balance": save_data["capital"]
+    })
+
 
 def process_order(request):
     if request.method == 'POST':
@@ -547,3 +540,22 @@ def end_day(request):
         user.save()
                 
     return redirect("game")
+
+def casino_reload_page(request):
+    new_capital = request.POST.get('balance')
+    save_key = request.POST.get('key')
+    user = request.user
+    saves = user.saves
+
+    save_data = saves.get(save_key, {})
+    save_data["capital"] = new_capital
+
+    saves[save_key] = save_data
+    user.saves = saves
+    user.save()
+
+    return render(request, "casino.html", {
+        "save": save_data,
+        "save_key": save_key,
+        "current_balance": new_capital
+    })

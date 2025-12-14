@@ -24,7 +24,11 @@
     <div class="btn settings-btn">Настройки</div>
     <div class="btn fullscreen-btn">Полный экран</div>
 </section>
-
+<form action="{% url "casino_reload_page" %}" method="post" id="casino_reload_form">
+    {% csrf_token %}
+    <input type="hidden" name="balance" id="casino_balance" value="{{current_balance}}">
+    <input type="hidden" name="key" value={{save_key}}>
+</form>
 <section class="screen casino active active_shop">
     <div class="image-container">
         <img src="../../media/casino.jpg" alt="" class="background">
@@ -36,7 +40,7 @@
             <section class="money-info">
                 <img src="../../media/icons/money.png" alt="">
                 <div class="money-content"></div>
-                <span class="money">{{ save.capital }}</span>
+                <span class="money">{{ current_balance }}</span>
                 <span class="money-per-second">0.1</span>
             </section>
             <div class="minimap-icon">

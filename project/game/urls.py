@@ -16,6 +16,7 @@ urlpatterns = [
     path('update-prices/', views.update_prices, name='update_prices'),
     path('gameplay/', views.gameplay, name='gameplay'),
     path('end_day/', views.end_day, name='end_day'),
+    path('casino_reload_page/', views.casino_reload_page, name='casino_reload_page'),
 ]
 
 if settings.DEBUG:
