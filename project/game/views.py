@@ -394,7 +394,7 @@ def gameplay(request):
                 user_price = float(product.get("price", 0))
                 
                 # Рассчитываем наценку в процентах
-                if user_price > 0 and base_price > 0:
+                if user_price >= 0 and base_price >= 0:
                     markup_percentage = ((user_price - base_price) / base_price) * 100
                     
                     if markup_percentage <= max_markup_percentage:

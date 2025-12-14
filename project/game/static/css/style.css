@@ -1232,10 +1232,20 @@ input::placeholder {
     left: 50%;
     transform: translateX(-50%);
     width: 500px;
-    height: 150px;
+    height: 170px;
     display: flex;
     justify-content: center;
     overflow: hidden;
+}
+
+.buyer-products {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.buyer-products .buyer-product {
+    width: 48%;
 }
 
 .orders-block.brightness {
@@ -1243,6 +1253,7 @@ input::placeholder {
     cursor: none;
     pointer-events: none;
 }
+
 .orders-block img {
     position: absolute;
     top: 0;
@@ -1255,10 +1266,11 @@ input::placeholder {
 .orders-block .order-block {
     position: relative;
     z-index: 5;
-    min-width: 100%;
+    width: 100%;
     height: 100%;
     font-size: 1.5rem;
     color: #e5d0ba;
+    padding: 25px;
 }
 
 .orders-block > .order-block ~ .order-block {
