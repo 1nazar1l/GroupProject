@@ -26,6 +26,14 @@ wheelContent.style.animation = 'none';
 
 let isSpinning = false;
 
+// Звуки
+const spinSound = new Audio('../../media/sfx/circle-spin.mp3');
+const winSound = new Audio('../../media/sfx/win.mp3');
+const loseSound = new Audio('../../media/sfx/lose.mp3');
+
+// Настройка звуков
+spinSound.loop = true; // Звук вращения должен зацикливаться
+
 // Функция для обновления состояния кнопок ставок
 function updateBetButtonsState() {
     const currentBalance = parseInt(balanceInput.value) || 0;
@@ -83,12 +91,22 @@ function spinWheel(finalDegrees, callback) {
     const spins = 5; 
     const totalDegrees = (spins * 360) + finalDegrees;
 
+    // Запускаем звук вращения
+    spinSound.currentTime = 0;
+    spinSound.play().catch(err => {
+        console.log('Ошибка воспроизведения звука вращения:', err);
+    });
+
     wheelContent.style.transition = 'transform 10s cubic-bezier(0.1, 0.9, 0.3, 1)';
     wheelContent.style.transform = `rotate(-${totalDegrees}deg)`;
     
     setTimeout(() => {
         wheelContent.style.transition = 'none';
         wheelContent.style.transform = `rotate(-${finalDegrees}deg)`;
+        
+        // Останавливаем звук вращения
+        spinSound.pause();
+        spinSound.currentTime = 0;
         
         // Вычисляем сектор
         let sector = (finalDegrees / 30) + 1;
@@ -156,9 +174,22 @@ betButtons.forEach(button => {
                     moneyDisplay.textContent = currentBalance;
                 }
                 
+                // Воспроизводим звук выигрыша
+                winSound.currentTime = 0;
+                winSound.play().catch(err => {
+                    console.log('Ошибка воспроизведения звука выигрыша:', err);
+                });
+                
                 console.log(`Выигрыш! Сектор ${sector} (четный). Баланс: ${currentBalance}`);
             } else {
                 // Нечетное - проигрыш: баланс остается прежним
+                
+                // Воспроизводим звук проигрыша
+                loseSound.currentTime = 0;
+                loseSound.play().catch(err => {
+                    console.log('Ошибка воспроизведения звука проигрыша:', err);
+                });
+                
                 console.log(`Проигрыш. Сектор ${sector} (нечетный). Баланс: ${currentBalance}`);
             }
             
