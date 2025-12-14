@@ -26,6 +26,29 @@ wheelContent.style.animation = 'none';
 
 let isSpinning = false;
 
+// Функция для обновления состояния кнопок ставок
+function updateBetButtonsState() {
+    const currentBalance = parseInt(balanceInput.value) || 0;
+    
+    betButtons.forEach(button => {
+        const betText = button.textContent.trim();
+        const betAmount = parseInt(betText);
+        
+        if (isNaN(betAmount) || betAmount <= 0) return;
+        
+        // Блокируем кнопку, если недостаточно средств
+        if (currentBalance < betAmount) {
+            button.style.opacity = '0.5';
+            button.style.pointerEvents = 'none';
+            button.style.cursor = 'not-allowed';
+        } else {
+            button.style.opacity = '1';
+            button.style.pointerEvents = 'auto';
+            button.style.cursor = 'pointer';
+        }
+    });
+}
+
 // Функция для отправки формы
 function saveBalance() {
     if (casinoForm) {
@@ -98,7 +121,7 @@ betButtons.forEach(button => {
         
         // Проверяем, достаточно ли средств
         if (currentBalance < betAmount) {
-            console.log('Недостаточно средств');
+            alert(`Недостаточно средств! Ваш баланс: ${currentBalance}$, ставка: ${betAmount}$`);
             return;
         }
         
@@ -110,6 +133,9 @@ betButtons.forEach(button => {
         if (moneyDisplay) {
             moneyDisplay.textContent = currentBalance;
         }
+        
+        // Обновляем состояние кнопок ставок
+        updateBetButtonsState();
         
         // Сохраняем баланс сразу после ставки
         saveBalance();
@@ -136,10 +162,18 @@ betButtons.forEach(button => {
                 console.log(`Проигрыш. Сектор ${sector} (нечетный). Баланс: ${currentBalance}`);
             }
             
+            // Обновляем состояние кнопок ставок после изменения баланса
+            updateBetButtonsState();
+            
             // Сохраняем баланс после завершения игры
             saveBalance();
             
             isSpinning = false;
         });
     });
+});
+
+// Инициализация состояния кнопок при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    updateBetButtonsState();
 });
