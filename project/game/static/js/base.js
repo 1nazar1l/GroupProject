@@ -204,3 +204,20 @@ document.addEventListener('click', () => {
         clickSound.play().catch(console.error);
     }
 });
+
+// Обработчик изменения размера экрана
+function handleScreenSize() {
+    const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+    
+    if (screenWidth < 1200) {
+        document.body.classList.add('screen_is_small');
+    } else {
+        document.body.classList.remove('screen_is_small');
+    }
+}
+
+// Вызываем при загрузке страницы
+window.addEventListener('load', handleScreenSize);
+
+// Вызываем при изменении размера окна
+window.addEventListener('resize', handleScreenSize);

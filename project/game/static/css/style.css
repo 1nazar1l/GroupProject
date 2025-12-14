@@ -42,6 +42,30 @@ body {
     background-color: #94A3B8;
 }
 
+body.screen_is_small > * {
+    pointer-events: none;
+    cursor: none;
+    display: none;
+}
+
+body.screen_is_small::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "Игра сделана только для компьютеров и ноутбуков!!!";
+    background-color: rgb(127, 229, 255);
+    color: #E2E8F0;
+    font-size: 3rem;
+    word-wrap: break-word;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 /* Добавь в CSS */
 .image-container {
     position: relative;
