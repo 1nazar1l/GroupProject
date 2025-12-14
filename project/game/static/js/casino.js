@@ -13,6 +13,18 @@ const triangle = document.querySelector('.triangle')
 const wheel = document.querySelector('.wheel')
 const betValues = document.querySelector('.bet-values')
 
+pauseBtn.addEventListener('click', () => {
+    triangle.classList.add('brightness')
+    wheel.classList.add('brightness')
+    betValues.classList.add('brightness')
+})
+
+continueMenuBtn.addEventListener('click', () => {
+    triangle.classList.remove('brightness')
+    wheel.classList.remove('brightness')
+    betValues.classList.remove('brightness')
+})
+
 minimapIcon.addEventListener('click', () => {
     triangle.classList.toggle('brightness')
     wheel.classList.toggle('brightness')

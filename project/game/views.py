@@ -25,12 +25,23 @@ def start_game(request):
         "saves": saves,
     })
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+
 def create_account(request):
     if request.POST:
         username = request.POST.get("username")
         password = request.POST.get("password")
-
+        
         User = get_user_model()
+        
+        # Проверяем, существует ли пользователь с таким именем
+        if User.objects.filter(username=username).exists():
+            # Можно вернуть ошибку или перенаправить с сообщением
+            return redirect("start_game")  # с сообщением об ошибке
+        
+        # Создаем пользователя только если username уникален
         user = User.objects.create_user(
             username=username,
             password=password,
@@ -44,7 +55,7 @@ def create_account(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-        
+    
     return redirect("start_game")
 
 def auth_account(request):
@@ -60,7 +71,7 @@ def auth_account(request):
 
 def sign_out(request):
     logout(request)
-    return redirect("mainPage")
+    return redirect("start_game")
 
 def create_save(request):
     User = get_user_model()
