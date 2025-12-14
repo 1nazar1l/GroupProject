@@ -20,6 +20,11 @@ const ordersBlock = document.querySelector('.orders-block')
 
 const timeSpeed = 333
 
+// Звуки
+const doorbellSound = new Audio('../../media/sfx/doorbell.mp3');
+const paymentFailureSound = new Audio('../../media/sfx/payment_failur.mp3');
+const cashBoxSound = new Audio('../../media/sfx/cash_box.mp3');
+
 tabletIcon.addEventListener('click', () => {
     clock.classList.toggle('brightness')
     ordersBlock.classList.toggle('brightness')
@@ -330,6 +335,12 @@ function checkPeoplesArrivalSimple(currentTime) {
             if (person.time === currentTime && !person.hasVisited && !person.isActive) {
                 person.isActive = true;
                 todayPeoples++;
+                
+                // Воспроизводим звук появления покупателя
+                doorbellSound.currentTime = 0;
+                doorbellSound.play().catch(err => {
+                    console.log('Ошибка воспроизведения звука дверного звонка:', err);
+                });
                 
                 console.log(`⚠️ Покупатель прибыл! Имя: ${person.name}, Время: ${person.time}`);
                 console.log(`Осталось покупателей сегодня: ${maxPeoplesPerDay - todayPeoples}`);
@@ -664,12 +675,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCorrect = isOrderCorrectForCustomer(orderItems, customer);
 
             if (!isCorrect) {
+                // Воспроизводим звук неправильного заказа
+                paymentFailureSound.currentTime = 0;
+                paymentFailureSound.play().catch(err => {
+                    console.log('Ошибка воспроизведения звука ошибки оплаты:', err);
+                });
+                
                 console.log('Неправильный заказ, покупатель остается в магазине');
                 return;
             }
 
             const result = markPeopleAsServed(peopleId);
             if (result.success) {
+                // Воспроизводим звук успешной оплаты
+                cashBoxSound.currentTime = 0;
+                cashBoxSound.play().catch(err => {
+                    console.log('Ошибка воспроизведения звука кассы:', err);
+                });
+                
                 // Обновляем деньги на экране
                 const moneyEl = document.querySelector('.money');
                 if (moneyEl) {
