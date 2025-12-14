@@ -263,16 +263,16 @@ input::placeholder {
 
 
 .money-info img {
-    width: 500px;
+    width: 300px;
     opacity: 0.9;
 }
 
 .money-info .money {
     position: absolute;
-    left: 25%;
+    left: 39%;
     top: 19%;
     color: #e5d0ba;
-    font-size: 4rem;
+    font-size: 3.5rem;
     line-height: 4rem;
 }
 
