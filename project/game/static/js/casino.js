@@ -15,3 +15,32 @@ casinoArea.addEventListener('click', () => {
     moneyInfo.classList.remove('brightness')
     pauseBtn.classList.remove('brightness')
 })
+
+const wheelContent = document.querySelector('.wheel-content');
+
+wheelContent.style.animation = 'none';
+
+function spinWheel(finalDegrees) {
+    const spins = 5; 
+    const totalDegrees = (spins * 360) + finalDegrees;
+
+    wheelContent.style.transition = 'transform 10s cubic-bezier(0.1, 0.9, 0.3, 1)';
+    wheelContent.style.transform = `rotate(-${totalDegrees}deg)`;
+    
+    setTimeout(() => {
+        wheelContent.style.transition = 'none';
+        wheelContent.style.transform = `rotate(-${finalDegrees}deg)`;
+    }, 10000);
+}
+
+const randomAngle = Math.floor(Math.random() * 360);
+let sector = (randomAngle / 30) + 1
+let sectorRemainder = (sector % 1) * 100
+
+if (sectorRemainder >= 50) {
+    sector += 1
+}
+
+sector = Math.trunc(sector)
+
+spinWheel(randomAngle);
