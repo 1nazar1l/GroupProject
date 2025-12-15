@@ -661,7 +661,6 @@ def get_credit(request):
 
 def repay_credit(request):
     if request.method == 'POST':
-        # Определяем текущий ключ сохранения
         save_key = request.POST.get("save_key") or request.session.get('current_save_key')
         if not save_key:
             return redirect('bank')
@@ -678,7 +677,6 @@ def repay_credit(request):
         total_to_pay = int(credit.get("total_to_pay", 0))
 
         if total_to_pay <= 0:
-            # Нет долга — сбрасываем структуру
             credit = {
                 "has_credit": False,
                 "amount": 0,
@@ -686,11 +684,26 @@ def repay_credit(request):
                 "multiplier": 0,
                 "total_to_pay": 0
             }
+
+            messages = save_data.get("messages", {})
+            if messages == {}:
+                new_message_key = "1"
+            else:
+                messages_keys = list(messages.keys())
+                new_message_key = str(int(messages_keys[-1]) + 1)
+
+            messages[new_message_key] = {
+                "type": "pay_credit",
+                "info": [
+                    f"Поздравляю с погашением кредита!!!",
+                    f"Оплачено {total_to_pay}",
+                    f"День: {save_data["day"]}",
+                ]
+            }
+            save_data["messages"] = messages
         else:
-            # Сумма, которую можем заплатить, оставляя 1 единицу денег
             pay_amount = max(0, capital - 1)
 
-            # Если можем погасить полностью
             if pay_amount >= total_to_pay:
                 capital -= total_to_pay
                 credit = {
@@ -700,8 +713,23 @@ def repay_credit(request):
                     "multiplier": 0,
                     "total_to_pay": 0
                 }
+                messages = save_data.get("messages", {})
+                if messages == {}:
+                    new_message_key = "1"
+                else:
+                    messages_keys = list(messages.keys())
+                    new_message_key = str(int(messages_keys[-1]) + 1)
+
+                messages[new_message_key] = {
+                    "type": "pay_credit",
+                    "info": [
+                        f"Поздравляю с погашением кредита!!!",
+                        f"Оплачено {total_to_pay}",
+                        f"День: {save_data["day"]}",
+                    ]
+                }
+                save_data["messages"] = messages
             else:
-                # Частичное погашение
                 total_to_pay -= pay_amount
                 capital = max(1, capital - pay_amount)
                 credit["total_to_pay"] = total_to_pay
