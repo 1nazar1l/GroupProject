@@ -85,6 +85,14 @@ def create_save(request):
             "capital": 500,
             "max_markup_percentage": 68,
             "max_product": 10,
+            "max_credit": 300,
+            "credit": {
+                "has_credit": False,
+                "amount": 0,
+                "days": 0,
+                "multiplier": 0,
+                "total_to_pay": 0
+            },
             "inventory": {},
             "messages": {},
             "bet_values": []
@@ -115,6 +123,7 @@ def next_tier(request):
         save_data["capital"] = money
         max_markup_percentage = 68
         max_product = 10
+        max_credit = 300
 
         current_tier = 0
 
@@ -125,30 +134,36 @@ def next_tier(request):
                 current_tier = 1
                 max_markup_percentage = 68
                 max_product = 10
+                max_credit = 300
             case "tier2_5":
                 current_tier = 3
                 max_markup_percentage = 75
                 max_product = 12
                 bet_values = [20, 50, 60, 85, 100, 110]
+                max_credit = 800
             case "tier3":
                 current_tier = 3
                 max_markup_percentage = 75
                 max_product = 12
                 bet_values = [20, 50, 60, 85, 100, 110]
+                max_credit = 800
             case "tier4":
                 current_tier = 4
                 max_markup_percentage = 89
                 max_product = 13
                 bet_values = [70, 110, 130, 160, 180, 210]
+                max_credit = 2000
             case "tier6":
                 current_tier = 6
                 max_markup_percentage = 100
                 max_product = 15
                 bet_values = [100, 150, 200, 250, 300, 400]
+                max_credit = 5000
         
         save_data["max_markup_percentage"] = max_markup_percentage
         save_data["max_product"] = max_product
         save_data["bet_values"] = bet_values
+        save_data["max_credit"] = max_credit
 
         new_products_count = 0
         if current_tier != 0:
@@ -174,7 +189,7 @@ def next_tier(request):
         if current_tier != 0:
             info_block = [
                 f"Поздравляю с переходом на новый уровень!!!",
-                f"Максимальная ставка в казино увеличина!",
+                f"Максимальная ставка в казино увеличена!",
                 f"Доступно новых товаров {new_products_count}",
                 f"Максимальная наценка для товаров {max_markup_percentage}%",
                 f"Максимальное количество товаров одного вида {max_product}",
@@ -304,9 +319,14 @@ def bank(request):
     if key:
         user = request.user
         save_data = user.saves.get(key, {})
+        max_credit = save_data["max_credit"]
+        credit = save_data["credit"]
+
         return render(request, "bank.html", {
             "save": save_data,
-            "save_key": key
+            "save_key": key,
+            "max_credit": max_credit,
+            "credit": credit
         })
     
     return redirect("start_game")
@@ -594,3 +614,47 @@ def casino_reload_page(request):
         "save_key": save_key,
         "current_balance": new_capital
     })
+
+def get_credit(request):
+    if request.method == 'POST':
+        save_key = request.POST.get("save_key")
+        credit_amount = request.POST.get("credit_amount")
+        credit_days = request.POST.get("credit_days")
+
+        try:
+            credit_amount = int(float(credit_amount or 0))
+        except (ValueError, TypeError):
+            credit_amount = 0
+
+        try:
+            credit_days = int(credit_days or 1)
+        except (ValueError, TypeError):
+            credit_days = 1
+
+        # Линейная интерполяция: 1 день => 1.3x, 10 дней => 2x
+        multiplier = 1.3 + (credit_days - 1) * (0.7 / 9)
+
+        user = request.user
+        saves = user.saves
+        save_data = saves.get(save_key, {})
+
+        # Добавляем деньги за счет кредита
+        capital = int(save_data.get("capital", 0))
+        capital += credit_amount
+        save_data["capital"] = capital
+
+        # Сохраняем информацию о кредите (простая структура)
+        save_data["credit"] = {
+            "has_credit": True,
+            "amount": credit_amount,
+            "days": credit_days,
+            "payment_day": save_data["day"] + credit_days,
+            "multiplier": multiplier,
+            "total_to_pay": int(round(credit_amount * multiplier))
+        }
+
+        saves[save_key] = save_data
+        user.saves = saves
+        user.save()
+
+    return redirect('bank')

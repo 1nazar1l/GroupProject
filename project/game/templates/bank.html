@@ -62,6 +62,37 @@
                     </form>
                 </div>
             </div>
+            <div class="credit-block">
+                <form action="{% url "get_credit" %}" method="post" class="get-credit-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="save_key" value="{{ save_key }}">
+                    <input type="hidden" name="credit_amount" id="credit_amount_input" value="0">
+                    <input type="hidden" name="credit_days" id="credit_days_input" value="1">
+                    <div class="credit-content">
+                        <label>
+                            <span>Выберите сумму кредита</span>
+                            <input id="credit_amount_range" type="range" min="0" max="{{max_credit}}" step="10" value="0">
+                        </label>
+                        <div>
+                            <span>Сумма кредита: </span><span class="credit_sum" id="credit_sum">0</span>
+                        </div>
+                        <div>
+                            <span>Процент кредита: </span><span class="credit_procent" id="credit_percent">0%</span>
+                        </div>
+                        <div>
+                            <span>Итог к возврату: </span><span class="credit_total" id="credit_total">0</span>
+                        </div>
+                        <label>
+                            <span>Дней на погашение кредита</span>
+                            <input id="credit_days_range" type="range" min="1" max="10" step="1" value="1">
+                        </label>
+                        <div>
+                            <span>Дней: </span><span class="credit_days" id="credit_days">1</span>
+                        </div>
+                        <button type="submit">Оформить кредит</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
