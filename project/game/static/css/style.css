@@ -71,12 +71,10 @@ body.screen_is_small::before {
     align-items: center;
     justify-content: center;
     background-color: #d3884a;
-    /* font-size: 2.7rem; */
     border-radius: 20px;
     color: #f8be6e;
     -webkit-text-stroke: 1px #965d2f;
     cursor: pointer;
-    /* padding: 15px 40px; */
     border: none;
     transition: all .3s ease;
 }
@@ -85,7 +83,6 @@ body.screen_is_small::before {
     background-color: #c97c3e;
 }
 
-/* Добавь в CSS */
 .image-container {
     position: relative;
     width: 100vw;
@@ -96,7 +93,7 @@ body.screen_is_small::before {
 .background {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* или contain в зависимости от нужного поведения */
+    object-fit: cover;
 }
 
 .content {
@@ -138,7 +135,6 @@ section.screen .content {
     left: 50%;
     transform: translateX(-50%);
     background-size: contain;
-    /* aspect-ratio: 16 / 9; */
 }
 
 .main-menu {
@@ -289,11 +285,11 @@ section.screen .content {
 
 .pause-menu {
     width: 20%;
-    display: none; /* Скрыто по умолчанию */
+    display: none; 
 }
 
 .pause-menu.active {
-    display: flex; /* Показываем когда активно */
+    display: flex;
 }
 
 .pause-menu .btn {
@@ -383,124 +379,13 @@ input::placeholder {
     font-size: 4rem;
     line-height: 4rem;
 }
-/* 
-.create-save-menu {
-    display: none;
-}
 
-.create-save-menu.active {
-    display: flex;
-}
-
-.create-save-menu #create_save_form {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.save-block{
-    border-radius: 20px;
-    border: 5px solid #d9834f;
-    background-color: #f6b763;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    transition: all .3s ease;
-}
-
-.choose-save-menu {
-    cursor: pointer;
-    display: none;
-}
-
-.choose-save-block {
-    width: 100%;
-    height: fit-content;
-}
-
-.choose-save {
-    gap: 10px;
-    border-radius: 20px;
-    border: 5px solid #d9834f;
-    background-color: #f6b763;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    transition: all .3s ease;
-    position: relative;
-}
-
-.choose-save .choose-save-btn {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 0;
-}
-
-.choose-save .username {
-    font-size: 3rem;
-    color: #f8be6e;
-    margin: 20px;
-    background-color: #965d2f;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.choose-save-menu.active {
-    display: flex;
-}
-
-.saves-block {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.save-block:hover {
-    transform: scale(1.05);
-}
-
-.choose-save:hover {
-    transform: scale(1.05);
-}
-
-.cross {
-    position: relative;
-    width: 80%;
-    aspect-ratio: 1 / 1;
-    height: 200px;
-}
-
-.cross span {
-    position: absolute;
-    width: 7px;
-    height: 80%;
-    background-color: #E2E8F0;
-    top: 50%;
-    left: 50%;
-}
-
-.cross span:nth-child(1) {
-    transform: translate(-50%, -50%);
-}
-
-.cross span:nth-child(2) {
-    transform: translate(-50%, -50%) rotate(90deg);
-} */
-
-/* Основной контейнер меню выбора сохранения */
 .choose-save-menu {
     display: none;
     flex-direction: column;
     align-items: center;
     gap: 50px;
     width: 100%;
-    /* padding: 40px 20px; */
 }
 
 .choose-save-menu.active {
@@ -508,21 +393,18 @@ input::placeholder {
     width: fit-content;
 }
 
-/* Контейнер для всех сохранений */
 .saves-block {
     display: flex;
     justify-content: center;
     gap: 50px;
 }
 
-/* Блок с кнопкой "Назад" */
 .choose-save-menu .exit.btn {
     padding: 15px 60px;
     font-size: 3rem;
     min-width: 250px;
 }
 
-/* Контейнер для каждого сохранения */
 .choose-save-block {
     display: flex;
     flex-direction: column;
@@ -530,7 +412,6 @@ input::placeholder {
     width: 300px;
 }
 
-/* Карточка сохранения */
 .choose-save {
     border-radius: 20px;
     border: 5px solid #d9834f;
@@ -549,7 +430,6 @@ input::placeholder {
     transform: scale(1.05);
 }
 
-/* Невидимая кнопка поверх всей карточки */
 .choose-save-btn {
     position: absolute;
     width: 100%;
@@ -561,7 +441,6 @@ input::placeholder {
     z-index: 2;
 }
 
-/* Имя пользователя в карточке */
 .choose-save .username {
     font-size: 3rem;
     color: #f8be6e;
@@ -577,7 +456,6 @@ input::placeholder {
     z-index: 1;
 }
 
-/* Кнопка удаления сохранения */
 .delete-save-btn {
     padding: 15px 0;
     font-size: 2.5rem;
@@ -586,7 +464,6 @@ input::placeholder {
     cursor: pointer;
 }
 
-/* Блок для создания нового сохранения */
 .save-block.create-save {
     border-radius: 20px;
     border: 5px solid #d9834f;
@@ -604,7 +481,6 @@ input::placeholder {
     transform: scale(1.05);
 }
 
-/* Плюсик для создания нового сохранения */
 .cross {
     position: relative;
     width: 120px;
@@ -633,14 +509,12 @@ input::placeholder {
     transform: translateX(-50%);
 }
 
-/* Стили для меню создания сохранения */
 .create-save-menu {
     display: none;
     flex-direction: column;
     align-items: center;
     gap: 50px;
     width: 100%;
-    /* padding: 40px 20px; */
 }
 
 .create-save-menu.active {
@@ -1014,7 +888,6 @@ input::placeholder {
     transform: translate(-50%, -50%);
     width: 58%;
     opacity: 0.7;
-    /* aspect-ratio: 1 / 1; */
     z-index: 1;
 }
 
@@ -1049,7 +922,6 @@ input::placeholder {
     left: 50%;
     bottom: 50%;
     height: 100%;
-    /* aspect-ratio: inherit; */
     transform: translate(-50%, 50%);
     z-index: 5;
     pointer-events: all;
@@ -1276,7 +1148,7 @@ input::placeholder {
 }
 
 .product .add-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
 }
 
 .product .remove-button {
@@ -1284,7 +1156,6 @@ input::placeholder {
 }
 
 .product .action-button {
-  /* Basic button styling */
   border: none;
   color: white;
   padding: 15px;
@@ -1294,38 +1165,38 @@ input::placeholder {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 50%; /* Makes it a circle */
-  position: relative; /* Needed for positioning the icon */
-  width: 50px; /* Adjust size as needed */
-  height: 50px; /* Adjust size as needed */
+  border-radius: 50%; 
+  position: relative; 
+  width: 50px; 
+  height: 50px;
 }
 
 .plus-icon {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the icon */
-  width: 20px; /* Width of the plus lines */
-  height: 20px; /* Height of the plus lines */
+  transform: translate(-50%, -50%); 
+  width: 20px; 
+  height: 20px;
 }
 
 .plus-icon::before,
 .plus-icon::after {
   content: '';
   position: absolute;
-  background-color: white; /* Color of the plus lines */
+  background-color: white;
 }
 
 .plus-icon::before {
   width: 100%;
-  height: 2px; /* Thickness of the horizontal line */
+  height: 2px;
   top: 50%;
   left: 0;
   transform: translateY(-50%);
 }
 
 .plus-icon::after {
-  width: 2px; /* Thickness of the vertical line */
+  width: 2px;
   height: 100%;
   top: 0;
   left: 50%;
@@ -1336,21 +1207,21 @@ input::placeholder {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the icon */
-  width: 20px; /* Width of the plus lines */
-  height: 20px; /* Height of the plus lines */
+  transform: translate(-50%, -50%); 
+  width: 20px; 
+  height: 20px; 
 }
 
 .minus-icon::before,
 .minus-icon::after {
   content: '';
   position: absolute;
-  background-color: white; /* Color of the plus lines */
+  background-color: white; 
 }
 
 .minus-icon::before {
   width: 100%;
-  height: 2px; /* Thickness of the horizontal line */
+  height: 2px; 
   top: 50%;
   left: 0;
   transform: translateY(-50%);
@@ -1858,20 +1729,6 @@ input::placeholder {
     height: 100%;
 }
 
-/* .wheel-content .circle {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 52%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background-color: green;
-    opacity: 0.5;
-    z-index: 40;
-    content: "";
-} */
-
 .bet-values {
     position: absolute;
     width: 350px;
@@ -1997,7 +1854,6 @@ input::placeholder {
     height: 100%;
 }
 
-/* Стили для формы возврата кредита */
 .credit-block form {
     padding: 20px;
     display: flex;
@@ -2031,12 +1887,6 @@ input::placeholder {
     margin-right: 10px;
 }
 
-/* .credit-block div span:last-child {
-    font-weight: normal;
-    color: #555;
-} */
-
-/* Кнопки */
 .credit-block button[type="submit"] {
     margin-top: auto;
     padding: 12px 24px;
@@ -2063,7 +1913,6 @@ input::placeholder {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Стили для формы получения кредита */
 .get-credit-form .credit-content {
     display: flex;
     flex-direction: column;
@@ -2084,7 +1933,6 @@ input::placeholder {
     font-size: 1rem;
 }
 
-/* Стилизация range input */
 .get-credit-form input[type="range"] {
     width: 100%;
     height: 6px;
@@ -2113,7 +1961,6 @@ input::placeholder {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Информационные блоки в форме кредита */
 .get-credit-form .credit-content > div {
     display: flex;
     justify-content: space-between;
@@ -2166,12 +2013,10 @@ input::placeholder {
     color: #9C27B0;
 }
 
-/* Стили для скрытых полей */
 .get-credit-form input[type="hidden"] {
     display: none;
 }
 
-/* Прокрутка для длинного контента */
 .get-credit-form .credit-content::-webkit-scrollbar {
     width: 6px;
 }
