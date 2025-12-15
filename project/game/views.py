@@ -1,11 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.utils.text import slugify
 import json
 import ast
-import os
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
@@ -36,12 +32,9 @@ def create_account(request):
         
         User = get_user_model()
         
-        # Проверяем, существует ли пользователь с таким именем
         if User.objects.filter(username=username).exists():
-            # Можно вернуть ошибку или перенаправить с сообщением
-            return redirect("start_game")  # с сообщением об ошибке
+            return redirect("start_game")  
         
-        # Создаем пользователя только если username уникален
         user = User.objects.create_user(
             username=username,
             password=password,
@@ -204,15 +197,12 @@ def next_tier(request):
                 "info": info_block
             }
 
-
-        # Сохраняем обновленный инвентарь
         save_data["messages"] = messages
         user.save()
         
-        # Сохраняем ключ в сессии для game view
         request.session['current_save_key'] = key
         
-        return redirect('game')  # Редирект на game view
+        return redirect('game')  
     
     return redirect("start_game")
 
@@ -350,7 +340,6 @@ def process_order(request):
 
         products_to_order = ProductToOrder.objects.all()
         
-        # Получаем массивы товаров
         product_ids = request.POST.getlist('product_id[]')
         product_counts = request.POST.getlist('product_count[]')
         save_key = request.POST.get('save_key')
@@ -402,7 +391,6 @@ def update_prices(request):
                         base_price = float(base_product.price)
                         user_price = float(value)
         
-                        # Рассчитываем наценку в процентах
                         if user_price > 0 and base_price > 0:
                             markup_percentage = ((user_price - base_price) / base_price) * 100
                             inventory[product_key]['markup_percentage'] = int(markup_percentage)
@@ -434,24 +422,20 @@ def gameplay(request):
         
         for item_key, product in inventory.items():
             try:
-                # Получаем базовую цену товара из справочника
                 base_product = products_to_order.get(icon_name=item_key)
                 base_price = float(base_product.price)
                 user_price = float(product.get("price", 0))
                 
-                # Рассчитываем наценку в процентах
                 if user_price >= 0 and base_price >= 0:
                     markup_percentage = ((user_price - base_price) / base_price) * 100
                     
                     if markup_percentage <= max_markup_percentage:
-                        # Добавляем рассчитанную наценку в данные товара
                         product_with_markup = product.copy()
                         product_with_markup["markup_percentage"] = round(markup_percentage, 2)
                         product_with_markup["base_price"] = base_price
                         filtered_products[item_key] = product_with_markup
                         
             except (ProductToOrder.DoesNotExist, ValueError, TypeError):
-                # Пропускаем товары с ошибками
                 continue
         
         tier = save_data.get("shop")
@@ -536,7 +520,7 @@ def end_day(request):
                 product_keys = list(parsed.keys())
 
         user = request.user
-        saves = user.saves  # Если это dict
+        saves = user.saves  
         save_data = saves.get(save_key, {})
         capital = int(save_data["capital"])
         capital += money_earned
@@ -546,18 +530,15 @@ def end_day(request):
         day += 1
         save_data["day"] = day
         inventory = save_data.get("inventory", {})
-        # Обновляем количество товаров
         products_sold = 0
         for item_key, product in inventory.items():
             if item_key in product_keys:
                 try:
-                    # Получаем новое количество из POST
                     new_product_count = int(request.POST.get(item_key, product.get("count", 0)))
                     products_sold += product["count"] - new_product_count
 
                     product["count"] = new_product_count
                 except (ValueError, TypeError):
-                    # Если что-то пошло не так, оставляем текущее значение
                     pass
         
 
@@ -579,15 +560,13 @@ def end_day(request):
             ]
         }
 
-        # Проверяем кредит: если срок погашения наступил сегодня — списываем долг
         credit = save_data.get("credit", {})
         if credit.get("has_credit"):
             payment_day = int(credit.get("payment_day", 0))
             if day == payment_day:
                 debt = int(credit.get("total_to_pay", 0))
-                capital -= debt  # допускаем уход в минус
+                capital -= debt  
                 save_data["capital"] = capital
-                # сбрасываем кредит в дефолт
                 save_data["credit"] = {
                     "has_credit": False,
                     "amount": 0,
@@ -595,7 +574,6 @@ def end_day(request):
                     "multiplier": 0,
                     "total_to_pay": 0
                 }
-                # фиксируем сообщение о списании
                 messages_keys = list(messages.keys())
                 credit_msg_key = "1" if messages_keys == [] else str(int(messages_keys[-1]) + 1)
                 messages[credit_msg_key] = {
@@ -607,17 +585,13 @@ def end_day(request):
                     ]
                 }
 
-        # Сохраняем обновленный инвентарь
         save_data["messages"] = messages
         save_data["inventory"] = inventory
         
-        # Обновляем данные сохранения
         saves[save_key] = save_data
         
-        # Сохраняем обновленные сохранения пользователя
         user.saves = saves
         
-        # Не забываем сохранить объект пользователя
         user.save()
                 
     return redirect("game")
@@ -657,19 +631,16 @@ def get_credit(request):
         except (ValueError, TypeError):
             credit_days = 1
 
-        # Линейная интерполяция: 1 день => 1.3x, 10 дней => 2x
         multiplier = 1.3 + (credit_days - 1) * (0.7 / 9)
 
         user = request.user
         saves = user.saves
         save_data = saves.get(save_key, {})
 
-        # Добавляем деньги за счет кредита
         capital = int(save_data.get("capital", 0))
         capital += credit_amount
         save_data["capital"] = capital
 
-        # Сохраняем информацию о кредите (простая структура)
         save_data["credit"] = {
             "has_credit": True,
             "amount": credit_amount,

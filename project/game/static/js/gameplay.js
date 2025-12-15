@@ -21,7 +21,6 @@ const endDayBlock = document.querySelector('.end-day-block')
 
 const timeSpeed = 333
 
-// Звуки
 const doorbellSound = new Audio('../../media/sfx/doorbell.mp3');
 const paymentFailureSound = new Audio('../../media/sfx/payment_failur.mp3');
 const cashBoxSound = new Audio('../../media/sfx/cash_box.mp3');
@@ -50,23 +49,16 @@ tomainMenuBtn.addEventListener('click', () => {
     endDayBlock.classList.remove('brightness')
 })
 
-// Функция для генерации случайного числа в диапазоне
-// function getRandomIntInclusive(min, max) {
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
 function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min); // Округляет min вверх
-  max = Math.floor(max); // Округляет max вниз
+  min = Math.ceil(min); 
+  max = Math.floor(max); 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Функция для форматирования времени (часы:минуты)
 function formatTime(num) {
     return num < 10 ? '0' + num : num;
 }
 
-// Функция для генерации случайного времени между 9:00 и 21:00
 function generateRandomTime() {
     const hour = getRandomIntInclusive(9, 20);
     const minute = getRandomIntInclusive(0, 59);
@@ -78,7 +70,6 @@ function generateRandomTime() {
     };
 }
 
-// Функция для генерации имен покупателей
 function generatePeopleName(index) {
     const names = [
         "Алексей", "Мария", "Дмитрий", "Анна", "Сергей", 
@@ -91,8 +82,7 @@ function generatePeopleName(index) {
     return names[randomNameIndex];
 }
 
-// Глобальные переменные
-let filteredProducts = window.filteredProducts || {}; // Используем данные из window
+let filteredProducts = window.filteredProducts || {}; 
 let peoples = {};
 let maxPeoplesPerDay = 0;
 let todayPeoples = 0;
@@ -122,7 +112,6 @@ function updateEndDayStats() {
     }
 }
 
-// Уменьшаем значения скрытых полей по проданным товарам
 function updateHiddenInventory(soldItems) {
     if (!Array.isArray(soldItems)) return;
     soldItems.forEach(item => {
@@ -135,23 +124,19 @@ function updateHiddenInventory(soldItems) {
     });
 }
 
-// Функция для получения случайных уникальных элементов из массива
 function getRandomItems(array, count) {
     if (array.length === 0) return [];
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
-// Функция для сортировки покупателей по времени
 function sortPeoplesByTime() {
-    // Сортируем arrivalTimes
     arrivalTimes.sort((a, b) => {
         const [hoursA, minutesA] = a.split(':').map(Number);
         const [hoursB, minutesB] = b.split(':').map(Number);
         return (hoursA * 60 + minutesA) - (hoursB * 60 + minutesB);
     });
     
-    // Сортируем сам объект peoples
     const peoplesArray = Object.entries(peoples);
     peoplesArray.sort((a, b) => {
         const timeA = a[1].hour * 60 + a[1].minute;
@@ -165,12 +150,10 @@ function sortPeoplesByTime() {
     });
 }
 
-// Функция для генерации списка покупок покупателя
 function generatePurchaseList() {
     const items = [];
     let totalCost = 0;
     
-    // Получаем доступные товары (только те, у которых count > 0)
     const availableProducts = Object.keys(filteredProducts).filter(productId => 
         filteredProducts[productId] && 
         filteredProducts[productId].count > 0
@@ -187,23 +170,20 @@ function generatePurchaseList() {
         return { items: [], totalCost: 0 };
     }
     
-    // Определяем сколько товаров купит покупатель (1-4 или меньше)
     const maxItemsToBuy = Math.min(productsByPeople, availableProducts.length);
     const itemsCount = getRandomIntInclusive(1, maxItemsToBuy);
     
     console.log(`Покупатель выберет ${itemsCount} товаров из ${availableProducts.length}`);
     
-    // Выбираем случайные товары (без повторений)
     const selectedProducts = getRandomItems(availableProducts, itemsCount);
     
     console.log('Выбранные товары:', selectedProducts);
     
-    // Для каждого выбранного товара определяем количество
     selectedProducts.forEach(productId => {
         const product = filteredProducts[productId];
         if (!product) return;
         
-        const maxQuantity = Math.min(itemByProduct, product.count || 0); // Не больше 3 и не больше доступного количества
+        const maxQuantity = Math.min(itemByProduct, product.count || 0); 
         
         if (maxQuantity > 0) {
             const quantity = getRandomIntInclusive(1, maxQuantity);
@@ -217,7 +197,6 @@ function generatePurchaseList() {
                 total: itemCost
             });
             
-            // Резервируем товар сразу при раздаче покупателям
             filteredProducts[productId].count -= quantity;
             if (filteredProducts[productId].count <= 0) {
                 delete filteredProducts[productId];
@@ -233,7 +212,6 @@ function generatePurchaseList() {
     return { items, totalCost: Math.round(totalCost * 100) / 100 };
 }
 
-// Функция для генерации покупателей на день
 function generatePeoplesForDay() {
     peoples = {};
     arrivalTimes = [];
@@ -252,9 +230,7 @@ function generatePeoplesForDay() {
     console.log('Текущие доступные товары:', filteredProducts);
     
     for (let i = 1; i <= maxPeoplesPerDay; i++) {
-        // Генерируем список покупок для покупателя
         const purchaseList = generatePurchaseList();
-        // Если покупок нет — отправляем на 23:00 (после закрытия)
         const time = (purchaseList.items && purchaseList.items.length > 0)
             ? generateRandomTime()
             : { hour: 23, minute: 0, formatted: '23:00' };
@@ -279,38 +255,30 @@ function generatePeoplesForDay() {
     return peoples;
 }
 
-// Функция для обновления блока заказов на странице
 function updateOrdersBlock() {
     const ordersBlock = document.querySelector('.orders-block');
     if (!ordersBlock) return;
     
-    // Находим контейнер для заказов (внутри orders-block, после img)
     const existingOrders = ordersBlock.querySelectorAll('.order-block');
     existingOrders.forEach(order => order.remove());
     
-    // Получаем всех активных покупателей
     const activePeoples = Object.keys(peoples).filter(key => 
         peoples[key].isActive && !peoples[key].hasVisited
     );
     
-    // Создаем блоки для каждого активного покупателя
     activePeoples.forEach(key => {
         const person = peoples[key];
         
-        // Создаем блок заказа
         const orderBlock = document.createElement('div');
         orderBlock.className = 'order-block';
         
-        // Создаем имя покупателя
         const buyerName = document.createElement('div');
         buyerName.className = 'buyer-name';
         buyerName.textContent = person.name;
         
-        // Создаем контейнер для товаров
         const buyerProducts = document.createElement('div');
         buyerProducts.className = 'buyer-products';
         
-        // Добавляем товары
         if (person.purchases && person.purchases.length > 0) {
             person.purchases.forEach(purchase => {
                 const buyerProduct = document.createElement('div');
@@ -324,14 +292,12 @@ function updateOrdersBlock() {
             });
         }
         
-        // Собираем блок
         orderBlock.appendChild(buyerName);
         orderBlock.appendChild(buyerProducts);
         ordersBlock.appendChild(orderBlock);
     });
 }
 
-// Функция для проверки, пришел ли покупатель
 function checkPeoplesArrivalSimple(currentTime) {
     if (arrivalTimes.includes(currentTime)) {
         Object.keys(peoples).forEach(key => {
@@ -341,7 +307,6 @@ function checkPeoplesArrivalSimple(currentTime) {
                 person.isActive = true;
                 todayPeoples++;
                 
-                // Воспроизводим звук появления покупателя
                 doorbellSound.currentTime = 0;
                 doorbellSound.play().catch(err => {
                     console.log('Ошибка воспроизведения звука дверного звонка:', err);
@@ -350,7 +315,6 @@ function checkPeoplesArrivalSimple(currentTime) {
                 console.log(`⚠️ Покупатель прибыл! Имя: ${person.name}, Время: ${person.time}`);
                 console.log(`Осталось покупателей сегодня: ${maxPeoplesPerDay - todayPeoples}`);
                 
-                // Показываем информацию о покупках
                 if (person.purchases && person.purchases.length > 0) {
                     console.log('🛒 Список покупок:');
                     person.purchases.forEach((item, index) => {
@@ -361,10 +325,8 @@ function checkPeoplesArrivalSimple(currentTime) {
                     console.log('🛒 Покупатель ничего не хочет покупать');
                 }
                 
-                // Обновляем блок заказов
                 updateOrdersBlock();
                 
-                // Удаляем время из массива
                 const index = arrivalTimes.indexOf(currentTime);
                 if (index > -1) {
                     arrivalTimes.splice(index, 1);
@@ -374,7 +336,6 @@ function checkPeoplesArrivalSimple(currentTime) {
     }
 }
 
-// Получаем id первого активного покупателя
 function getFirstActivePeopleId() {
     const active = Object.keys(peoples).filter(key =>
         peoples[key].isActive && !peoples[key].hasVisited
@@ -382,7 +343,6 @@ function getFirstActivePeopleId() {
     return active.length ? active[0] : null;
 }
 
-// Собираем заказ из планшета (по названиям и количествам)
 function collectTabletOrder() {
     const products = [];
 
@@ -405,11 +365,9 @@ function collectTabletOrder() {
     return products;
 }
 
-// Проверяем соответствие заказа активному покупателю
 function isOrderCorrectForCustomer(orderItems, customer) {
     if (!customer || !Array.isArray(customer.purchases)) return false;
 
-    // Строим карту заказов и ожидаемых покупок по имени
     const orderMap = {};
     orderItems.forEach(item => {
         orderMap[item.name] = (orderMap[item.name] || 0) + item.quantity;
@@ -428,14 +386,12 @@ function isOrderCorrectForCustomer(orderItems, customer) {
     return expectedNames.every(name => orderMap[name] === expectedMap[name]);
 }
 
-// Сбрасываем счетчики заказа
 function resetTabletOrder() {
     document.querySelectorAll('.tablet-order-screen .order-product-count').forEach(counter => {
         counter.textContent = '0';
     });
 }
 
-// Функция для проверки нового дня
 function checkNewDay(currentHour, currentMinute) {
     if (currentHour === 9 && currentMinute === 0 && !hasGeneratedToday) {
         generatePeoplesForDay();
@@ -443,7 +399,7 @@ function checkNewDay(currentHour, currentMinute) {
     }
     
     if (currentHour === 21 && currentMinute === 0) {
-        hasGeneratedToday = false; // готовим к следующему дню при повторном запуске
+        hasGeneratedToday = false; 
     }
     
     if (currentHour === 21) {
@@ -460,12 +416,10 @@ function checkNewDay(currentHour, currentMinute) {
     }
 }
 
-// Функция для обновления количества товаров после покупки
 function updateProductQuantity(productId, quantitySold) {
     if (filteredProducts[productId]) {
         filteredProducts[productId].count -= quantitySold;
         
-        // Если товар закончился, удаляем его из доступных
         if (filteredProducts[productId].count <= 0) {
             delete filteredProducts[productId];
             console.log(`Товар ${productId} закончился`);
@@ -475,7 +429,6 @@ function updateProductQuantity(productId, quantitySold) {
     }
 }
 
-// Функция для обработки покупки покупателя
 function processCustomerPurchase(peopleId) {
     const customer = peoples[peopleId];
     if (!customer || !customer.purchases || customer.purchases.length === 0) {
@@ -498,7 +451,6 @@ function processCustomerPurchase(peopleId) {
     };
 }
 
-// Функция для отметки покупателя как обслуженного
 function markPeopleAsServed(peopleId) {
     if (peoples[peopleId]) {
         const result = processCustomerPurchase(peopleId);
@@ -511,10 +463,8 @@ function markPeopleAsServed(peopleId) {
             console.log(`💰 Продано товаров на сумму: ${result.totalAmount}$`);
             console.log('📦 Проданные товары:', result.soldItems);
             
-            // Обновляем блок заказов
             updateOrdersBlock();
             
-            // Обновляем дневную статистику
             moneyEarnedToday += result.totalAmount;
             peopleServedToday += 1;
             updateEndDayStats();
@@ -529,18 +479,15 @@ function markPeopleAsServed(peopleId) {
     return { success: false, message: "Покупатель не найден" };
 }
 
-// Функция для получения активных покупателей
 function getActivePeoples() {
     return Object.keys(peoples).filter(key => 
         peoples[key].isActive && !peoples[key].hasVisited
     );
 }
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Доступные товары из window:', filteredProducts);
     
-    // Проверяем, есть ли товары с количеством > 0
     const availableProducts = Object.keys(filteredProducts).filter(productId => 
         filteredProducts[productId] && 
         filteredProducts[productId].count > 0
@@ -552,13 +499,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('⚠️ Внимание: Нет доступных товаров для продажи!');
     }
     
-    // Генерируем покупателей на первый день
     generatePeoplesForDay();
     
     let lastCheckedTime = '';
     let checkInterval = null;
     
-    // Функция для проверки времени и покупателей
     function checkTimeAndPeoples() {
         const clockElement = document.querySelector('.clock span');
         if (!clockElement) return;
@@ -573,7 +518,6 @@ document.addEventListener('DOMContentLoaded', function() {
             checkNewDay(currentHour, currentMinute);
             checkPeoplesArrivalSimple(currentTime);
             
-            // Активация конца дня в 21:00
             if (currentHour >= 21 && !endOfDayActivated) {
                 endOfDayActivated = true;
                 const endDayBlock = document.querySelector('.end-day-block');
@@ -581,7 +525,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     endDayBlock.classList.add('active');
                 }
                 
-                // Увеличиваем длительность игровой минуты до 1000 мс после 21:00
                 if (checkInterval) {
                     clearInterval(checkInterval);
                 }
@@ -596,13 +539,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 arrivalTimes = [];
-                // Обновляем блок заказов
                 updateOrdersBlock();
             }
         }
     }
     
-    // Запускаем проверку покупателей
     function startCustomerChecker() {
         if (!checkInterval) {
             // ТУТ МЕНЯТЬ СКОРОСТЬ ВРЕМЕНИ
@@ -611,7 +552,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Останавливаем проверку
     function stopCustomerChecker() {
         if (checkInterval) {
             clearInterval(checkInterval);
@@ -620,10 +560,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Запускаем проверку
     startCustomerChecker();
     
-    // Быстрая проверка после загрузки
     setTimeout(function() {
         const clockElement = document.querySelector('.clock span');
         if (clockElement) {
@@ -634,7 +572,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✅ Система покупателей инициализирована');
 
-    // Привязка кнопок увеличения/уменьшения товаров (каптчур, чтобы не задвоить обработчики из tablet.js)
     const tabletOrderScreen = document.querySelector('.tablet-order-screen');
     if (tabletOrderScreen) {
         tabletOrderScreen.addEventListener('click', function(event) {
@@ -659,7 +596,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, true);
     }
 
-    // Кнопка "Отдать" — проверка заказа с активным покупателем
     const completeOrderBtn = document.querySelector('.complete-order-btn');
     if (completeOrderBtn) {
         completeOrderBtn.addEventListener('click', function() {
@@ -680,7 +616,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCorrect = isOrderCorrectForCustomer(orderItems, customer);
 
             if (!isCorrect) {
-                // Воспроизводим звук неправильного заказа
                 paymentFailureSound.currentTime = 0;
                 paymentFailureSound.play().catch(err => {
                     console.log('Ошибка воспроизведения звука ошибки оплаты:', err);
@@ -692,13 +627,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const result = markPeopleAsServed(peopleId);
             if (result.success) {
-                // Воспроизводим звук успешной оплаты
                 cashBoxSound.currentTime = 0;
                 cashBoxSound.play().catch(err => {
                     console.log('Ошибка воспроизведения звука кассы:', err);
                 });
                 
-                // Обновляем деньги на экране
                 const moneyEl = document.querySelector('.money');
                 if (moneyEl) {
                     const currentMoney = parseFloat((moneyEl.textContent || moneyEl.innerText || '0').replace(/\s/g, '')) || 0;

@@ -52,15 +52,12 @@ wheelContent.style.animation = 'none';
 
 let isSpinning = false;
 
-// Звуки
 const spinSound = new Audio('../../media/sfx/circle-spin.mp3');
 const winSound = new Audio('../../media/sfx/win.mp3');
 const loseSound = new Audio('../../media/sfx/lose.mp3');
 
-// Настройка звуков
-spinSound.loop = true; // Звук вращения должен зацикливаться
+spinSound.loop = true;
 
-// Функция для обновления состояния кнопок ставок
 function updateBetButtonsState() {
     const currentBalance = parseInt(balanceInput.value) || 0;
     
@@ -70,7 +67,6 @@ function updateBetButtonsState() {
         
         if (isNaN(betAmount) || betAmount <= 0) return;
         
-        // Блокируем кнопку, если недостаточно средств
         if (currentBalance < betAmount) {
             button.style.opacity = '0.5';
             button.style.pointerEvents = 'none';
@@ -83,32 +79,26 @@ function updateBetButtonsState() {
     });
 }
 
-// Функция для отправки формы
 function saveBalance() {
     if (casinoForm) {
         const formData = new FormData(casinoForm);
         const url = casinoForm.action;
         
-        // Используем navigator.sendBeacon для надежной отправки
-        // Это гарантирует отправку даже при закрытии страницы
         if (navigator.sendBeacon) {
             const data = new URLSearchParams();
             for (const [key, value] of formData.entries()) {
                 data.append(key, value);
             }
-            // Отправляем как Blob для поддержки POST
             const blob = new Blob([data.toString()], { type: 'application/x-www-form-urlencoded' });
             navigator.sendBeacon(url, blob);
         } else {
-            // Fallback для старых браузеров - используем синхронный XMLHttpRequest
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', url, false); // false = синхронный запрос
+            xhr.open('POST', url, false); 
             xhr.send(formData);
         }
     }
 }
 
-// Отправка формы при обновлении страницы
 window.addEventListener('beforeunload', function(e) {
     saveBalance();
 });
@@ -117,7 +107,6 @@ function spinWheel(finalDegrees, callback) {
     const spins = 5; 
     const totalDegrees = (spins * 360) + finalDegrees;
 
-    // Запускаем звук вращения
     spinSound.currentTime = 0;
     spinSound.play().catch(err => {
         console.log('Ошибка воспроизведения звука вращения:', err);
@@ -130,11 +119,9 @@ function spinWheel(finalDegrees, callback) {
         wheelContent.style.transition = 'none';
         wheelContent.style.transform = `rotate(-${finalDegrees}deg)`;
         
-        // Останавливаем звук вращения
         spinSound.pause();
         spinSound.currentTime = 0;
         
-        // Вычисляем сектор
         let sector = (finalDegrees / 30) + 1;
         let sectorRemainder = (sector % 1) * 100;
         
@@ -150,57 +137,44 @@ function spinWheel(finalDegrees, callback) {
     }, 10000);
 }
 
-// Обработчики для кнопок ставок
 betButtons.forEach(button => {
     button.addEventListener('click', function() {
-        if (isSpinning) return; // Предотвращаем повторные клики во время вращения
+        if (isSpinning) return; 
         
         const betText = this.textContent.trim();
         const betAmount = parseInt(betText);
         
         if (isNaN(betAmount) || betAmount <= 0) return;
         
-        // Получаем текущий баланс
         let currentBalance = parseInt(balanceInput.value) || 0;
         
-        // Проверяем, достаточно ли средств
         if (currentBalance < betAmount) {
             alert(`Недостаточно средств! Ваш баланс: ${currentBalance}$, ставка: ${betAmount}$`);
             return;
         }
         
-        // Уменьшаем баланс на ставку
         currentBalance -= betAmount;
         balanceInput.value = currentBalance;
         
-        // Обновляем отображение денег на странице
         if (moneyDisplay) {
             moneyDisplay.textContent = currentBalance;
         }
         
-        // Обновляем состояние кнопок ставок
         updateBetButtonsState();
-        
-        // Сохраняем баланс сразу после ставки
         saveBalance();
         
-        // Запускаем вращение
         isSpinning = true;
         const randomAngle = Math.floor(Math.random() * 360);
         
         spinWheel(randomAngle, function(sector) {
-            // После завершения вращения проверяем четность сектора
             if (sector % 2 === 0) {
-                // Четное - выигрыш: увеличиваем баланс на удвоенную ставку
                 currentBalance += betAmount * 2;
                 balanceInput.value = currentBalance;
                 
-                // Обновляем отображение денег на странице
                 if (moneyDisplay) {
                     moneyDisplay.textContent = currentBalance;
                 }
                 
-                // Воспроизводим звук выигрыша
                 winSound.currentTime = 0;
                 winSound.play().catch(err => {
                     console.log('Ошибка воспроизведения звука выигрыша:', err);
@@ -208,9 +182,6 @@ betButtons.forEach(button => {
                 
                 console.log(`Выигрыш! Сектор ${sector} (четный). Баланс: ${currentBalance}`);
             } else {
-                // Нечетное - проигрыш: баланс остается прежним
-                
-                // Воспроизводим звук проигрыша
                 loseSound.currentTime = 0;
                 loseSound.play().catch(err => {
                     console.log('Ошибка воспроизведения звука проигрыша:', err);
@@ -219,10 +190,7 @@ betButtons.forEach(button => {
                 console.log(`Проигрыш. Сектор ${sector} (нечетный). Баланс: ${currentBalance}`);
             }
             
-            // Обновляем состояние кнопок ставок после изменения баланса
             updateBetButtonsState();
-            
-            // Сохраняем баланс после завершения игры
             saveBalance();
             
             isSpinning = false;
@@ -230,7 +198,6 @@ betButtons.forEach(button => {
     });
 });
 
-// Инициализация состояния кнопок при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     updateBetButtonsState();
 });

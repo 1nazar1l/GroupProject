@@ -37,10 +37,8 @@ function updateClock() {
     
     clockElement.textContent = `${formatTime(newHours)}:${formatTime(newMinutes)}`;
     
-    // Проверяем и обновляем фон при изменении времени
     updateBackground(newHours);
 
-    // После 21:00 замедляем скорость до 1000 мс за минуту (однократно)
     if (newHours >= 21 && !clockAfter21Activated) {
         clockAfter21Activated = true;
         setClockInterval(clockIntervalAfter21);
@@ -53,7 +51,6 @@ function updateBackground(hours) {
     
     const currentSrc = backgroundElement.src;
     
-    // Определяем время суток
     let timeOfDay = '';
     if (hours >= 21 || hours < 6) {
         timeOfDay = '-evening';
@@ -63,7 +60,6 @@ function updateBackground(hours) {
         timeOfDay = '-morning';
     }
     
-    // Универсальная замена для любых расширений изображений
     const basePath = currentSrc.replace(/(-morning|-evening)?(\.[a-zA-Z]+)$/, '');
     const extension = currentSrc.match(/\.[a-zA-Z]+$/)?.[0] || '.jpg';
     const newSrc = basePath + timeOfDay + extension;
@@ -73,7 +69,6 @@ function updateBackground(hours) {
     }
 }
 
-// Функция запуска часов
 function startClock() {
     if (!clockInterval) {
         setClockInterval(clockIntervalMs);
@@ -82,7 +77,6 @@ function startClock() {
     }
 }
 
-// Функция остановки часов
 function stopClock() {
     if (clockInterval) {
         clearInterval(clockInterval);
@@ -92,7 +86,6 @@ function stopClock() {
     }
 }
 
-// Функция переключения паузы
 function toggleClockPause() {
     if (isClockPaused) {
         startClock();
@@ -101,39 +94,31 @@ function toggleClockPause() {
     }
 }
 
-// Функция возобновления часов
 function resumeClock() {
-    // Если часы остановлены, запускаем их
     if (isClockPaused) {
         startClock();
     }
-    // Если часы уже работают, ничего не делаем
 }
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     const clockElement = document.querySelector('.clock span');
     if (clockElement && clockElement.textContent.trim() === '') {
         clockElement.textContent = '09:00';
     }
     
-    // Устанавливаем начальный фон
     const clockSpan = document.querySelector('.clock span');
     if (clockSpan) {
         const [hours] = clockSpan.textContent.split(':').map(Number);
         updateBackground(hours);
     }
     
-    // Запускаем часы
     startClock();
     
-    // Добавляем обработчик кнопки паузы
     const pauseBtn = document.querySelector('.pause-btn');
     if (pauseBtn) {
         pauseBtn.addEventListener('click', toggleClockPause);
     }
     
-    // Добавляем обработчик кнопки продолжения
     const continueMenuBtn = document.querySelector('.continue-btn');
     if (continueMenuBtn) {
         continueMenuBtn.addEventListener('click', resumeClock);

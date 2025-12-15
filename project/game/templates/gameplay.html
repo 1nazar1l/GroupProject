@@ -28,7 +28,6 @@
 <input type="hidden" id="filtered-products" value="{{ filtered_products|safe }}">
 
 <script>
-// Альтернативный способ парсинга - через data-атрибуты
 const productsData = document.getElementById('filtered-products');
 if (productsData) {
     window.filteredProducts = JSON.parse(productsData.value.replace(/'/g, '"'));

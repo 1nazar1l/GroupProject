@@ -134,24 +134,6 @@
           {% endfor %}
         </div>
       </div>
-      <div class="changeable-content tablet-settings-screen">
-        <div class="tablet-title">Каталог магазина4</div>
-        <div class="products">
-          {% for key, product in save.inventory.items %}
-          <div class="product">
-            <span class="product-name">{{product.name}}</span>
-            <span class="product-count">{{product.count}} шт</span>
-            <span class="product-price">{{product.price}}$</span>
-          </div>
-          {% endfor %} {% for key, product in save.inventory.items %}
-          <div class="product">
-            <span class="product-name">{{product.name}}</span>
-            <span class="product-count">{{product.count}} шт</span>
-            <span class="product-price">{{product.price}}$</span>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
       <div class="tablet-actions">
         <i class="fa-solid fa-house tablet-shop-icon active"></i>
         <i class="fa-solid fa-truck tablet-order-icon"></i>

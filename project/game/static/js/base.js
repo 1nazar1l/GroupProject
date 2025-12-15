@@ -7,7 +7,6 @@ function syncContentWithImage(screenClass) {
     
     if (!background || !content) return;
     
-    // Синхронизируем сразу без проверок
     const imgRect = background.getBoundingClientRect();
     content.style.width = imgRect.width + 'px';
     content.style.height = imgRect.height + 'px';
@@ -15,7 +14,6 @@ function syncContentWithImage(screenClass) {
     content.style.left = '50%';
     content.style.transform = 'translateX(-50%)';
     
-    // Дополнительная синхронизация при загрузке изображения (на всякий случай)
     if (!background.complete) {
         background.addEventListener('load', function() {
             const rect = background.getBoundingClientRect();
@@ -27,26 +25,20 @@ function syncContentWithImage(screenClass) {
     }
 }
 
-// Функция для переключения экранов
 function switchScreen(toScreenClass) {
-    // Скрываем все экраны
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
     });
     
-    // Скрываем меню паузы
     document.querySelector('.pause-menu').classList.remove('active');
     
-    // Показываем целевой экран
     const toScreen = document.querySelector(`.${toScreenClass}`);
     if (toScreen) {
         toScreen.classList.add('active');
-        // Без задержки
         syncContentWithImage(toScreenClass);
     }
 }
 
-// Функция для обновления всех экранов
 function updateAllScreens() {
     const screens = [
         "main-screen", 
@@ -70,7 +62,6 @@ function updateAllScreens() {
     });
 }
 
-// Функция для проверки полноэкранного режима
 function isFullscreen() {
     return !!(document.fullscreenElement || 
               document.webkitFullscreenElement ||
@@ -79,10 +70,8 @@ function isFullscreen() {
               window.innerHeight === screen.height);
 }
 
-// Функция для переключения полноэкранного режима
 function toggleFullscreen() {
     if (!isFullscreen()) {
-        // Вход в полноэкранный режим
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         } else if (document.documentElement.webkitRequestFullscreen) {
@@ -93,7 +82,6 @@ function toggleFullscreen() {
             document.documentElement.msRequestFullscreen();
         }
     } else {
-        // Выход из полноэкранного режима
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.webkitExitFullscreen) {
@@ -106,36 +94,29 @@ function toggleFullscreen() {
     }
 }
 
-// Обработчик изменения полноэкранного режима
 function handleFullscreenChange() {
     const fullscreen = isFullscreen();
     
-    // Обновляем стили для полноэкранного режима
     document.body.classList.toggle('fullscreen-mode', fullscreen);
     
-    // Обновляем размеры контента
     updateAllScreens();
     
-    // Обновляем текст всех кнопок полноэкранного режима
     document.querySelectorAll('.fullscreen-btn').forEach(btn => {
         btn.textContent = fullscreen ? 'Обычный экран' : 'Полный экран';
     });
 }
 
-// Обработчик нажатия F11
 function handleKeyPress(event) {
     if (event.key === 'F11') {
-        handleFullscreenChange(); // Без задержки
+        handleFullscreenChange(); 
     }
 }
 
-// Проверяем размеры окна при изменении размера
 function handleResize() {
     updateAllScreens();
     handleFullscreenChange();
 }
 
-// Инициализация при загрузке
 window.addEventListener('load', function() {    
     document.addEventListener('dragstart', function(event) {
         event.preventDefault();
@@ -143,7 +124,6 @@ window.addEventListener('load', function() {
     
     updateAllScreens();
     
-    // Инициализация навигации по экранам
     document.querySelectorAll('[data-screen-target]').forEach(button => {
         button.addEventListener('click', function() {
             const targetScreen = this.getAttribute('data-screen-target');
@@ -151,33 +131,28 @@ window.addEventListener('load', function() {
         });
     });
     
-    // Обработчики для кнопок полноэкранного режима
     document.querySelectorAll('.fullscreen-btn').forEach(btn => {
         btn.addEventListener('click', toggleFullscreen);
     });
     
-    handleFullscreenChange(); // Без задержки
+    handleFullscreenChange(); 
 });
 
-// Слушаем события изменения размера
 window.addEventListener('resize', handleResize);
 
-// Слушаем события полноэкранного режима
 document.addEventListener('fullscreenchange', handleFullscreenChange);
 document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
-// Слушаем нажатие F11
 document.addEventListener('keydown', handleKeyPress);
 
-// Наблюдатель за изменениями размеров
 const observer = new ResizeObserver(updateAllScreens);
 document.querySelectorAll('.background').forEach(img => {
     observer.observe(img);
 });
 
-setInterval(handleFullscreenChange, 1000); // Оставляем для периодической проверки
+setInterval(handleFullscreenChange, 1000); 
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -205,7 +180,6 @@ document.addEventListener('click', () => {
     }
 });
 
-// Обработчик изменения размера экрана
 function handleScreenSize() {
     const screenWidth = window.innerWidth || document.documentElement.clientWidth;
     
@@ -216,8 +190,5 @@ function handleScreenSize() {
     }
 }
 
-// Вызываем при загрузке страницы
 window.addEventListener('load', handleScreenSize);
-
-// Вызываем при изменении размера окна
 window.addEventListener('resize', handleScreenSize);

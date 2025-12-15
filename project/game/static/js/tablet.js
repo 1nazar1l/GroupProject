@@ -86,13 +86,12 @@ tabletMessageIcon.addEventListener('click', () => {
     tabletMessageScreen.classList.add('active')
 })
 
-// Находим все кнопки добавления и удаления ТОЛЬКО на экране заказа
 document.querySelectorAll('.tablet-order-screen .add-button').forEach(button => {
     button.addEventListener('click', function(event) {
         event.stopPropagation();
         
         const productElement = this.closest('.product');
-        const countElement = productElement.querySelector('.order-product-count'); // Изменено
+        const countElement = productElement.querySelector('.order-product-count'); 
         const maxCanBuy = productElement.querySelector('.max-can-buy').value
         
         let currentCount = parseInt(countElement.textContent) || 0;
@@ -113,7 +112,7 @@ document.querySelectorAll('.tablet-order-screen .remove-button').forEach(button 
         event.stopPropagation();
         
         const productElement = this.closest('.product');
-        const countElement = productElement.querySelector('.order-product-count'); // Изменено
+        const countElement = productElement.querySelector('.order-product-count'); 
         
         let currentCount = parseInt(countElement.textContent) || 0;
         if (currentCount > 0) {
@@ -131,9 +130,8 @@ function updateOrderTotals() {
     let totalPrice = 0;
     let totalCount = 0;
     
-    // Считаем только товары на экране заказа
     document.querySelectorAll('.tablet-order-screen .product').forEach(product => {
-        const countElement = product.querySelector('.order-product-count'); // Изменено
+        const countElement = product.querySelector('.order-product-count'); 
         const priceElement = product.querySelector('.product-price');
         
         const count = parseInt(countElement.textContent) || 0;
@@ -163,11 +161,10 @@ function prepareOrderForm() {
     const oldProductFields = form.querySelectorAll('input[name^="product_"]');
     oldProductFields.forEach(field => field.remove());
     
-    // Используем только товары на экране заказа
     document.querySelectorAll('.tablet-order-screen .product').forEach(product => {
         const productId = product.getAttribute('data-product-id');
         const productName = product.querySelector('.product-name').textContent;
-        const countElement = product.querySelector('.order-product-count'); // Изменено
+        const countElement = product.querySelector('.order-product-count'); 
         const count = parseInt(countElement.textContent) || 0;
         
         if (count > 0 && productId) {

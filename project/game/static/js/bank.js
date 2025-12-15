@@ -31,7 +31,6 @@ continueMenuBtn.addEventListener('click', () => {
     creditBlock.classList.remove('brightness')
 })
 
-// Логика кредита
 document.addEventListener('DOMContentLoaded', () => {
     const amountRange = document.getElementById('credit_amount_range');
     const daysRange = document.getElementById('credit_days_range');
@@ -43,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysInput = document.getElementById('credit_days_input');
 
     function calcMultiplier(days) {
-        const minMult = 1.3; // 1 день => +30%
-        const maxMult = 2.0; // 10 дней => +100%
-        const k = (maxMult - minMult) / 9; // линейная интерполяция
+        const minMult = 1.3; 
+        const maxMult = 2.0; 
+        const k = (maxMult - minMult) / 9; 
         return minMult + (days - 1) * k;
     }
 

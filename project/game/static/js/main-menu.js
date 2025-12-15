@@ -29,10 +29,8 @@ createSaveMenu.querySelector('.exit').addEventListener('click', () => {
     mainMenu.classList.remove('hidden')
 })
 
-// Добавляем обработчик ко всем блокам
 document.querySelectorAll('.save-block').forEach(block => {
     block.addEventListener('click', function(event) {
-        // Предотвращаем всплытие события, если нужно
         event.stopPropagation();
 
         mainScreen.classList.add('brightness')
