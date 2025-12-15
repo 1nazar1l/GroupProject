@@ -1739,13 +1739,25 @@ input::placeholder {
     filter: brightness(40%);
 }
 
+.day-info {
+    position: absolute;
+    top: 5%;
+    left: 22%;
+    font-size: 3rem;
+    color: #e5d0ba;
+}
+
+.day-info.brightness {
+    filter: brightness(40%);
+}
+
 .credit-block {
     position: absolute;
     right: 5%;
     top: 50%;
     transform: translateY(-50%);
-    width: 400px;
-    height: 200px;
+    width: 320px;
+    height: 470px;
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 16px;
 }
@@ -1764,14 +1776,191 @@ input::placeholder {
     height: 100%;
 }
 
-.day-info {
-    position: absolute;
-    top: 5%;
-    left: 22%;
-    font-size: 3rem;
-    color: #e5d0ba;
+/* Стили для формы возврата кредита */
+.credit-block form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
 }
 
-.day-info.brightness {
-    filter: brightness(40%);
+.credit-block span {
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+.credit-block form > span {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #d32f2f;
+}
+
+.credit-block div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credit-block div span:first-child {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.credit-block div span:last-child {
+    font-weight: normal;
+    color: #555;
+}
+
+/* Кнопки */
+.credit-block button[type="submit"] {
+    margin-top: auto;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.credit-block button[type="submit"]:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.credit-block button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для формы получения кредита */
+.get-credit-form .credit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.get-credit-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.get-credit-form label span {
+    font-weight: bold;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Стилизация range input */
+.get-credit-form input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #4CAF50, #2196F3);
+    outline: none;
+}
+
+.get-credit-form input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FF9800;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.get-credit-form input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FF9800;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Информационные блоки в форме кредита */
+.get-credit-form .credit-content > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    border-left: 4px solid #2196F3;
+}
+
+.get-credit-form .credit-content > div:nth-child(2) {
+    border-left-color: #4CAF50;
+}
+
+.get-credit-form .credit-content > div:nth-child(3) {
+    border-left-color: #FF9800;
+}
+
+.get-credit-form .credit-content > div:nth-child(4) {
+    border-left-color: #d32f2f;
+}
+
+.get-credit-form .credit-content > div:nth-child(6) {
+    border-left-color: #9C27B0;
+}
+
+.get-credit-form .credit-content > div span:first-child {
+    font-weight: bold;
+    color: #333;
+}
+
+.get-credit-form .credit-content > div span:last-child {
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.get-credit-form .credit-content > div:nth-child(2) span:last-child {
+    color: #4CAF50;
+}
+
+.get-credit-form .credit-content > div:nth-child(3) span:last-child {
+    color: #FF9800;
+}
+
+.get-credit-form .credit-content > div:nth-child(4) span:last-child {
+    color: #d32f2f;
+}
+
+.get-credit-form .credit-content > div:nth-child(6) span:last-child {
+    color: #9C27B0;
+}
+
+/* Стили для скрытых полей */
+.get-credit-form input[type="hidden"] {
+    display: none;
+}
+
+/* Прокрутка для длинного контента */
+.get-credit-form .credit-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.get-credit-form .credit-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.get-credit-form .credit-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
 }

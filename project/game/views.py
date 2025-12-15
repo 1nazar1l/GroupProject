@@ -537,8 +537,6 @@ def end_day(request):
                 product_keys = list(parsed.keys())
 
         user = request.user
-        # Получаем текущие сохранения пользователя
-        # Предполагаю, что user.saves это JSONField или подобное
         saves = user.saves  # Если это dict
         save_data = saves.get(save_key, {})
         capital = int(save_data["capital"])
