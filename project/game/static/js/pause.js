@@ -14,9 +14,9 @@ pauseBtn.addEventListener('click', () => {
     pauseBtn.classList.add('brightness')
     moneyInfo.classList.add('brightness')
     pauseMenu.classList.add('active')
+    dayInfo.classList.add('brightness')
     progressBar.classList.add('brightness')
     nextTierBtn.classList.add('brightness')
-    dayInfo.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
@@ -24,15 +24,15 @@ continueMenuBtn.addEventListener('click', () => {
     activeScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')
     pauseBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
-    dayInfo.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     activeScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')  
+    dayInfo.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
-    dayInfo.classList.remove('brightness')
 })

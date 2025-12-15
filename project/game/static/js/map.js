@@ -21,39 +21,39 @@ minimapIcon.addEventListener('click', () => {
     pauseBtn.classList.toggle('brightness')
     tabletIcon.classList.toggle('brightness')
     startDayBtn.classList.toggle('brightness')
+    dayInfo.classList.toggle('brightness')
     progressBar.classList.toggle('brightness')
     nextTierBtn.classList.toggle('brightness')
-    dayInfo.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     minimapIcon.classList.add('brightness')
     map.classList.add('brightness')
     startDayBtn.classList.add('brightness')
+    dayInfo.classList.add('brightness')
     progressBar.classList.add('brightness')
     nextTierBtn.classList.add('brightness')
-    dayInfo.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     minimapIcon.classList.remove('brightness')
     map.classList.remove('brightness')  
+    dayInfo.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
-    dayInfo.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     minimapIcon.classList.remove('brightness')
     map.classList.remove('brightness')  
+    dayInfo.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
-    dayInfo.classList.remove('brightness')
 })
 
 shopArea.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
-    dayInfo.classList.remove('brightness')
 })

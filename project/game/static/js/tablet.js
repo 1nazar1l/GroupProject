@@ -26,34 +26,34 @@ tabletIcon.addEventListener('click', () => {
     pauseBtn.classList.toggle('brightness')
     mapIcon.classList.toggle('brightness')
     startDayBtn.classList.toggle('brightness')
+    dayInfo.classList.toggle('brightness')
     progressBar.classList.toggle('brightness')
     nextTierBtn.classList.toggle('brightness')
-    dayInfo.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
     tabletIcon.classList.add('brightness')
     tablet.classList.add('brightness')
     startDayBtn.classList.add('brightness')
+    dayInfo.classList.add('brightness')
     progressBar.classList.add('brightness')
     nextTierBtn.classList.add('brightness')
-    dayInfo.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
     startDayBtn.classList.remove('brightness')
-    nextTierBtn.classList.remove('brightness')
     dayInfo.classList.remove('brightness')
+    nextTierBtn.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     tablet.classList.remove('brightness')
     startDayBtn.classList.remove('brightness')
-    nextTierBtn.classList.remove('brightness')
     dayInfo.classList.remove('brightness')
+    nextTierBtn.classList.remove('brightness')
 })
 
 tabletMainIcon.addEventListener('click', () => {
