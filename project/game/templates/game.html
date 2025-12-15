@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
     <link rel="stylesheet" href="{% static "css/money-info.css" %}">
     <link rel="stylesheet" href="{% static "css/progress-bar.css" %}">
+    <link rel="stylesheet" href="{% static "css/map.css" %}">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -59,7 +60,7 @@
 {% elif save.shop == "tier6"%}
     {% include "tier6_screen.html" with save=save save_key=save_key %}
     <script type="module" src="{% static "js/tier6-shop.js" %}"></script>
-    
+
 {% endif %}
 
 <script type="module" src="{% static "js/pause.js" %}"></script>

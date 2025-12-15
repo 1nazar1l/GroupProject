@@ -1,21 +1,65 @@
-<div class="map-block">
-    <img src="../../media/icons/square-back.png" alt="" class="back">
-    <img src="../../media/icons/square-border.png" alt="" class="border">
-    <img src="../../media/map.jpg" alt="" class="map">
+{% if state == 'game' %}
+    <div class="map-block">
+        <img src="../../media/icons/square-back.png" alt="" class="back">
+        <img src="../../media/icons/square-border.png" alt="" class="border">
+        <img src="../../media/map.jpg" alt="" class="map">
 
-    <div class="click_area bank-area">
-        <form action="{% url "bank" %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="key" value={{save_key}}>
-            <button></button>
-        </form>
+        <div class="click_area bank-area">
+            <form action="{% url "bank" %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="key" value={{save_key}}>
+                <button></button>
+            </form>
+        </div>
+        <div class="click_area casino-area">
+            <form action="{% url "casino" %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="key" value={{save_key}}>
+                <button></button>
+            </form>
+        </div>
+        <div class="click_area shop-area"></div>
     </div>
-    <div class="click_area casino-area">
-        <form action="{% url "casino" %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="key" value={{save_key}}>
-            <button></button>
-        </form>
+{% elif state == 'bank' %}
+    <div class="map-block">
+        <img src="../../media/icons/square-back.png" alt="" class="back">
+        <img src="../../media/icons/square-border.png" alt="" class="border">
+        <img src="../../media/map.jpg" alt="" class="map">
+
+        <div class="click_area bank-area"></div>
+        <div class="click_area casino-area">
+            <form action="{% url "casino" %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="key" value={{save_key}}>
+                <button></button>
+            </form>
+        </div>
+        <div class="click_area shop-area">
+            <form action="{% url "game" %}" method="post">
+                {% csrf_token %}
+                <button></button>
+            </form>
+        </div>
     </div>
-    <div class="click_area shop-area"></div>
-</div>
+{% elif state == 'casino' %}
+    <div class="map-block">
+        <img src="../../media/icons/square-back.png" alt="" class="back">
+        <img src="../../media/icons/square-border.png" alt="" class="border">
+        <img src="../../media/map.jpg" alt="" class="map">
+
+        <div class="click_area bank-area">
+            <form action="{% url "bank" %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="key" value={{save_key}}>
+                <button></button>
+            </form>
+        </div>
+        <div class="click_area casino-area"></div>
+        <div class="click_area shop-area">
+            <form action="{% url "game" %}" method="post">
+                {% csrf_token %}
+                <button></button>
+            </form>
+        </div>
+    </div>
+{% endif %}

@@ -15,7 +15,7 @@
                 <img src="../../media/icons/square-back.png" alt="" class="back">
                 <img src="../../media/icons/icon_map.png" alt="" class="icon">
             </div>
-            {% include "map.html" %}
+            {% include "map.html" with state='game'%}
             {% include "tablet.html" with gamestate='wait' %}
             {% if progress_bar_width == 100 %}
             <div class="next-tier-btn">

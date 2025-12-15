@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static "css/base.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
     <link rel="stylesheet" href="{% static "css/money-info.css" %}">
+    <link rel="stylesheet" href="{% static "css/map.css" %}">
 
     <link
       rel="stylesheet"
@@ -42,26 +43,7 @@
                 <img src="../../media/icons/square-back.png" alt="" class="back">
                 <img src="../../media/icons/icon_map.png" alt="" class="icon">
             </div>
-            <div class="map-block">
-                <img src="../../media/icons/square-back.png" alt="" class="back">
-                <img src="../../media/icons/square-border.png" alt="" class="border">
-                <img src="../../media/map.jpg" alt="" class="map">
-
-                <div class="click_area bank-area"></div>
-                <div class="click_area casino-area">
-                    <form action="{% url "casino" %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="key" value={{save_key}}>
-                        <button></button>
-                    </form>
-                </div>
-                <div class="click_area shop-area">
-                    <form action="{% url "game" %}" method="post">
-                        {% csrf_token %}
-                        <button></button>
-                    </form>
-                </div>
-            </div>
+            {% include "map.html" with state='bank'%}
             <div class="credit-block">
                 {% if credit.has_credit %}
                 <form action="{% url "repay_credit" %}" method="post">
