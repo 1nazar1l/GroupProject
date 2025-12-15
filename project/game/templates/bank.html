@@ -63,6 +63,20 @@
                 </div>
             </div>
             <div class="credit-block">
+                {% if credit.has_credit %}
+                <form action="{% url "repay_credit" %}" method="post">
+                    {% csrf_token %}
+                    <span>Оплати кредит неуч</span>
+                    <div>
+                        <span>Сумма кредита: </span><span>{{credit.total_to_pay}}</span>
+                    </div>
+                    <div>
+                        <span>До какого дня нужно оплатить:</span><span>{{credit.payment_day}}</span>
+                    </div>
+                    <button type="submit">Оплатить кредит</button>
+                </form>
+                {% else %}
+
                 <form action="{% url "get_credit" %}" method="post" class="get-credit-form">
                     {% csrf_token %}
                     <input type="hidden" name="save_key" value="{{ save_key }}">
@@ -92,6 +106,7 @@
                         <button type="submit">Оформить кредит</button>
                     </div>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>

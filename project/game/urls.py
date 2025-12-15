@@ -19,7 +19,8 @@ urlpatterns = [
     path('end_day/', views.end_day, name='end_day'),
     path('casino_reload_page/', views.casino_reload_page, name='casino_reload_page'),
     path('logout/', views.sign_out, name="logout"),
-    path('get_credit/', views.get_credit, name="get_credit")
+    path('get_credit/', views.get_credit, name="get_credit"),
+    path('repay_credit/', views.repay_credit, name="repay_credit"),
 ]
 
 if settings.DEBUG:

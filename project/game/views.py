@@ -658,3 +658,58 @@ def get_credit(request):
         user.save()
 
     return redirect('bank')
+
+def repay_credit(request):
+    if request.method == 'POST':
+        # Определяем текущий ключ сохранения
+        save_key = request.POST.get("save_key") or request.session.get('current_save_key')
+        if not save_key:
+            return redirect('bank')
+
+        user = request.user
+        saves = user.saves
+        save_data = saves.get(save_key, {})
+
+        credit = save_data.get("credit", {})
+        if not credit.get("has_credit"):
+            return redirect('bank')
+
+        capital = int(save_data.get("capital", 0))
+        total_to_pay = int(credit.get("total_to_pay", 0))
+
+        if total_to_pay <= 0:
+            # Нет долга — сбрасываем структуру
+            credit = {
+                "has_credit": False,
+                "amount": 0,
+                "days": 0,
+                "multiplier": 0,
+                "total_to_pay": 0
+            }
+        else:
+            # Сумма, которую можем заплатить, оставляя 1 единицу денег
+            pay_amount = max(0, capital - 1)
+
+            # Если можем погасить полностью
+            if pay_amount >= total_to_pay:
+                capital -= total_to_pay
+                credit = {
+                    "has_credit": False,
+                    "amount": 0,
+                    "days": 0,
+                    "multiplier": 0,
+                    "total_to_pay": 0
+                }
+            else:
+                # Частичное погашение
+                total_to_pay -= pay_amount
+                capital = max(1, capital - pay_amount)
+                credit["total_to_pay"] = total_to_pay
+
+            save_data["capital"] = capital
+            save_data["credit"] = credit
+            saves[save_key] = save_data
+            user.saves = saves
+            user.save()
+
+    return redirect('bank')
