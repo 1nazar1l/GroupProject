@@ -66,10 +66,10 @@
                     {% csrf_token %}
                     <span>Оплати кредит неуч</span>
                     <div>
-                        <span>Сумма кредита: </span><span>{{credit.total_to_pay}}</span>
+                        <span>Сумма кредита: </span><span class="credit_val">{{credit.total_to_pay}}</span>
                     </div>
                     <div>
-                        <span>До какого дня нужно оплатить:</span><span>{{credit.payment_day}}</span>
+                        <span>До какого дня нужно оплатить:</span><span class="credit_val">{{credit.payment_day}}</span>
                     </div>
                     <button type="submit">Оплатить кредит</button>
                 </form>
