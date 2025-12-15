@@ -57,18 +57,20 @@
                 </div>
             {% else %}
                 <div class="choose-save-block">
-                    <form action="{% url "game" %}" method="post">
+                    <div class="choose-save">
+                        <form action="{% url "game" %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="key" value="{{key}}">
+                            <button type="submit" class="choose-save-btn"></button>
+                        </form>
+                        <span class="username">{{save.username}}</span>
+                    </div>
+                    <form action="{% url "delete_save" %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="key" value="{{key}}">
-                        <button type="submit" class="choose-save-btn"></button>
+                        <button type="submit" class="btn delete-save-btn">Удалить</button>
                     </form>
-                    <span class="username">{{save.username}}</span>
                 </div>
-                <form action="{% url "delete_save" %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="key" value="{{key}}">
-                    <button type="submit" class="btn delete-save-btn">Удалить</button>
-                </form>
             {% endif %}
         {% endfor %}
     </div>

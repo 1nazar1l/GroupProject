@@ -53,8 +53,8 @@ body.screen_is_small::before {
     left: 0;
     top: 0;
     content: "Игра сделана только для компьютеров и ноутбуков!!!";
-    background-color: rgb(127, 229, 255);
-    color: #E2E8F0;
+    background-color: white;
+    color: black;
     font-size: 3rem;
     word-wrap: break-word;
     z-index: 9999;
@@ -248,6 +248,18 @@ section.screen .content {
     cursor: pointer;
 }
 
+.pause-btn.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d3884a;
+    font-size: 2.7rem;
+    border-radius: 20px;
+    color: #f8be6e;
+    -webkit-text-stroke: 1px #965d2f;
+    cursor: pointer;
+}
+
 .pause-btn span{
     width: 8px;
     height: 25px;
@@ -342,7 +354,7 @@ input::placeholder {
     font-size: 4rem;
     line-height: 4rem;
 }
-
+/* 
 .create-save-menu {
     display: none;
 }
@@ -374,6 +386,11 @@ input::placeholder {
 }
 
 .choose-save-block {
+    width: 100%;
+    height: fit-content;
+}
+
+.choose-save {
     gap: 10px;
     border-radius: 20px;
     border: 5px solid #d9834f;
@@ -387,7 +404,7 @@ input::placeholder {
     position: relative;
 }
 
-.choose-save-block .choose-save-btn {
+.choose-save .choose-save-btn {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -396,7 +413,7 @@ input::placeholder {
     opacity: 0;
 }
 
-.choose-save-block .username {
+.choose-save .username {
     font-size: 3rem;
     color: #f8be6e;
     margin: 20px;
@@ -404,12 +421,14 @@ input::placeholder {
     padding: 10px;
     border-radius: 10px;
 }
+
 .choose-save-menu.active {
     display: flex;
 }
 
 .saves-block {
     display: flex;
+    flex-direction: column;
     gap: 30px;
 }
 
@@ -417,13 +436,14 @@ input::placeholder {
     transform: scale(1.05);
 }
 
-.choose-save-block:hover {
+.choose-save:hover {
     transform: scale(1.05);
 }
 
 .cross {
     position: relative;
-    width: 200px;
+    width: 80%;
+    aspect-ratio: 1 / 1;
     height: 200px;
 }
 
@@ -442,6 +462,189 @@ input::placeholder {
 
 .cross span:nth-child(2) {
     transform: translate(-50%, -50%) rotate(90deg);
+} */
+
+/* Основной контейнер меню выбора сохранения */
+.choose-save-menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    /* padding: 40px 20px; */
+}
+
+.choose-save-menu.active {
+    display: flex;
+    width: fit-content;
+}
+
+/* Контейнер для всех сохранений */
+.saves-block {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+/* Блок с кнопкой "Назад" */
+.choose-save-menu .exit.btn {
+    padding: 15px 60px;
+    font-size: 3rem;
+    min-width: 250px;
+}
+
+/* Контейнер для каждого сохранения */
+.choose-save-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 300px;
+}
+
+/* Карточка сохранения */
+.choose-save {
+    border-radius: 20px;
+    border: 5px solid #d9834f;
+    background-color: #f6b763;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    position: relative;
+    transition: all .3s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.choose-save:hover {
+    transform: scale(1.05);
+}
+
+/* Невидимая кнопка поверх всей карточки */
+.choose-save-btn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Имя пользователя в карточке */
+.choose-save .username {
+    font-size: 3rem;
+    color: #f8be6e;
+    background-color: #965d2f;
+    padding: 20px 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 1;
+}
+
+/* Кнопка удаления сохранения */
+.delete-save-btn {
+    padding: 15px 0;
+    font-size: 2.5rem;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+/* Блок для создания нового сохранения */
+.save-block.create-save {
+    border-radius: 20px;
+    border: 5px solid #d9834f;
+    background-color: #f6b763;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    width: 300px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.save-block.create-save:hover {
+    transform: scale(1.05);
+}
+
+/* Плюсик для создания нового сохранения */
+.cross {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.cross span {
+    position: absolute;
+    background-color: #E2E8F0;
+    border-radius: 4px;
+}
+
+.cross span:nth-child(1) {
+    width: 100%;
+    height: 8px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cross span:nth-child(2) {
+    width: 8px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+/* Стили для меню создания сохранения */
+.create-save-menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    /* padding: 40px 20px; */
+}
+
+.create-save-menu.active {
+    display: flex;
+    width: fit-content;
+}
+
+.create-save-menu #create_save_form {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Общие стили для кнопок */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d3884a;
+    font-size: 2.7rem;
+    border-radius: 20px;
+    color: #f8be6e;
+    -webkit-text-stroke: 1px #965d2f;
+    cursor: pointer;
+    /* padding: 15px 40px; */
+    border: none;
+    transition: all .3s ease;
+}
+
+.btn:hover {
+    background-color: #c97c3e;
 }
 
 .brush {
