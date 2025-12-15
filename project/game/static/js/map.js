@@ -19,9 +19,9 @@ minimapIcon.addEventListener('click', () => {
     shopScreen.classList.toggle('brightness')
     moneyInfo.classList.toggle('brightness')
     pauseBtn.classList.toggle('brightness')
-    tabletIcon.classList.toggle('brightness')
     startDayBtn.classList.toggle('brightness')
     dayInfo.classList.toggle('brightness')
+    tabletIcon.classList.toggle('brightness')
     progressBar.classList.toggle('brightness')
     nextTierBtn.classList.toggle('brightness')
 })
@@ -52,8 +52,8 @@ tomainMenuBtn.addEventListener('click', () => {
 })
 
 shopArea.addEventListener('click', () => {
-    tabletIcon.classList.remove('brightness')
     dayInfo.classList.remove('brightness')
+    tabletIcon.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
 })
