@@ -327,6 +327,15 @@ input::placeholder {
     display: flex;
 }
 
+.registration-menu button,
+.auth-menu button {
+    background-color: #b87239;
+}
+
+.background.not_auth {
+    filter: brightness(40%);
+}
+
 .auth-menu {
     width: fit-content;
     display: none;

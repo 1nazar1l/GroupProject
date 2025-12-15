@@ -23,7 +23,7 @@
 </section>
 
 {% if not request.user.is_authenticated %}
-<img src="../../media/title.jpeg" alt="" class="background">
+<img src="../../media/title.jpeg" alt="" class="background not_auth">
 <section class="menu center-menu registration-menu active">
     <form action="{% url "create_account" %}" method="post">
         {% csrf_token %}
