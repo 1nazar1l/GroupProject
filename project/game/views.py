@@ -521,7 +521,6 @@ def end_day(request):
 
         if raw_filtered:
             parsed = None
-            # Пытаемся разобрать JSON; если не вышло — пробуем literal_eval
             try:
                 parsed = json.loads(raw_filtered)
             except Exception:
@@ -579,6 +578,35 @@ def end_day(request):
                 f"Денег на тот момент: {capital}"
             ]
         }
+
+        # Проверяем кредит: если срок погашения наступил сегодня — списываем долг
+        credit = save_data.get("credit", {})
+        if credit.get("has_credit"):
+            payment_day = int(credit.get("payment_day", 0))
+            if day == payment_day:
+                debt = int(credit.get("total_to_pay", 0))
+                capital -= debt  # допускаем уход в минус
+                save_data["capital"] = capital
+                # сбрасываем кредит в дефолт
+                save_data["credit"] = {
+                    "has_credit": False,
+                    "amount": 0,
+                    "days": 0,
+                    "multiplier": 0,
+                    "total_to_pay": 0
+                }
+                # фиксируем сообщение о списании
+                messages_keys = list(messages.keys())
+                credit_msg_key = "1" if messages_keys == [] else str(int(messages_keys[-1]) + 1)
+                messages[credit_msg_key] = {
+                    "type": "pay_credit",
+                    "info": [
+                        f"Срок кредита наступил, списано: {debt}",
+                        f"Баланс после списания: {capital}",
+                        f"День: {day}",
+                    ]
+                }
+
         # Сохраняем обновленный инвентарь
         save_data["messages"] = messages
         save_data["inventory"] = inventory

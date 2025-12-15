@@ -1,4 +1,3 @@
-import * as values from './pause.js';
 const minimapIcon = document.querySelector('.minimap-icon')
 const map = document.querySelector('.map-block')
 const shopScreen = document.querySelector('.screen')
