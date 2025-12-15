@@ -7,6 +7,7 @@ const tomainMenuBtn = pauseMenu.querySelector('.main-screen-btn')
 const settingsMenuBtn = pauseMenu.querySelector('.settings-btn')
 const progressBar = document.querySelector('.progress-bar')
 const nextTierBtn = document.querySelector('.next-tier-btn')
+const dayInfo = document.querySelector('.day-info')
 
 pauseBtn.addEventListener('click', () => {
     activeScreen.classList.add('brightness')
@@ -15,6 +16,7 @@ pauseBtn.addEventListener('click', () => {
     pauseMenu.classList.add('active')
     progressBar.classList.add('brightness')
     nextTierBtn.classList.add('brightness')
+    dayInfo.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
@@ -24,6 +26,7 @@ continueMenuBtn.addEventListener('click', () => {
     pauseBtn.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
@@ -31,4 +34,5 @@ tomainMenuBtn.addEventListener('click', () => {
     moneyInfo.classList.remove('brightness')  
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
 })

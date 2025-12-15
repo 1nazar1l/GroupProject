@@ -11,6 +11,8 @@ const bankArea = document.querySelector('.bank-area')
 const startDayBtn = document.querySelector('.start-day-btn')
 const progressBar = document.querySelector('.progress-bar')
 const nextTierBtn = document.querySelector('.next-tier-btn')
+const dayInfo = document.querySelector('.day-info')
+
 
 minimapIcon.addEventListener('click', () => {
     map.classList.toggle('active')
@@ -21,6 +23,7 @@ minimapIcon.addEventListener('click', () => {
     startDayBtn.classList.toggle('brightness')
     progressBar.classList.toggle('brightness')
     nextTierBtn.classList.toggle('brightness')
+    dayInfo.classList.toggle('brightness')
 })
 
 pauseBtn.addEventListener('click', () => {
@@ -29,6 +32,7 @@ pauseBtn.addEventListener('click', () => {
     startDayBtn.classList.add('brightness')
     progressBar.classList.add('brightness')
     nextTierBtn.classList.add('brightness')
+    dayInfo.classList.add('brightness')
 })
 
 continueMenuBtn.addEventListener('click', () => {
@@ -36,6 +40,7 @@ continueMenuBtn.addEventListener('click', () => {
     map.classList.remove('brightness')  
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
 })
 
 tomainMenuBtn.addEventListener('click', () => {
@@ -43,10 +48,12 @@ tomainMenuBtn.addEventListener('click', () => {
     map.classList.remove('brightness')  
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
 })
 
 shopArea.addEventListener('click', () => {
     tabletIcon.classList.remove('brightness')
     progressBar.classList.remove('brightness')
     nextTierBtn.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
 })

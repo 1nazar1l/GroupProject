@@ -1763,3 +1763,15 @@ input::placeholder {
     width: 100%;
     height: 100%;
 }
+
+.day-info {
+    position: absolute;
+    top: 5%;
+    left: 22%;
+    font-size: 3rem;
+    color: #e5d0ba;
+}
+
+.day-info.brightness {
+    filter: brightness(40%);
+}
