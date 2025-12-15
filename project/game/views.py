@@ -767,3 +767,15 @@ def repay_credit(request):
             user.save()
 
     return redirect('bank')
+
+def delete_save(request):
+    if request.method == "POST":
+        key = request.POST.get("key")
+        if key:
+            user = request.user
+            saves = user.saves
+            if key in saves:
+                saves[key] = {}
+                user.saves = saves
+                user.save()
+    return redirect("start_game")

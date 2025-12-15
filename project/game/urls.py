@@ -21,6 +21,7 @@ urlpatterns = [
     path('logout/', views.sign_out, name="logout"),
     path('get_credit/', views.get_credit, name="get_credit"),
     path('repay_credit/', views.repay_credit, name="repay_credit"),
+    path('delete_save/', views.delete_save, name='delete_save'),
 ]
 
 if settings.DEBUG:
