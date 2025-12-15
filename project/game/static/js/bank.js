@@ -7,12 +7,28 @@ const continueMenuBtn = document.querySelector('.continue-btn')
 const tomainMenuBtn = document.querySelector('.main-screen-btn')
 const shopArea = document.querySelector('.shop-area')
 const bankArea = document.querySelector('.bank-area')
+const creditBlock = document.querySelector('.credit-block')
+const dayInfo = document.querySelector('.day-info')
 
 bankArea.addEventListener('click', () => {
     map.classList.remove('active')
     shopScreen.classList.remove('brightness')
     moneyInfo.classList.remove('brightness')
     pauseBtn.classList.remove('brightness')
+    creditBlock.classList.remove('brightness')
+    dayInfo.classList.remove('brightness')
+})
+
+minimapIcon.addEventListener('click', () => {
+    creditBlock.classList.toggle('brightness')
+})
+
+pauseBtn.addEventListener('click', () => {
+    creditBlock.classList.add('brightness')
+})
+
+continueMenuBtn.addEventListener('click', () => {
+    creditBlock.classList.remove('brightness')
 })
 
 // Логика кредита

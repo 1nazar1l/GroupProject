@@ -13,7 +13,6 @@ const progressBar = document.querySelector('.progress-bar')
 const nextTierBtn = document.querySelector('.next-tier-btn')
 const dayInfo = document.querySelector('.day-info')
 
-
 minimapIcon.addEventListener('click', () => {
     map.classList.toggle('active')
     shopScreen.classList.toggle('brightness')
