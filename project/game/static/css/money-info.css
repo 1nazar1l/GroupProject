@@ -1,0 +1,50 @@
+.money-info {
+    width: fit-content;
+    padding: 0;
+    flex-direction: row;
+    background-color: transparent;
+    border: 0;
+    left: 20px;
+    top: 20px;
+    position: absolute;
+}
+
+.money-info.brightness {
+    filter: brightness(40%);
+}
+
+
+.money-info img {
+    width: 300px;
+    opacity: 0.9;
+}
+
+.money-info .money {
+    position: absolute;
+    left: 39%;
+    top: 19%;
+    color: #e5d0ba;
+    font-size: 3.5rem;
+    line-height: 4rem;
+}
+
+.money-info .money-per-second {
+    position: absolute;
+    left: 67%;
+    top: 19%;
+    color: #e5d0ba;
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.day-info {
+    position: absolute;
+    top: 5%;
+    left: 22%;
+    font-size: 3rem;
+    color: #e5d0ba;
+}
+
+.day-info.brightness {
+    filter: brightness(40%);
+}
