@@ -633,7 +633,7 @@ input::placeholder {
     align-items: center;
     justify-content: center;
     background-color: #d3884a;
-    font-size: 2.7rem;
+    /* font-size: 2.7rem; */
     border-radius: 20px;
     color: #f8be6e;
     -webkit-text-stroke: 1px #965d2f;
