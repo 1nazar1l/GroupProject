@@ -66,6 +66,25 @@ body.screen_is_small::before {
     text-align: center;
 }
 
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d3884a;
+    /* font-size: 2.7rem; */
+    border-radius: 20px;
+    color: #f8be6e;
+    -webkit-text-stroke: 1px #965d2f;
+    cursor: pointer;
+    /* padding: 15px 40px; */
+    border: none;
+    transition: all .3s ease;
+}
+
+.btn:hover {
+    background-color: #c97c3e;
+}
+
 /* Добавь в CSS */
 .image-container {
     position: relative;
@@ -258,6 +277,7 @@ section.screen .content {
     color: #f8be6e;
     -webkit-text-stroke: 1px #965d2f;
     cursor: pointer;
+    transition: all 0s;
 }
 
 .pause-btn span{
@@ -627,26 +647,6 @@ input::placeholder {
     max-width: 500px;
 }
 
-/* Общие стили для кнопок */
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #d3884a;
-    /* font-size: 2.7rem; */
-    border-radius: 20px;
-    color: #f8be6e;
-    -webkit-text-stroke: 1px #965d2f;
-    cursor: pointer;
-    /* padding: 15px 40px; */
-    border: none;
-    transition: all .3s ease;
-}
-
-.btn:hover {
-    background-color: #c97c3e;
-}
-
 .brush {
     width: 80px;
     aspect-ratio: 1 / 1;
@@ -703,7 +703,7 @@ input::placeholder {
 }
 
 .click_area {
-    opacity: 0;
+    opacity: 0.1;
     transition: all 0.2s ease-in-out;
     background-color: yellow;
     cursor: pointer;
@@ -715,7 +715,7 @@ input::placeholder {
 }
 
 .click_area:hover {
-    opacity: 0.2;
+    opacity: 0.3;
 }
 
 .brush_area {
